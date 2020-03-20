@@ -24,9 +24,6 @@ The following configurable options are included in the JustBetter Akeneo Bundle 
 - Enable and disable different akeneo fixes under Stores > Configuration > Catalog > Akeneo Connector > JustBetter Akeneo.
 - To map specific Akeneo attribute code with a Magento Customer group. simply go to Stores > Configuration > Catalog > Akeneo Connector > Products > Customer Group Pricing
 
-## Compability
-The module is tested on magento versions 2.2.x - 2.3.4 
-
 ## Ideas, bugs or suggestions?
 Would be awesome if you can submit an [issue](https://github.com/justbetter/magento2-akeneo-bundle/issues) or for kudos create a [pull request](https://github.com/justbetter/magento2-akeneo-bundle/pulls).
 
