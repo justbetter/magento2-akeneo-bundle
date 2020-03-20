@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Akeneo\Connector\Job\Attribute" type="JustBetter\AkeneoBundle\Plugin\Metrics"/>
+    <type name="Akeneo\Connector\Job\Product">
+        <plugin name="JustBetter_FixConfigurableProductUrls" type="JustBetter\AkeneoBundle\Plugin\FixProductUrls" />
+        <plugin name="JustBetter_TierPrices" type="JustBetter\AkeneoBundle\Plugin\SetTierPrices" />
+        <plugin name="JustBetter_InsertNewProducts" type="JustBetter\AkeneoBundle\Plugin\InsertNewProducts" />
+        <plugin name="JustBetter_setTaxClass" type="JustBetter\AkeneoBundle\Plugin\SetTaxClassId" />
+    </type>
+    <type name="Akeneo\Connector\Job\Category">
+        <plugin name="JustBetter_CategoryExist" type="JustBetter\AkeneoBundle\Plugin\CategoryExist" />
+    </type>
+    <type name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="import" xsi:type="object">Akeneo\Connector\Console\Command\AkeneoConnectorImportCommand</item>
+            </argument>
+            <argument name="commands" xsi:type="array">
+                <item name="slackNotificationCommand" xsi:type="object">JustBetter\AkeneoBundle\Console\Command\SlackNotificationCommand</item>
+            </argument>
+             <argument name="commands" xsi:type="array">
+                <item name="MailNotificationCommand" xsi:type="object">JustBetter\AkeneoBundle\Console\Command\MailNotificationCommand</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

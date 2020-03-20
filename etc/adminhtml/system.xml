@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="catalog" translate="label" sortOrder="2000">
+            <label>catalog</label>
+        </tab>
+         <section id="akeneo_connector" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="0" showInStore="0">
+            <label>Akeneo Connector</label>
+            <tab>catalog</tab>
+            <resource>Akeneo_Connector::config_akeneo_connector</resource>
+            <group id="product" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Products</label>
+                <field id="groups" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Customer Group Pricing</label>
+                    <frontend_model>JustBetter\AkeneoBundle\Block\Adminhtml\System\Config\Form\Field\Type</frontend_model>
+                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                    <comment>Map specific Akeneo attribute code with a Magento Customer group. This ensures that the tier prices from Akeneo are imported into Magento customer tier prices</comment>
+                    <depends>
+                        <field id="akeneo_connector/justbetter/tierprices">1</field>
+                    </depends>
+                </field>
+                <field id="tax_id_mapping" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Tax Id Mapping</label>
+                    <frontend_model>JustBetter\AkeneoBundle\Block\Adminhtml\System\Config\Form\Field\TaxIdMapping</frontend_model>
+                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                    <comment>Map Akeneo tax class codes to Magento tax class</comment>
+                    <depends>
+                        <field id="akeneo_connector/justbetter/settaxclass">1</field>
+                    </depends>
+                </field>
+            </group>
+            <resource>JustBetter_AkeneoBundle::akeneobundle_config</resource>
+            <group id="justbetter" translate="label" type="text" sortOrder="2000" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>JustBetter Akeneo</label>
+                <field id="fixconfigurableurls" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Fix Configurable Urls</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Replaces configurable product urls with the original url + sku. (Default no)</comment>
+                </field>
+                <field id="tierprices" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Tier Prices</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Map specific Akeneo attribute code with a Magento Customer group. (Default no)</comment>
+                </field>
+                <field id="akeneometrics" translate="label" type="select" sortOrder="3" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Akeneo Metrics</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="categoryexist" translate="label" type="select" sortOrder="4" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Category Exist</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Skip inserting url path when category already exist. (Default no)</comment>
+                </field>
+                <field id="akeneomanager" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Akeneo Manager</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Manages akeneo codes and magento entity id's. (Default: no)</comment>
+                </field>
+                <field id="insertnewproducts" translate="label" type="select" sortOrder="6" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Insert New Products</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Imports new products from akeneo. (Default: yes)</comment>
+                </field>
+                <field id="settaxclass" translate="label" type="select" sortOrder="6" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Set Tax Class</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Map Akeneo tax class codes to Magento tax class (Default: no)</comment>
+                </field>
+                <group id="slack" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Slack Akeneo import notifications</label>
+                <field id="enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="token" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Token</label>
+                    <comment>Authentication token bearing required scopes. This token is required to authorize this app to send Slack messages.</comment>
+                </field>
+                <field id="username" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Username</label>
+                    <comment>Set your bot's user name. This is the name that will be displayed at the Slack messages.</comment>
+                </field>
+                <field id="channel" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Channel</label>
+                    <comment>Channel, private group, user or IM channel to send message to. Channels always start with #. Could be an encoded ID, or a name. </comment>
+                </field>
+                <field id="api" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>api</label>
+                    <comment>Slack api url.</comment>
+                </field>
+                </group>
+                <group id="mailnotifications" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Akeneo import e-mail notifications</label>
+                    <field id="enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                        <label>Enabled</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="mail" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                        <label>E-mail</label>
+                        <comment>Enter your email where you want to receive notifications about akeneo imports.</comment>
+                    </field>
+                    <field id="frommail" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                        <label>From E-mail</label>
+                    </field>
+                    <field id="fromname" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                        <label>From Name</label>
+                    </field>
+                </group>
+            </group>
+        </section>
+    </system>
+</config>

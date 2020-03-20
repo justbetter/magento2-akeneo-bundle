@@ -1,0 +1,23 @@
+{
+    "name": "justbetter/magento-2-akeneo-bundle",
+    "description": "JustBetter AkeneoBundle",
+    "require": {
+      "php": ">=7.0"
+    },
+    "type": "magento2-module",
+    "version": "1.0.1",
+    "authors": [
+      {
+        "name": "Tom Folkers",
+        "email": "tomfolkers@justbetter.nl"
+      }
+    ],
+    "autoload": {
+      "files": [
+        "registration.php"
+      ],
+      "psr-4": {
+        "JustBetter\\AkeneoBundle\\": ""
+      }
+    }
+  }

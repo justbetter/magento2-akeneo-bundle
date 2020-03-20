@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <akeneo_connector>
+            <justbetter>
+                <fixconfigurableurls>0</fixconfigurableurls>
+                <tierprices>0</tierprices>
+                <akeneometrics>0</akeneometrics>
+                <categoryexist>0</categoryexist>
+                <akeneomanager>0</akeneomanager>
+                <insertnewproducts>1</insertnewproducts>
+                <settaxclass>0</settaxclass>
+                <slack>
+                    <enable>0</enable>
+                    <token></token>
+                    <username>akeneo</username>
+                    <channel></channel>
+                    <api>https://slack.com/api/chat.postMessage</api>
+                </slack>
+                <mailnotification>
+                    <enable>0</enable>
+                    <mail>john@example.com</mail>
+                    <frommail>noreply@akeneo-import.com</frommail>
+                    <fromname>Akeneo Import</fromname>
+                </mailnotification>
+            </justbetter>
+        </akeneo_connector>
+    </default>
+</config>

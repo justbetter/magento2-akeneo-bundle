@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../Magento/Backend/etc/menu.xsd">
+    <menu>
+	    <add id="JustBetter_AkeneoBundle::menu" title="JustBetter" module="JustBetter_AkeneoBundle" sortOrder="49" resource="JustBetter_AkeneoBundle::menu" dependsOnConfig="akeneo_connector/justbetter/akeneomanager"/>
+		<add id="JustBetter_AkeneoBundle::akeneo" title="Akeneo Manager" module="JustBetter_AkeneoBundle" sortOrder="20" parent="JustBetter_AkeneoBundle::menu" action="akeneomanager/akeneo" resource="JustBetter_AkeneoBundle::akeneo"/>
+    </menu>
+</config>

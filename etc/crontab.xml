@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+<group id="slack_cron">
+    <job name="slack" instance="JustBetter\AkeneoBundle\Cron\SlackNotificationCron" method="execute">
+        <schedule>0 8 * * *</schedule>
+    </job>
+</group>
+<group id="akeneomail_cron">
+    <job name="akeneomail" instance="JustBetter\AkeneoBundle\Cron\MailNotificationCron" method="execute">
+        <schedule>0 8 * * *</schedule>
+    </job>
+</group>
+</config>
