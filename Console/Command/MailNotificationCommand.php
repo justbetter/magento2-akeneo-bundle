@@ -2,8 +2,8 @@
 
 namespace JustBetter\AkeneoBundle\Console\Command;
 
-use JustBetter\AkeneoBundle\Job\RunMailMessage;
 use Symfony\Component\Console\Command\Command;
+use JustBetter\AkeneoBundle\Job\RunMailMessage;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 

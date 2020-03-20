@@ -6,7 +6,6 @@ The following configurable options are included in the JustBetter Akeneo Bundle 
 
 | Bundle extension                   | Description                                                                       |
 | ------------------------ | --------------------------------------------------------------------------------- |
-| Metrics                  | Add the right Akeneo metric unit to the Magento attribute for use in frontend     |
 | FixProductUrls           | Replaces variant product urls with the original url + sku for unique URL’s.       |
 | InsertNewProducts        | Adds the possibility to disable insertion of new products from akeneo.            |
 | CategoryExist            | Adds the possibility to skip inserting url paths when the category already exist. |

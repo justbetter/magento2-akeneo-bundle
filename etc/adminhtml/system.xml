@@ -42,10 +42,6 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Map specific Akeneo attribute code with a Magento Customer group. (Default no)</comment>
                 </field>
-                <field id="akeneometrics" translate="label" type="select" sortOrder="3" showInDefault="1" showInWebsite="0" showInStore="0">
-                    <label>Akeneo Metrics</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
                 <field id="categoryexist" translate="label" type="select" sortOrder="4" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Category Exist</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
