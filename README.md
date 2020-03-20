@@ -1,8 +1,10 @@
-# Magento 2 Akeneo Bundle
+# Magento2 Akeneo Bundle
 
-This Magento 2 module made by JustBetter extends the akeneo_connector (A module that allows you to export your data from Akeneo to Magento 2) on different aspects. Such as: urls and notifications. Below you will find all extensions included in the module and a short description about the extensions.
+This Magento2 extension made by JustBetter extends the[Akeneo Connector](https://github.com/akeneo/magento2-connector-community)(the default Akeneo connector extension that allows you to import productdata from Akeneo to Magento2). 
 
-| Module                   | Description                                                                       |
+The following configurable options are included in the JustBetter Akeneo Bundle extension:
+
+| Bundle extension                   | Description                                                                       |
 | ------------------------ | --------------------------------------------------------------------------------- |
 | Metrics                  | Add the right Akeneo metric unit to the Magento attribute for use in frontend     |
 | FixProductUrls           | Replaces variant product urls with the original url + sku for unique URL’s.       |
@@ -24,13 +26,13 @@ This Magento 2 module made by JustBetter extends the akeneo_connector (A module 
 - To map specific Akeneo attribute code with a Magento Customer group. simply go to Stores > Configuration > Catalog > Akeneo Connector > Products > Customer Group Pricing
 
 ## Compability
-The module is tested on magento version 2.2.x
+The module is tested on magento versions 2.2.x - 2.3.4 
 
 ## Ideas, bugs or suggestions?
-Please create a [issue](https://github.com/justbetter/magento2-akeneo-bundle/issues) or a [pull request](https://github.com/justbetter/magento2-akeneo-bundle/pulls).
+Would be awesome if you can submit an [issue](https://github.com/justbetter/magento2-akeneo-bundle/issues) or for kudos create a [pull request](https://github.com/justbetter/magento2-akeneo-bundle/pulls).
 
 ## About us
-We’re a innovative development agency from The Netherlands building awesome websites, webshops and web applications with Laravel and Magento. Check out our website [justbetter.nl](https://justbetter.nl) and our [open source projects](https://github.com/justbetter).
+We’re a innovative development agency from The Netherlands building awesome websites, webshops and web applications with Laravel and Magento2. Check out our website [justbetter.nl](https://justbetter.nl) and our [open source projects](https://github.com/justbetter).
 
 ## License
 [GNU GENERAL PUBLIC LICENSE](LICENSE)
