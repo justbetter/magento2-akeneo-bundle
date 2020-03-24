@@ -2,10 +2,10 @@
 
 namespace JustBetter\AkeneoBundle\Plugin;
 
+use Akeneo\Connector\Job\Product;
+use Akeneo\Connector\Helper\Import\Entities;
 use Magento\Store\Model\ScopeInterface as scope;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Akeneo\Connector\Helper\Import\Entities;
-use Akeneo\Connector\Job\Product;
 
 class InsertNewProducts
 {

@@ -1,4 +1,5 @@
 <?php
+
 namespace JustBetter\AkeneoBundle\Api\Cron;
 
 use Psr\Log\LoggerInterface;

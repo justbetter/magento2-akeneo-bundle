@@ -2,10 +2,10 @@
 
 namespace JustBetter\AkeneoBundle\Plugin;
 
-use Magento\Store\Model\ScopeInterface as scope;
-use Magento\Framework\App\Config\ScopeConfigInterface;
 use Akeneo\Connector\Helper\Import\Entities;
+use Magento\Store\Model\ScopeInterface as scope;
 use Akeneo\Connector\Helper\Store as StoreHelper;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 
 class CategoryExist
 {

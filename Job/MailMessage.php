@@ -1,4 +1,5 @@
 <?php
+
 namespace JustBetter\AkeneoBundle\Job;
 
 use Akeneo\Connector\Api\Data\ImportInterface;

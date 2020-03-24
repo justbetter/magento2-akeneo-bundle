@@ -1,4 +1,5 @@
 <?php
+
 namespace JustBetter\AkeneoBundle\Block\Adminhtml\Akeneo;
 
 use Magento\Backend\Helper\Data;
