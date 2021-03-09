@@ -1,27 +1,33 @@
 {
-  "name": "justbetter/magento2-akeneo-bundle",
-  "description": "Magento2 bundle for extending the Akeneo connector with awesome features.",
-  "require": {
-    "php": ">=7.2"
-  },
-  "type": "magento2-module",
-  "version": "1.0.3",
-  "authors": [
-    {
-      "name": "Tom Folkers",
-      "email": "tomfolkers@justbetter.nl"
+    "name": "justbetter/magento2-akeneo-bundle",
+    "description": "Magento2 bundle for extending the Akeneo connector with awesome features.",
+    "require": {
+        "php": ">=7.2",
+        "akeneo/module-magento2-connector-community": "^101.3"
     },
-    {
-      "name": "Pim Ruiter",
-      "email": "pim@justbetter.nl"
-    }
-  ],
-  "autoload": {
-    "files": [
-      "registration.php"
+    "type": "magento2-module",
+    "version": "1.0.4",
+    "authors": [
+        {
+            "name": "Tom Folkers",
+            "email": "tomfolkers@justbetter.nl"
+        },
+        {
+            "name": "Pim Ruiter",
+            "email": "pim@justbetter.nl"
+        },
+        {
+            "name": "Quinten Buis",
+            "email": "quinten@justbetter.nl",
+            "role": "Developer"
+        }
     ],
-    "psr-4": {
-      "JustBetter\\AkeneoBundle\\": ""
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "JustBetter\\AkeneoBundle\\": ""
+        }
     }
-  }
 }
