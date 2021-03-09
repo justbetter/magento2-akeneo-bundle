@@ -15,6 +15,11 @@
         {
             "name": "Pim Ruiter",
             "email": "pim@justbetter.nl"
+        },
+        {
+            "name": "Quinten Buis",
+            "email": "quinten@justbetter.nl",
+            "role": "Developer"
         }
     ],
     "autoload": {
