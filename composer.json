@@ -3,10 +3,10 @@
     "description": "Magento2 bundle for extending the Akeneo connector with awesome features.",
     "require": {
         "php": ">=7.2",
-        "akeneo/module-magento2-connector-community": "^101.3"
+        "akeneo/module-magento2-connector-community": "*"
     },
     "type": "magento2-module",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "authors": [
         {
             "name": "Tom Folkers",
