@@ -6,7 +6,7 @@
         "akeneo/module-magento2-connector-community": "*"
     },
     "type": "magento2-module",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "authors": [
         {
             "name": "Tom Folkers",

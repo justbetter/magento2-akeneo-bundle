@@ -1,8 +1,7 @@
 <?php
 
-namespace JustBetter\AkeneoBundle\Api\Cron;
+namespace JustBetter\AkeneoBundle\Cron;
 
-use Psr\Log\LoggerInterface;
 use JustBetter\AkeneoBundle\Job\RunSlackMessage;
 
 class SlackNotificationCron
