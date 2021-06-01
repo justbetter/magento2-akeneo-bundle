@@ -1,8 +1,8 @@
 # Magento2 Akeneo Bundle
 
-This Magento2 extension made by JustBetter extends the [Akeneo Connector](https://github.com/akeneo/magento2-connector-community) (the default Akeneo connector extension that allows you to import productdata from Akeneo to Magento2). 
+This Magento2 extension made by JustBetter extends the [Akeneo Connector](https://github.com/akeneo/magento2-connector-community) with several features you can enable/disable, so you can configure for example customer tier-price attributes and different product Tax classes within the Akeneo connector configuration.
 
-The following configurable options are included in the JustBetter Akeneo Bundle extension:
+The following features are included in the JustBetter Akeneo Bundle extension:
 
 | Bundle extension                                      | Description                                                                                   |
 | ----------------------------------------------------- | --------------------------------------------------------------------------------------------- |
@@ -13,7 +13,7 @@ The following configurable options are included in the JustBetter Akeneo Bundle 
 | MailNotificationCommand                               | Adds the possibility to receive e-mail notifications about akeneo imports.        |
 | AkeneoManager                                         | Manual adjustment of akeneo codes vs magento entity id’s connector mapping.       |
 | SetTierPrices                                         | Maps specific Akeneo attribute code with a Magento Customer group. This ensures that the tier prices from Akeneo are imported into Magento customer tier prices      |
-| SetTaxClass                                           | Map Akeneo tax class codes to Magento tax class  
+| SetTaxClass                                           | Map When you have multiple tax classes in Akeneo and want to use them in Magento. Akeneo tax class codes to Magento tax class - See confguration
 | <a href="#import-finished-events">ImportFinished</a>  | Fires an event for every job that is fully finished.
 
 ## Installation
@@ -22,8 +22,9 @@ The following configurable options are included in the JustBetter Akeneo Bundle 
 - `bin/magento setup:upgrade && bin/magento cache:flush`
 
 ## Configuration
-- Enable and disable different akeneo fixes under Stores > Configuration > Catalog > Akeneo Connector > JustBetter Akeneo.
+- Enable and disable different Akeneo features. Go to Stores > Configuration > Catalog > Akeneo Connector > JustBetter Akeneo.
 - To map specific Akeneo attribute code with a Magento Customer group. simply go to Stores > Configuration > Catalog > Akeneo Connector > Products > Customer Group Pricing
+- When using the TAX mapping, map to Akeneo codes to the Magento Tax classes. Don't forget to define the Tax attribute within the Attribute configuration for this feature to work.
 
 ## Import finished events
 There are a total of 5 events:
