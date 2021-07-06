@@ -5,6 +5,7 @@
         <plugin name="JustBetter_TierPrices" type="JustBetter\AkeneoBundle\Plugin\SetTierPrices" />
         <plugin name="JustBetter_InsertNewProducts" type="JustBetter\AkeneoBundle\Plugin\InsertNewProducts" />
         <plugin name="JustBetter_setTaxClass" type="JustBetter\AkeneoBundle\Plugin\SetTaxClassId" />
+        <plugin name="JustBetter_setProductsActive" type="JustBetter\AkeneoBundle\Plugin\SetProductsActive" />
     </type>
 
     <type name="Akeneo\Connector\Job\Category">

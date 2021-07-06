@@ -8,6 +8,7 @@
                 <categoryexist>0</categoryexist>
                 <akeneomanager>0</akeneomanager>
                 <insertnewproducts>1</insertnewproducts>
+                <setproductsactive>0</setproductsactive>
                 <settaxclass>0</settaxclass>
                 <slack>
                     <enable>0</enable>
