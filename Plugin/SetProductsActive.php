@@ -7,11 +7,11 @@ use Akeneo\Connector\Helper\Import\Entities;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Store\Model\ScopeInterface as scope;
+use Magento\Store\Model\ScopeInterface as Scope;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Catalog\Model\Product\Attribute\Source\Status;
 use Magento\Catalog\Api\ProductRepositoryInterface;
-use Magento\Catalog\Model\Product as catalogProduct;
+use Magento\Catalog\Model\Product as CatalogProduct;
 
 class SetProductsActive
 {
@@ -19,7 +19,6 @@ class SetProductsActive
     protected $entitiesHelper;
 
     /**
-     * __construct function
      * @param ScopeConfigInterface $config
      * @param Entities $entitiesHelper
      */
@@ -42,7 +41,7 @@ class SetProductsActive
      */
     public function afterInsertData(product $subject, $result)
     {
-        $extensionEnabled = $this->config->getValue('akeneo_connector/justbetter/setproductsactive', scope::SCOPE_WEBSITE);
+        $extensionEnabled = $this->config->getValue('akeneo_connector/justbetter/setproductsactive', Scope::SCOPE_WEBSITE);
         if (!$extensionEnabled) {
             return $result;
         }
@@ -80,10 +79,10 @@ class SetProductsActive
 
     /**
      * @param $identifier
-     * @return ProductInterface|catalogProduct|null
+     * @return CatalogProduct
      * @throws NoSuchEntityException
      */
-    protected function getProduct(string $identifier): catalogProduct
+    protected function getProduct(string $identifier): CatalogProduct
     {
         return $this->productRepository->get($identifier);
     }
