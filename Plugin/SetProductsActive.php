@@ -6,6 +6,7 @@ use Akeneo\Connector\Job\Product;
 use Akeneo\Connector\Helper\Import\Entities;
 use Magento\Store\Model\ScopeInterface as scope;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Catalog\Model\Product\Attribute\Source\Status;
 
 class SetProductsActive
 {
@@ -27,18 +28,20 @@ class SetProductsActive
 
     /**
      * afterInsertData function
-     * @param  product $subject
+     * @param  product $product
      * @param  bool $result
      * @return bool $result
      */
-    public function afterInsertData(product $subject, $result)
+    public function afterInsertData(product $product, $result)
     {
         $extensionEnabled = $this->config->getValue('akeneo_connector/justbetter/setproductsactive', scope::SCOPE_WEBSITE);
         if (!$extensionEnabled) {
             return $result;
         }
 
-        // todo:
+        //todo: Save enabled status on product
+//        $product->setStatus(Status::STATUS_ENABLED);
+//        $product->save();
 
         return $result;
     }
