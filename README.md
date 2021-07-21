@@ -8,6 +8,7 @@ The following features are included in the JustBetter Akeneo Bundle extension:
 | ----------------------------------------------------- | --------------------------------------------------------------------------------------------- |
 | FixProductUrls                                        | Replaces variant product urls with the original url + sku for unique URL’s.       |
 | InsertNewProducts                                     | Adds the possibility to disable insertion of new products from akeneo.            |
+| SetProductsActive                                     | Adds the possibility to enable all products from akeneo.            |
 | CategoryExist                                         | Adds the possibility to skip inserting url paths when the category already exist. |
 | SlackNotificationCommand                              | Adds the possibility to receive slack notifications about akeneo imports.         |
 | MailNotificationCommand                               | Adds the possibility to receive e-mail notifications about akeneo imports.        |
