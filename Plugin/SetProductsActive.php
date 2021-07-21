@@ -35,11 +35,11 @@ class SetProductsActive
 
     /**
      * afterInsertData function
-     * @param  product $subject
+     * @param  Product $subject
      * @param  bool $result
      * @return bool $result
      */
-    public function afterInsertData(product $subject, $result)
+    public function afterInsertData(Product $subject, $result)
     {
         $extensionEnabled = $this->config->getValue('akeneo_connector/justbetter/setproductsactive', Scope::SCOPE_WEBSITE);
         if (!$extensionEnabled) {
@@ -64,10 +64,10 @@ class SetProductsActive
     /**
      * Get the products from the temp table with a join to get the _entity_id
      *
-     * @param product $subject
+     * @param Product $subject
      * @return array
      */
-    protected function getProducts(product $subject): array
+    protected function getProducts(Product $subject): array
     {
         $tmpTableName = $this->entitiesHelper->getTableName($subject->getCode());
         $query = $this->connection->select()->from(['t' => $tmpTableName])->joinInner(
