@@ -8,9 +8,7 @@ use Magento\Catalog\Model\ProductRepository;
 use Magento\CatalogInventory\Model\Stock\StockItemRepository;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\DB\Adapter\AdapterInterface;
-use Magento\Framework\Exception\CouldNotSaveException;
-use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Store\Model\ScopeInterface as scope;
+use Magento\Store\Model\ScopeInterface as Scope;
 
 class EnableManageStock
 {
@@ -45,7 +43,7 @@ class EnableManageStock
 
     public function afterInitStock(Subject $subject): bool
     {
-        $extensionEnabled = $this->config->getValue('akeneo_connector/justbetter/enablemanagestock', scope::SCOPE_WEBSITE);
+        $extensionEnabled = $this->config->getValue('akeneo_connector/justbetter/enablemanagestock', Scope::SCOPE_WEBSITE);
 
         if (! $extensionEnabled) {
             return true;
@@ -64,9 +62,6 @@ class EnableManageStock
         return true;
     }
 
-    /**
-     * @throws CouldNotSaveException|NoSuchEntityException
-     */
     protected function updateStockInfo(array $product): void
     {
         $product = $this->productRepository->get($product['identifier']);
@@ -80,7 +75,6 @@ class EnableManageStock
         $this->stockItemRepository->save($stock);
     }
 
-    /** Get the products from the temp table with a join to get the _entity_id */
     protected function getProducts(Subject $subject): array
     {
         $tmpTableName = $this->entitiesHelper->getTableName($subject->getCode());
