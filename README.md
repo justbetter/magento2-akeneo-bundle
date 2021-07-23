@@ -6,13 +6,14 @@ The following features are included in the JustBetter Akeneo Bundle extension:
 
 | Bundle extension                                      | Description                                                                                   |
 | ----------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| FixProductUrls                                        | Replaces variant product urls with the original url + sku for unique URL’s.       |
-| InsertNewProducts                                     | Adds the possibility to disable insertion of new products from akeneo.            |
-| SetProductsActive                                     | Adds the possibility to enable all products from akeneo.            |
-| CategoryExist                                         | Adds the possibility to skip inserting url paths when the category already exist. |
-| SlackNotificationCommand                              | Adds the possibility to receive slack notifications about akeneo imports.         |
-| MailNotificationCommand                               | Adds the possibility to receive e-mail notifications about akeneo imports.        |
-| AkeneoManager                                         | Manual adjustment of akeneo codes vs magento entity id’s connector mapping.       |
+| FixProductUrls                                        | Replaces variant product urls with the original url + sku for unique URL’s.                   |
+| InsertNewProducts                                     | Adds the possibility to disable insertion of new products from akeneo.                        |
+| SetProductsActive                                     | Adds the possibility to enable all products from akeneo.                                      |
+| EnableManageStock                                     | Adds the possibility to enable manage stock for products from akeneo.                                      |
+| CategoryExist                                         | Adds the possibility to skip inserting url paths when the category already exist.             |
+| SlackNotificationCommand                              | Adds the possibility to receive slack notifications about akeneo imports.                     |
+| MailNotificationCommand                               | Adds the possibility to receive e-mail notifications about akeneo imports.                    |
+| AkeneoManager                                         | Manual adjustment of akeneo codes vs magento entity id’s connector mapping.                   |
 | SetTierPrices                                         | Maps specific Akeneo attribute code with a Magento Customer group. This ensures that the tier prices from Akeneo are imported into Magento customer tier prices      |
 | SetTaxClass                                           | Map When you have multiple tax classes in Akeneo and want to use them in Magento. Akeneo tax class codes to Magento tax class - See confguration
 | <a href="#import-finished-events">ImportFinished</a>  | Fires an event for every job that is fully finished.

@@ -9,6 +9,7 @@
                 <akeneomanager>0</akeneomanager>
                 <insertnewproducts>1</insertnewproducts>
                 <setproductsactive>0</setproductsactive>
+                <enablemanagestock>0</enablemanagestock>
                 <settaxclass>0</settaxclass>
                 <slack>
                     <enable>0</enable>
