@@ -17,6 +17,7 @@ The following features are included in the JustBetter Akeneo Bundle extension:
 | SetTierPrices                                         | Maps specific Akeneo attribute code with a Magento Customer group. This ensures that the tier prices from Akeneo are imported into Magento customer tier prices      |
 | SetTaxClass                                           | Map When you have multiple tax classes in Akeneo and want to use them in Magento. Akeneo tax class codes to Magento tax class - See confguration
 | <a href="#import-finished-events">ImportFinished</a>  | Fires an event for every job that is fully finished.
+| <a href="#metric-units">Metric Units</a>              | Sets Akeneo's metric unit in the eav_attribute
 
 ## Installation
 - `composer require justbetter/magento2-akeneo-bundle`
@@ -40,6 +41,14 @@ akeneo_connector_import_finish_product
 
 These events are fired before the `cleanCache` function which only runs at the end of the job. 
 That way the cache will still me flushed after your hook.
+
+## Metric Units
+When enabled the default metric unit for metric attributes will be added to the `unit` field in the `eav_attribute` table.
+This can be overidden at a channel, currently we only support one channel for this which is configurable in the backend.
+
+You can run this from the command line using `bin/magento metric:import`
+
+It is also automatically run after the attribute import
 
 ## Ideas, bugs or suggestions?
 Would be awesome if you can submit an [issue](https://github.com/justbetter/magento2-akeneo-bundle/issues) or for kudos create a [pull request](https://github.com/justbetter/magento2-akeneo-bundle/pulls).
