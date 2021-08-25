@@ -11,6 +11,8 @@
                 <setproductsactive>0</setproductsactive>
                 <enablemanagestock>0</enablemanagestock>
                 <settaxclass>0</settaxclass>
+                <enablemetricunits>0</enablemetricunits>
+                <metric_conversion_channel>ecommerce</metric_conversion_channel>
                 <slack>
                     <enable>0</enable>
                     <token></token>

@@ -38,6 +38,9 @@
              <argument name="commands" xsi:type="array">
                 <item name="MailNotificationCommand" xsi:type="object">JustBetter\AkeneoBundle\Console\Command\MailNotificationCommand</item>
             </argument>
+            <argument name="commands" xsi:type="array">
+                <item name="UpdateMetricUnits" xsi:type="object">JustBetter\AkeneoBundle\Console\Command\ImportMetricUnits</item>
+            </argument>
         </arguments>
     </type>
 </config>

@@ -1,0 +1,5 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="akeneo_connector_import_finish_attribute">
+        <observer name="retrieve_metric_values" instance="JustBetter\AkeneoBundle\Observer\ImportMetricUnits"/>
+    </event>
+</config>
