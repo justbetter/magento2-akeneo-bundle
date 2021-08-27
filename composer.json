@@ -2,7 +2,7 @@
     "name": "justbetter/magento2-akeneo-bundle",
     "description": "Magento2 bundle for extending the Akeneo connector with awesome features.",
     "require": {
-        "php": ">=7.2",
+        "php": "^7.4",
         "akeneo/module-magento2-connector-community": "*"
     },
     "type": "magento2-module",
