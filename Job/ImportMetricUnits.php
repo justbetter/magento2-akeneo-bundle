@@ -38,6 +38,9 @@ class ImportMetricUnits
     public function execute(OutputInterface $output = null): void
     {
         if (! $this->akeneoClient) {
+            if ($output) {
+                $output->writeln('<error>Akeneo client not configured!</error>');
+            }
             return;
         }
         
