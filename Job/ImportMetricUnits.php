@@ -19,8 +19,8 @@ class ImportMetricUnits
     protected const CHANNEL_CONFIG_KEY = 'metric_conversion_channel';
 
     protected AttributeRepositoryInterface $attributeRepository;
-    protected AkeneoPimClientInterface $akeneoClient;
     protected ScopeConfigInterface $config;
+    protected $akeneoClient;
 
     public function __construct(
         Authenticator $authenticator,
