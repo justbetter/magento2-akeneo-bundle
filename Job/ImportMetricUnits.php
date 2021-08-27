@@ -19,8 +19,8 @@ class ImportMetricUnits
     protected const CHANNEL_CONFIG_KEY = 'metric_conversion_channel';
 
     protected AttributeRepositoryInterface $attributeRepository;
+    protected ?AkeneoPimClientInterface $akeneoClient = null;
     protected ScopeConfigInterface $config;
-    protected $akeneoClient;
 
     public function __construct(
         Authenticator $authenticator,
@@ -28,12 +28,19 @@ class ImportMetricUnits
         ScopeConfigInterface $config
     ) {
         $this->attributeRepository = $attributeRepository;
-        $this->akeneoClient = $authenticator->getAkeneoApiClient();
         $this->config = $config;
+
+        if (($client = $authenticator->getAkeneoApiClient())) {
+            $this->akeneoClient = $client;
+        }
     }
 
     public function execute(OutputInterface $output = null): void
     {
+        if (! $this->akeneoClient) {
+            return;
+        }
+        
         if (!$this->config->getValue(static::CONFIG_PREFIX . static::ENABLED_CONFIG_KEY)) {
             if ($output) {
                 $output->writeln('<error>Metrics not enabled!</error>');
