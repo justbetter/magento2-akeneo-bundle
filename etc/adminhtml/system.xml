@@ -99,7 +99,13 @@
                     <label>Channel for metric conversions</label>
                     <comment>What channel to use for metric conversions</comment>
                 </field>
-                <group id="slack" translate="label" type="text" sortOrder="9" showInDefault="1" showInWebsite="0"
+                <field id="notvisiblefamilies" translate="label" type="multiselect" sortOrder="9" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
+                    <label>Set families to not visible individually after importing</label>
+                    <source_model>JustBetter\AkeneoBundle\Data\FamilyOptions</source_model>
+                    <comment>When a family is selected here all of the products will get the status not visible individually</comment>
+                </field>
+                <group id="slack" translate="label" type="text" sortOrder="11" showInDefault="1" showInWebsite="0"
                        showInStore="0">
                     <label>Slack Akeneo import notifications</label>
                     <field id="enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0"

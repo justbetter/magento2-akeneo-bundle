@@ -15,9 +15,10 @@ The following features are included in the JustBetter Akeneo Bundle extension:
 | MailNotificationCommand                               | Adds the possibility to receive e-mail notifications about akeneo imports.                    |
 | AkeneoManager                                         | Manual adjustment of akeneo codes vs magento entity id’s connector mapping.                   |
 | SetTierPrices                                         | Maps specific Akeneo attribute code with a Magento Customer group. This ensures that the tier prices from Akeneo are imported into Magento customer tier prices      |
-| SetTaxClass                                           | Map When you have multiple tax classes in Akeneo and want to use them in Magento. Akeneo tax class codes to Magento tax class - See confguration
-| <a href="#import-finished-events">ImportFinished</a>  | Fires an event for every job that is fully finished.
-| <a href="#metric-units">Metric Units</a>              | Sets Akeneo's metric unit in the eav_attribute
+| SetTaxClass                                           | Map When you have multiple tax classes in Akeneo and want to use them in Magento. Akeneo tax class codes to Magento tax class - See confguration |
+| <a href="#import-finished-events">ImportFinished</a>  | Fires an event for every job that is fully finished. |
+| <a href="#metric-units">Metric Units</a>              | Sets Akeneo's metric unit in the eav_attribute |
+| <a href="#not-visible-individually">Family - Not Visible Individually</a>              | Sets products in selected families to Not Visible Individually |
 
 ## Installation
 - `composer require justbetter/magento2-akeneo-bundle`
@@ -49,6 +50,12 @@ This can be overidden at a channel, currently we only support one channel for th
 You can run this from the command line using `bin/magento metric:import`
 
 It is also automatically run after the attribute import
+
+## Family - Not Visible Individually
+If you need all products of a certain families to be set to not visible individually you can select those families.
+After each import this will run and set products to not visible.
+
+You can also run this from the command line using `bin/magento set:notvisible`
 
 ## Ideas, bugs or suggestions?
 Would be awesome if you can submit an [issue](https://github.com/justbetter/magento2-akeneo-bundle/issues) or for kudos create a [pull request](https://github.com/justbetter/magento2-akeneo-bundle/pulls).
