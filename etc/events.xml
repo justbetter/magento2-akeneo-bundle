@@ -2,4 +2,7 @@
     <event name="akeneo_connector_import_finish_attribute">
         <observer name="retrieve_metric_values" instance="JustBetter\AkeneoBundle\Observer\ImportMetricUnits"/>
     </event>
+    <event name="akeneo_connector_import_finish_product">
+        <observer name="set_not_visible" instance="JustBetter\AkeneoBundle\Observer\SetNotVisible"/>
+    </event>
 </config>
