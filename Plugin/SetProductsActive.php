@@ -4,16 +4,11 @@ namespace JustBetter\AkeneoBundle\Plugin;
 
 use Akeneo\Connector\Job\Product;
 use Akeneo\Connector\Helper\Import\Entities;
-use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Model\ResourceModel\Eav\Attribute;
 use Magento\Framework\DB\Adapter\AdapterInterface;
-use Magento\Framework\Exception\CouldNotSaveException;
-use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Model\ScopeInterface as Scope;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Catalog\Model\Product\Attribute\Source\Status;
-use Magento\Catalog\Api\ProductRepositoryInterface;
-use Magento\Catalog\Model\Product as CatalogProduct;
 
 class SetProductsActive
 {
@@ -21,19 +16,16 @@ class SetProductsActive
 
     protected ScopeConfigInterface $config;
     protected Entities $entitiesHelper;
-    protected ProductRepositoryInterface $productRepository;
     protected AdapterInterface $connection;
     protected Attribute $attribute;
 
     public function __construct(
         ScopeConfigInterface $config,
         Entities $entitiesHelper,
-        ProductRepositoryInterface $productRepository,
         Attribute $attribute
     ) {
         $this->config = $config;
         $this->entitiesHelper = $entitiesHelper;
-        $this->productRepository = $productRepository;
         $this->attribute = $attribute;
         $this->connection = $this->entitiesHelper->getConnection();
     }
