@@ -20,8 +20,8 @@ class SetNotVisible extends Command
 
     protected function configure(): void
     {
-        $this->setName('set:notvisible');
-        $this->setDescription('Set recently updated products to not visible');
+        $this->setName('akeneo:setfamilynotvisible');
+        $this->setDescription('Set family products to not visible');
 
         parent::configure();
     }
