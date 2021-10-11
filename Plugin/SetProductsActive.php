@@ -5,6 +5,8 @@ namespace JustBetter\AkeneoBundle\Plugin;
 use Akeneo\Connector\Job\Product;
 use Akeneo\Connector\Helper\Import\Entities;
 use Magento\Catalog\Api\Data\ProductInterface;
+use Magento\Catalog\Model\ResourceModel\Eav\Attribute;
+use Magento\Framework\DB\Adapter\AdapterInterface;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Model\ScopeInterface as Scope;
@@ -15,94 +17,77 @@ use Magento\Catalog\Model\Product as CatalogProduct;
 
 class SetProductsActive
 {
-    protected $config;
-    protected $entitiesHelper;
+    protected const CONFIG_KEY = 'akeneo_connector/justbetter/setproductsactive';
 
-    /**
-     * @param ScopeConfigInterface $config
-     * @param Entities $entitiesHelper
-     */
+    protected ScopeConfigInterface $config;
+    protected Entities $entitiesHelper;
+    protected ProductRepositoryInterface $productRepository;
+    protected AdapterInterface $connection;
+    protected Attribute $attribute;
+
     public function __construct(
         ScopeConfigInterface $config,
         Entities $entitiesHelper,
-        ProductRepositoryInterface $productRepository
+        ProductRepositoryInterface $productRepository,
+        Attribute $attribute
     ) {
         $this->config = $config;
         $this->entitiesHelper = $entitiesHelper;
         $this->productRepository = $productRepository;
+        $this->attribute = $attribute;
         $this->connection = $this->entitiesHelper->getConnection();
     }
 
-    /**
-     * afterInsertData function
-     * @param  Product $subject
-     * @param  bool $result
-     * @return bool $result
-     */
-    public function afterInsertData(Product $subject, $result)
+    public function afterInitStock(Product $subject, $result)
     {
-        $extensionEnabled = $this->config->getValue('akeneo_connector/justbetter/setproductsactive', Scope::SCOPE_WEBSITE);
-        if (!$extensionEnabled) {
+        if (!$this->config->getValue(static::CONFIG_KEY, Scope::SCOPE_WEBSITE)) {
             return $result;
         }
 
-        $tmpTableName = $this->entitiesHelper->getTableName($subject->getCode());
         $products = $this->getProducts($subject);
 
-        foreach ($products as $product) {
-            try {
-                $this->update($product);
-            } catch (CouldNotSaveException $e) {
-                // TODO: possible slack message?
-            } catch (NoSuchEntityException $e) {
-            }
-        }
+        $this->update($products);
 
         return $result;
     }
 
-    /**
-     * Get the products from the temp table with a join to get the _entity_id
-     *
-     * @param Product $subject
-     * @return array
-     */
     protected function getProducts(Product $subject): array
     {
         $tmpTableName = $this->entitiesHelper->getTableName($subject->getCode());
-        $query = $this->connection->select()->from(['t' => $tmpTableName])->joinInner(
-            ['c' => 'catalog_product_entity'],
-            't.identifier = c.sku'
-        );
+
+        $query = $this->connection
+            ->select()
+            ->from(['t' => $tmpTableName])
+            ->joinInner(
+                ['c' => 'catalog_product_entity'],
+                't.identifier = c.sku'
+            );
+
         return $this->connection->fetchAll($query);
     }
 
-    /**
-     * @param $identifier
-     * @return CatalogProduct
-     * @throws NoSuchEntityException
-     */
-    protected function getProduct(string $identifier): CatalogProduct
+    protected function update(array $products): void
     {
-        return $this->productRepository->get($identifier);
-    }
+        $ids = array_map(function ($product) {
+            return $product['_entity_id'];
+        }, $products);
 
-    /**
-     * update the stock information
-     *
-     * @param $product
-     * @return void
-     * @throws CouldNotSaveException|NoSuchEntityException
-     */
-    protected function update(array $product): void
-    {
-        $product = $this->getProduct($product['identifier']);
+        $table = $this->connection->getTableName('catalog_product_entity_int');
+        $attributeId = $this->attribute->getIdByCode('catalog_product', 'status');
 
-        if (!$product) {
-            return;
+        foreach (array_chunk($ids, 100) as $chunk) {
+            $this->connection->update(
+                $table,
+                [
+                    'value' => Status::STATUS_ENABLED
+                ],
+                [
+                    'attribute_id = ' . $attributeId
+                    . ' AND entity_id IN (' . implode(',', $chunk) . ')'
+                    . ' AND value <> ' . Status::STATUS_ENABLED
+                    . ' AND store_id = 0'
+                ]
+            );
         }
-
-        $product->setStatus(Status::STATUS_ENABLED);
-        $product = $this->productRepository->save($product);
     }
 }
