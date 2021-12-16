@@ -26,6 +26,10 @@
                     <frommail>noreply@akeneo-import.com</frommail>
                     <fromname>Akeneo Import</fromname>
                 </mailnotification>
+                <log_cleaner>
+                    <enable>0</enable>
+                    <number_of_days>30</number_of_days>
+                </log_cleaner>
             </justbetter>
         </akeneo_connector>
     </default>

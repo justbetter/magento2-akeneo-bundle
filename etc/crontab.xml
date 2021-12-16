@@ -10,4 +10,9 @@
         <schedule>0 8 * * *</schedule>
     </job>
 </group>
+<group id="akeneo_log_cleaner_cron">
+    <job name="akeneo_log_cleaner" instance="JustBetter\AkeneoBundle\Cron\CleanLogs" method="execute">
+        <schedule>0 2 * * *</schedule>
+    </job>
+</group>
 </config>
