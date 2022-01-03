@@ -88,6 +88,12 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Set manage stock on product always on (Default: no)</comment>
                 </field>
+                <field id="setstockstatus" translate="label" type="select" sortOrder="6" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
+                    <label>Set stock status</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Set stock status to "In Stock" when backorders are allowed</comment>
+                </field>
                 <field id="enablemetricunits" translate="label" type="select" sortOrder="7" showInDefault="1"
                        showInWebsite="0" showInStore="0">
                     <label>Enable retrieving metric units</label>

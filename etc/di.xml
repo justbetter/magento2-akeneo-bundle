@@ -7,6 +7,7 @@
         <plugin name="JustBetter_setTaxClass" type="JustBetter\AkeneoBundle\Plugin\SetTaxClassId" />
         <plugin name="JustBetter_setProductsActive" type="JustBetter\AkeneoBundle\Plugin\SetProductsActive" />
         <plugin name="JustBetter_EnableManageStock" type="JustBetter\AkeneoBundle\Plugin\EnableManageStock" sortOrder="1" />
+        <plugin name="JustBetter_SetStockStatus" type="JustBetter\AkeneoBundle\Plugin\SetStockStatus" sortOrder="2" />
         <plugin name="JustBetter_ImportFinished" type="JustBetter\AkeneoBundle\Plugin\ImportFinished" sortOrder="10" />
     </type>
 
