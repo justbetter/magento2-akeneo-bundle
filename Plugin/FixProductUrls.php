@@ -63,8 +63,17 @@ class FixProductUrls
         $identifier = " LOWER(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(TRIM(`identifier`), ':', ''), ')', ''), '(', ''), ',', ''), '\/', ''), '\'', ''), '&', ''), '!', ''), '.', ''), ' ', '-'), '--', '-'), '--', '-')) ";
 
         foreach ($stores as $local) {
+            $data = [];
+            $channelCode = $local[0]['channel_code'] ?? false;
             $local = "url_key-" . $local[0]['lang'];
             $urlKey = $connection->tableColumnExists($tmpTableName, $local);
+
+            if ($channelCode) {
+                if ($connection->tableColumnExists($tmpTableName, $local.'-'.$channelCode)) {
+                    $urlKey = true;
+                    $local = $local.'-'.$channelCode;
+                }
+            }
 
             if ($urlKey) {
                 $data[$local] = new expression("CONCAT(`" . $local . "`,'-' ," . $identifier . ")");
