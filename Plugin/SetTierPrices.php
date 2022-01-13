@@ -5,7 +5,7 @@ namespace JustBetter\AkeneoBundle\Plugin;
 use Exception;
 use Zend_Db_Expr as Expr;
 use Akeneo\Connector\Job\Product;
-use Akeneo\Connector\Helper\Serializer;
+use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Store\Model\ScopeInterface as scope;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Akeneo\Connector\Helper\Import\Product as ProductImportHelper;
@@ -21,14 +21,12 @@ class SetTierPrices
     public $customerGroupsUnserialized;
 
     /**
-     * construct function
-     *
-     * @param Serializer $serializer
+     * @param Json $serializer
      * @param ScopeConfigInterface $config
      * @param ProductImportHelper $entitiesHelper
      */
     public function __construct(
-        Serializer $serializer,
+        Json $serializer,
         ScopeConfigInterface $config,
         ProductImportHelper $entitiesHelper
     ) {

@@ -4,7 +4,7 @@ namespace JustBetter\AkeneoBundle\Plugin;
 
 use Akeneo\Connector\Job\Product;
 use Akeneo\Connector\Helper\Config;
-use Akeneo\Connector\Helper\Serializer;
+use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Eav\Model\Config as EavConfig;
 use Magento\Store\Model\ScopeInterface as scope;
 use Akeneo\Connector\Helper\Config as ConfigHelper;
@@ -39,17 +39,20 @@ class SetTaxClassId
     protected $tax_id_column;
 
     /**
-     * Construct.
-     *
-     * @param ProductImportHelper  $entitiesHelper [description]
-     * @param Serializer           $serializer     [description]
-     * @param ConfigHelper         $configHelper   [description]
-     * @param ScopeConfigInterface $scopeConfig    [description]
-     * @param EavConfig            $eavConfig      [description]
+     * @var Json
+     */
+    protected $serializer;
+
+    /**
+     * @param ProductImportHelper $entitiesHelper
+     * @param Json $serializer
+     * @param ConfigHelper $configHelper
+     * @param ScopeConfigInterface $scopeConfig
+     * @param EavConfig $eavConfig
      */
     public function __construct(
         ProductImportHelper $entitiesHelper,
-        Serializer $serializer,
+        Json $serializer,
         ConfigHelper $configHelper,
         ScopeConfigInterface $scopeConfig,
         EavConfig $eavConfig
