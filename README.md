@@ -10,6 +10,7 @@ The following features are included in the JustBetter Akeneo Bundle extension:
 | InsertNewProducts                                     | Adds the possibility to disable insertion of new products from akeneo.                        |
 | SetProductsActive                                     | Adds the possibility to enable all products from akeneo.                                      |
 | EnableManageStock                                     | Adds the possibility to enable manage stock for products from akeneo.                                      |
+| CheckWebsiteAssocation                                     | Adds the possibility to unset the product website when one of the attributes is empty. For example when the Name attribute in Akeneo is empty for the associated website.                                      |
 | CategoryExist                                         | Adds the possibility to skip inserting url paths when the category already exist.             |
 | SlackNotificationCommand                              | Adds the possibility to receive slack notifications about akeneo imports.                     |
 | MailNotificationCommand                               | Adds the possibility to receive e-mail notifications about akeneo imports.                    |
@@ -40,7 +41,7 @@ akeneo_connector_import_finish_option
 akeneo_connector_import_finish_product
 ```
 
-These events are fired before the `cleanCache` function which only runs at the end of the job. 
+These events are fired before the `cleanCache` function which only runs at the end of the job.
 That way the cache will still me flushed after your hook.
 
 ## Metric Units

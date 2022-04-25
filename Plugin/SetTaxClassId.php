@@ -4,68 +4,53 @@ namespace JustBetter\AkeneoBundle\Plugin;
 
 use Akeneo\Connector\Job\Product;
 use Akeneo\Connector\Helper\Config;
-use Magento\Framework\Serialize\Serializer\Json;
-use Magento\Eav\Model\Config as EavConfig;
-use Magento\Store\Model\ScopeInterface as scope;
+use Akeneo\Connector\Helper\Authenticator;
+use Akeneo\Connector\Helper\Store as StoreHelper;
 use Akeneo\Connector\Helper\Config as ConfigHelper;
-use Magento\Framework\App\Config\ScopeConfigInterface;
 use Akeneo\Connector\Helper\Import\Product as ProductImportHelper;
+use Magento\Store\Model\ScopeInterface as scope;
+use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Eav\Model\Config as EavConfig;
 
 class SetTaxClassId
 {
-    /**
-     * This variable contains a ProductImportHelper
-     *
-     * @var ProductImportHelper $entitiesHelper
-     */
     protected $entitiesHelper;
-
-    /**
-     * This variable contains a ConfigHelper
-     *
-     * @var ConfigHelper $configHelper
-     */
     protected $configHelper;
-
-    /**
-     * @var \Magento\Framework\App\Config\ScopeConfigInterface
-     */
     protected $scopeConfig;
-
-    /**
-     * column name of tax_id.
-     * @var string
-     */
-    protected $tax_id_column;
-
-    /**
-     * @var Json
-     */
+    protected $tax_id_columns;
+    protected $storeHelper;
     protected $serializer;
 
     /**
-     * @param ProductImportHelper $entitiesHelper
-     * @param Json $serializer
-     * @param ConfigHelper $configHelper
+     * @param ProductImportHelper  $entitiesHelper
+     * @param StoreHelper          $storeHelper
+     * @param Json                 $serializer
+     * @param ConfigHelper         $configHelper
+     * @param Authenticator        $authenticator
      * @param ScopeConfigInterface $scopeConfig
-     * @param EavConfig $eavConfig
+     * @param EavConfig            $eavConfig
      */
     public function __construct(
         ProductImportHelper $entitiesHelper,
+        StoreHelper $storeHelper,
         Json $serializer,
         ConfigHelper $configHelper,
+        Authenticator $authenticator,
         ScopeConfigInterface $scopeConfig,
         EavConfig $eavConfig
     ) {
         $this->entitiesHelper = $entitiesHelper;
-        $this->configHelper = $configHelper;
-        $this->scopeConfig = $scopeConfig;
+        $this->storeHelper = $storeHelper;
         $this->serializer = $serializer;
+        $this->configHelper = $configHelper;
+        $this->authenticator = $authenticator;
+        $this->scopeConfig = $scopeConfig;
         $this->eavConfig = $eavConfig;
     }
 
     /**
-     * Overwrite tax id with the one imported from Akeneo.
+     * Overwrite Magento Tax Class with the one from Akeneo.
      *
      * @param Product $context
      */
@@ -79,26 +64,41 @@ class SetTaxClassId
         $attributes = $this->serializer->unserialize(
             $this->scopeConfig->getValue(ConfigHelper::ATTRIBUTE_TYPES)
         );
+
         $mappings = $this->serializer->unserialize(
             $this->scopeConfig->getValue('akeneo_connector/product/tax_id_mapping')
         );
 
         foreach ($attributes as $attribute) {
             if ($attribute['magento_type'] === "tax") {
-                $this->tax_id_column = $attribute['pim_type'];
-                break;
+                $this->tax_id_columns[] = $attribute['pim_type'];
             }
         }
 
-        if (!$this->tax_id_column || !count($mappings)) {
+        if (!$this->tax_id_columns || !count($mappings)) {
             return;
         }
 
         /** @var AdapterInterface $connection */
         $connection = $this->entitiesHelper->getConnection();
+
         /** @var string $tmpTable */
         $tmpTable = $this->entitiesHelper->getTableName($context->getCode());
-        $connection->query($this->createQuery($this->tax_id_column, $tmpTable));
+
+        $this->tax_id_columns = $this->checkTaxColumnsExist($this->tax_id_columns, $tmpTable);
+
+        if (empty($this->tax_id_columns)) {
+            return;
+        }
+
+        foreach ($this->tax_id_columns as $tax_id_column) {
+            $taxQuery = $this->createQuery($tax_id_column, $tmpTable);
+            if (!$taxQuery) {
+                return;
+            }
+
+            $connection->query($taxQuery);
+        }
     }
 
     /**
@@ -110,7 +110,7 @@ class SetTaxClassId
      */
     public function afterUpdateOption(Product $context)
     {
-        if (!$this->tax_id_column) {
+        if (!$this->tax_id_columns) {
             return;
         }
 
@@ -119,7 +119,9 @@ class SetTaxClassId
         /** @var string $tmpTable */
         $tmpTable = $this->entitiesHelper->getTableName($context->getCode());
 
-        $connection->query('UPDATE ' . $tmpTable . ' SET `' . $this->tax_id_column . '` = `_tax_class_id`;');
+        foreach ($this->tax_id_columns as $tax_id_column) {
+            $connection->query('UPDATE ' . $tmpTable . ' SET `' . $tax_id_column . '` = `_tax_class_id`;');
+        }
     }
 
     /**
@@ -139,7 +141,7 @@ class SetTaxClassId
 
         $query = $this->addCase($query, $tax_id_column);
 
-            return $query;
+        return $query;
     }
 
     /**
@@ -152,12 +154,17 @@ class SetTaxClassId
      */
     public function addCase($query, $tax_id_column)
     {
-        $query .= "CASE
-        ";
-
         $mappings = $this->serializer->unserialize(
             $this->scopeConfig->getValue('akeneo_connector/product/tax_id_mapping')
         );
+
+        if (!count($mappings)) {
+            return $query;
+        }
+
+        $query .= "CASE
+        ";
+
         foreach ($mappings as $mapping) {
             $query .= "WHEN `" . $tax_id_column . "` = '" . $mapping['akeneo'] . "' then '" . $mapping['magento'] . "'
             ";
@@ -166,7 +173,45 @@ class SetTaxClassId
         $query .= 'ELSE `_tax_class_id`
         END';
 
-
         return $query;
+    }
+
+    /**
+     * Check If the Tax Class is localizable and exist
+     *
+     * @param $mappings
+     * @param $tmpTable
+     * @return array
+     */
+    public function checkTaxColumnsExist($mappings, $tmpTable)
+    {
+        $newMappings = [];
+
+        /** @var AdapterInterface $connection */
+        $connection = $this->entitiesHelper->getConnection();
+
+        foreach ($mappings as $key => $mapping) {
+
+            $akeneoAttribute = $this->authenticator->getAkeneoApiClient()->getAttributeApi()->get($mapping);
+
+            if($akeneoAttribute['localizable'] === false) {
+                if ($connection->tableColumnExists($tmpTable, $mapping)) {
+                    $newMappings[] = $mapping;
+                }
+            }
+
+            if (isset($akeneoAttribute['localizable'])) {
+                $mappedChannels = $this->configHelper->getMappedChannels();
+                foreach ($mappedChannels as $key => $channel) {
+                    foreach ($this->storeHelper->getChannelStoreLangs($channel) as $locale) {
+                        if ($connection->tableColumnExists($tmpTable, $mapping . '-' . $locale . '-' . $channel)) {
+                            $newMappings[] = $mapping . '-' . $locale . '-' . $channel;
+                        }
+                    }
+                }
+            }
+        }
+
+        return $newMappings;
     }
 }
