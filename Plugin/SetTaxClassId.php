@@ -79,25 +79,25 @@ class SetTaxClassId
             return;
         }
 
-        /** @var AdapterInterface $connection */
-        $connection = $this->entitiesHelper->getConnection();
-
-        /** @var string $tmpTable */
         $tmpTable = $this->entitiesHelper->getTableName($context->getCode());
 
-        $this->tax_id_columns = $this->checkTaxColumnsExist($this->tax_id_columns, $tmpTable);
+        $taxColumns = $this->checkTaxColumnsExist($this->tax_id_columns, $tmpTable);
 
-        if (empty($this->tax_id_columns)) {
+        if (empty($taxColumns)) {
             return;
         }
 
-        foreach ($this->tax_id_columns as $tax_id_column) {
+        foreach ($taxColumns as $tax_id_column) {
             $taxQuery = $this->createQuery($tax_id_column, $tmpTable);
             if (!$taxQuery) {
                 return;
             }
-
-            $connection->query($taxQuery);
+            try {
+                $connection = $this->entitiesHelper->getConnection();
+                $connection->query($taxQuery);
+            } catch (Exception $e) {
+                throw $e;
+            }
         }
     }
 
@@ -119,8 +119,10 @@ class SetTaxClassId
         /** @var string $tmpTable */
         $tmpTable = $this->entitiesHelper->getTableName($context->getCode());
 
-        foreach ($this->tax_id_columns as $tax_id_column) {
-            $connection->query('UPDATE ' . $tmpTable . ' SET `' . $tax_id_column . '` = `_tax_class_id`;');
+        $taxColumns = $this->checkTaxColumnsExist($this->tax_id_columns, $tmpTable);
+
+        foreach ($taxColumns as $taxColumn) {
+            $connection->query('UPDATE ' . $tmpTable . ' SET `' . $taxColumn . '` = `_tax_class_id`;');
         }
     }
 
