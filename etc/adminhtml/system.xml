@@ -27,13 +27,19 @@
                 </field>
                 <field id="tax_id_mapping" translate="label" type="text" sortOrder="10" showInDefault="1"
                        showInWebsite="0" showInStore="0">
-                    <label>Tax Id Mapping</label>
+                    <label>Tax Class Mapping</label>
                     <frontend_model>JustBetter\AkeneoBundle\Block\Adminhtml\System\Config\Form\Field\TaxIdMapping</frontend_model>
                     <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
-                    <comment>Map Akeneo tax class codes to Magento tax class</comment>
+                    <comment>Map Akeneo tax class codes to Magento tax class. Make sure the Akeneo Tax attribute is mapped in Attributes --> Additional Types section in the Akeneo connector configuration.</comment>
                     <depends>
                         <field id="akeneo_connector/justbetter/settaxclass">1</field>
                     </depends>
+                </field>
+                <field id="required_attribute_mapping" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Unset Website when empty Product Attribute Mapping</label>
+                    <frontend_model>Akeneo\Connector\Block\Adminhtml\System\Config\Form\Field\Attribute</frontend_model>
+                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                    <comment>Each of the required product attributes will be checked. If one of the attributes is empty the Website Association is removed. For Example when a productname in Akeneo is empty, there may be errors in Magento.</comment>
                 </field>
             </group>
             <resource>JustBetter_AkeneoBundle::akeneobundle_config</resource>
