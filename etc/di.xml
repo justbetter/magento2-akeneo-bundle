@@ -33,17 +33,9 @@
         <arguments>
             <argument name="commands" xsi:type="array">
                 <item name="import" xsi:type="object">Akeneo\Connector\Console\Command\AkeneoConnectorImportCommand</item>
-            </argument>
-            <argument name="commands" xsi:type="array">
                 <item name="slackNotificationCommand" xsi:type="object">JustBetter\AkeneoBundle\Console\Command\SlackNotificationCommand</item>
-            </argument>
-             <argument name="commands" xsi:type="array">
                 <item name="MailNotificationCommand" xsi:type="object">JustBetter\AkeneoBundle\Console\Command\MailNotificationCommand</item>
-            </argument>
-            <argument name="commands" xsi:type="array">
                 <item name="UpdateMetricUnits" xsi:type="object">JustBetter\AkeneoBundle\Console\Command\ImportMetricUnits</item>
-            </argument>
-            <argument name="commands" xsi:type="array">
                 <item name="SetNotVisible" xsi:type="object">JustBetter\AkeneoBundle\Console\Command\SetNotVisible</item>
             </argument>
         </arguments>
