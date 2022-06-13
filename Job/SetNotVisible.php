@@ -58,7 +58,7 @@ class SetNotVisible
     {
         return explode(
             ',',
-            $this->config->getValue(static::CONFIG_PREFIX . static::NOT_VISIBLE_CONFIG_KEY)
+            $this->config->getValue(static::CONFIG_PREFIX . static::NOT_VISIBLE_CONFIG_KEY) ?? ''
         );
     }
 }
