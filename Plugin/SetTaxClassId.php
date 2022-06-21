@@ -61,13 +61,15 @@ class SetTaxClassId
             return ;
         }
 
-        $attributes = $this->serializer->unserialize(
-            $this->scopeConfig->getValue(ConfigHelper::ATTRIBUTE_TYPES)
-        );
+        if (
+            !($attributes = $this->scopeConfig->getValue(ConfigHelper::ATTRIBUTE_TYPES)) ||
+            !($mappings = $this->scopeConfig->getValue('akeneo_connector/product/tax_id_mapping'))) {
+            return ;
+        }
 
-        $mappings = $this->serializer->unserialize(
-            $this->scopeConfig->getValue('akeneo_connector/product/tax_id_mapping')
-        );
+        $attributes = $this->serializer->unserialize($attributes);
+
+        $mappings = $this->serializer->unserialize($mappings);
 
         foreach ($attributes as $attribute) {
             if ($attribute['magento_type'] === "tax") {
@@ -156,9 +158,10 @@ class SetTaxClassId
      */
     public function addCase($query, $tax_id_column)
     {
-        $mappings = $this->serializer->unserialize(
-            $this->scopeConfig->getValue('akeneo_connector/product/tax_id_mapping')
-        );
+        if (!($mappings = $this->scopeConfig->getValue('akeneo_connector/product/tax_id_mapping'))) {
+            return ;
+        }
+        $mappings = $this->serializer->unserialize($mappings);
 
         if (!count($mappings)) {
             return $query;

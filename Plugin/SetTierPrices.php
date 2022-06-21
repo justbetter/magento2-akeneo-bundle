@@ -50,7 +50,7 @@ class SetTierPrices
         }
 
         $this->customerGroups = $this->config->getValue('akeneo_connector/product/groups', scope::SCOPE_WEBSITE);
-        $this->customerGroupsUnserialized = $this->serializer->unserialize($this->customerGroups);
+        $this->customerGroupsUnserialized = $this->serializer->unserialize($this->customerGroups ?? '{}');
 
         $tmpTableName = $this->entitiesHelper->getTableName($subject->getCode());
         $connection = $this->entitiesHelper->getConnection();
