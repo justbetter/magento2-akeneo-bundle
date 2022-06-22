@@ -117,7 +117,10 @@ class CheckWebsiteAssociation
 
     public function getRequiredAttributes()
     {
-        $requiredAttributes = $this->serializer->unserialize($this->config->getValue('akeneo_connector/product/required_attribute_mapping'));
+        if (!($requiredAttributes = $this->config->getValue('akeneo_connector/product/required_attribute_mapping'))) {
+            return [];
+        }
+        $requiredAttributes = $this->serializer->unserialize($requiredAttributes);
 
         foreach ($requiredAttributes as $key => &$requiredAttribute) {
             $akeneoAttribute = $this->authenticator->getAkeneoApiClient()->getAttributeApi()->get($requiredAttribute['akeneo_attribute']);
