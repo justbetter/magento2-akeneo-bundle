@@ -104,31 +104,6 @@ class SetTaxClassId
     }
 
     /**
-     * After tax_class_id has been set to normal option value
-     * set it to correct value.
-     *
-     * @param Product $context
-     * @return void
-     */
-    public function afterUpdateOption(Product $context)
-    {
-        if (!$this->tax_id_columns) {
-            return;
-        }
-
-        /** @var AdapterInterface $connection */
-        $connection = $this->entitiesHelper->getConnection();
-        /** @var string $tmpTable */
-        $tmpTable = $this->entitiesHelper->getTableName($context->getCode());
-
-        $taxColumns = $this->checkTaxColumnsExist($this->tax_id_columns, $tmpTable);
-
-        foreach ($taxColumns as $taxColumn) {
-            $connection->query('UPDATE ' . $tmpTable . ' SET `' . $taxColumn . '` = `_tax_class_id`;');
-        }
-    }
-
-    /**
      * Create the query to update the rows.
      *
      * @param string $tax_id_column
