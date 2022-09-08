@@ -40,4 +40,6 @@
             </argument>
         </arguments>
     </type>
+
+    <preference for="Akeneo\Connector\Helper\Import\Product" type="JustBetter\AkeneoBundle\Helper\Import\Product"/>
 </config>

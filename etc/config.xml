@@ -13,6 +13,7 @@
                 <settaxclass>0</settaxclass>
                 <enablemetricunits>0</enablemetricunits>
                 <metric_conversion_channel>ecommerce</metric_conversion_channel>
+                <defaultstorevalues>0</defaultstorevalues>
                 <slack>
                     <enable>0</enable>
                     <token></token>
