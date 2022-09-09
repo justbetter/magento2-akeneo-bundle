@@ -4,8 +4,6 @@ namespace JustBetter\AkeneoBundle\Plugin;
 
 use Akeneo\Connector\Helper\Import\Product as ProductImportHelper;
 use Akeneo\Connector\Job\Product as Subject;
-use Magento\Catalog\Model\ProductRepository;
-use Magento\CatalogInventory\Model\Stock\StockItemRepository;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\DB\Adapter\AdapterInterface;
 use Magento\Store\Model\ScopeInterface as Scope;
@@ -18,24 +16,14 @@ class SetStockStatus
     /** @var AdapterInterface */
     protected $connection;
 
-    /** @var StockItemRepository */
-    protected $stockItemRepository;
-
-    /** @var ProductRepository */
-    protected $productRepository;
-
     /** @var ScopeConfigInterface */
     protected $config;
 
     public function __construct(
         ProductImportHelper $entitiesHelper,
-        StockItemRepository $stockItemRepository,
-        ProductRepository $productRepository,
         ScopeConfigInterface $config
     ) {
         $this->entitiesHelper = $entitiesHelper;
-        $this->stockItemRepository = $stockItemRepository;
-        $this->productRepository = $productRepository;
         $this->config = $config;
 
         $this->connection = $this->entitiesHelper->getConnection();
