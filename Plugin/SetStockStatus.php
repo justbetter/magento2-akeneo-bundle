@@ -50,39 +50,22 @@ class SetStockStatus
         }
 
         $products = $this->getProducts($subject);
-
-        foreach ($products as $product) {
-            try {
-                $this->updateStockInfo($product);
-            } catch (\Exception $e) {
-                continue;
-            }
+        if(!empty($products)) {
+            $connection = $this->entitiesHelper->getConnection();
+            $where = ['product_id' . ' IN(?)' => [$products], 'backorders' . ' IN(?)' => [1, 2]];
+            $connection->update($this->entitiesHelper->getTable('cataloginventory_stock_item'), ['is_in_stock' => '1'], $where);
         }
-
         return true;
-    }
-
-    protected function updateStockInfo(array $product): void
-    {
-        $product = $this->productRepository->get($product['identifier']);
-
-        $stock = $product->getExtensionAttributes()->getStockItem();
-
-        if ($stock->getBackorders() === 1 || $stock->getBackorders() === 2) {
-            $stock->setIsInStock(1);
-
-            $this->stockItemRepository->save($stock);
-        }
     }
 
     protected function getProducts(Subject $subject): array
     {
         $tmpTableName = $this->entitiesHelper->getTableName($subject->getCode());
-        $query = $this->connection->select()->from(['t' => $tmpTableName])->joinInner(
+        $query = $this->connection->select()->from(['t' => $tmpTableName],['c.entity_id'])->joinInner(
             ['c' => 'catalog_product_entity'],
             't.identifier = c.sku'
         );
 
-        return $this->connection->fetchAll($query);
+        return $this->connection->fetchPairs($query);
     }
 }
