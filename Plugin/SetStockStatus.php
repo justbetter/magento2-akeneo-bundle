@@ -7,6 +7,7 @@ use Akeneo\Connector\Job\Product as Subject;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\DB\Adapter\AdapterInterface;
 use Magento\Store\Model\ScopeInterface as Scope;
+use Magento\CatalogInventory\Model\Stock;
 
 class SetStockStatus
 {
@@ -40,8 +41,8 @@ class SetStockStatus
         $products = $this->getProducts($subject);
         if(!empty($products)) {
             $connection = $this->entitiesHelper->getConnection();
-            $where = ['product_id' . ' IN(?)' => [$products], 'backorders' . ' IN(?)' => [1, 2]];
-            $connection->update($this->entitiesHelper->getTable('cataloginventory_stock_item'), ['is_in_stock' => '1'], $where);
+            $where = ['product_id' . ' IN(?)' => [$products], 'backorders' . ' IN(?)' => [Stock::BACKORDERS_YES_NONOTIFY, Stock::BACKORDERS_YES_NOTIFY]];
+            $connection->update($this->entitiesHelper->getTable('cataloginventory_stock_item'), ['is_in_stock' => Stock::STOCK_IN_STOCK], $where);
         }
         return true;
     }
