@@ -4,11 +4,10 @@ namespace JustBetter\AkeneoBundle\Plugin;
 
 use Akeneo\Connector\Helper\Import\Product as ProductImportHelper;
 use Akeneo\Connector\Job\Product as Subject;
-use Magento\Catalog\Model\ProductRepository;
-use Magento\CatalogInventory\Model\Stock\StockItemRepository;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\DB\Adapter\AdapterInterface;
 use Magento\Store\Model\ScopeInterface as Scope;
+use Magento\CatalogInventory\Model\Stock;
 
 class SetStockStatus
 {
@@ -18,24 +17,14 @@ class SetStockStatus
     /** @var AdapterInterface */
     protected $connection;
 
-    /** @var StockItemRepository */
-    protected $stockItemRepository;
-
-    /** @var ProductRepository */
-    protected $productRepository;
-
     /** @var ScopeConfigInterface */
     protected $config;
 
     public function __construct(
         ProductImportHelper $entitiesHelper,
-        StockItemRepository $stockItemRepository,
-        ProductRepository $productRepository,
         ScopeConfigInterface $config
     ) {
         $this->entitiesHelper = $entitiesHelper;
-        $this->stockItemRepository = $stockItemRepository;
-        $this->productRepository = $productRepository;
         $this->config = $config;
 
         $this->connection = $this->entitiesHelper->getConnection();
@@ -50,39 +39,22 @@ class SetStockStatus
         }
 
         $products = $this->getProducts($subject);
-
-        foreach ($products as $product) {
-            try {
-                $this->updateStockInfo($product);
-            } catch (\Exception $e) {
-                continue;
-            }
+        if(!empty($products)) {
+            $connection = $this->entitiesHelper->getConnection();
+            $where = ['product_id' . ' IN(?)' => [$products], 'backorders' . ' IN(?)' => [Stock::BACKORDERS_YES_NONOTIFY, Stock::BACKORDERS_YES_NOTIFY]];
+            $connection->update($this->entitiesHelper->getTable('cataloginventory_stock_item'), ['is_in_stock' => Stock::STOCK_IN_STOCK], $where);
         }
-
         return true;
-    }
-
-    protected function updateStockInfo(array $product): void
-    {
-        $product = $this->productRepository->get($product['identifier']);
-
-        $stock = $product->getExtensionAttributes()->getStockItem();
-
-        if ($stock->getBackorders() === 1 || $stock->getBackorders() === 2) {
-            $stock->setIsInStock(1);
-
-            $this->stockItemRepository->save($stock);
-        }
     }
 
     protected function getProducts(Subject $subject): array
     {
         $tmpTableName = $this->entitiesHelper->getTableName($subject->getCode());
-        $query = $this->connection->select()->from(['t' => $tmpTableName])->joinInner(
+        $query = $this->connection->select()->from(['t' => $tmpTableName],['c.entity_id'])->joinInner(
             ['c' => 'catalog_product_entity'],
             't.identifier = c.sku'
         );
 
-        return $this->connection->fetchAll($query);
+        return $this->connection->fetchPairs($query);
     }
 }
