@@ -51,7 +51,7 @@ akeneo_connector_import_finish_product
 These events are fired before the `cleanCache` function which only runs at the end of the job execution.
 That way the cache will still be flushed after your hook.
 
-*Please keep in mind that the Akeneo Products Import is executed per family. So if you import products from multiple families the `akeneo_connector_import_finish_product` event will be called multiple times before cleaning the cache.*
+*Please keep in mind that the Akeneo Products Import is executed per family ([since 102.1.1](https://github.com/akeneo/magento2-connector-community/blob/master/CHANGELOG.md#version-10211-)). So if you import products from multiple families the `akeneo_connector_import_finish_product` event will be called multiple times.*
 
 ## Metric Units
 When enabled the default metric unit for metric attributes will be added to the `unit` field in the `eav_attribute` table.
