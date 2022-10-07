@@ -44,6 +44,7 @@ We added a total of 5 events:
 ```
 akeneo_connector_import_finish_category
 akeneo_connector_import_finish_family
+akeneo_connector_import_finish_attribute
 akeneo_connector_import_finish_option
 akeneo_connector_import_finish_product
 ```
