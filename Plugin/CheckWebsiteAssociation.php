@@ -64,10 +64,13 @@ class CheckWebsiteAssociation
             $query = $connection->query($select);
             /** @var array $row */
             while (($row = $query->fetch())) {
-
-                $mapping = $this->getMappedWebsiteChannels();
+                
+                if(!isset($row[$websiteAssociation])) {
+                    continue;
+                }
 
                 $websites = explode(',', $row[$websiteAssociation]);
+                $mapping = $this->getMappedWebsiteChannels();
 
                 foreach ($websites as $key => $website) {
                     $channel = $mapping[$website] ?? '';
