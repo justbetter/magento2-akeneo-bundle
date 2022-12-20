@@ -97,10 +97,40 @@ class SetTaxClassId
             try {
                 $connection = $this->entitiesHelper->getConnection();
                 $connection->query($taxQuery);
+                $connection->query("ALTER TABLE `" . $tmpTable . "` DROP COLUMN `" . $tax_id_column . "`");
             } catch (Exception $e) {
                 throw $e;
             }
         }
+    }
+
+    /**
+     * In Case the Akeneo attribute is called tax_class_id
+     *
+     * @param Product $context
+     */
+    public function afterUpdateOption(Product $context): void
+    {
+        $extensionEnabled = $this->scopeConfig->getValue('akeneo_connector/justbetter/settaxclass', scope::SCOPE_WEBSITE);
+        if (!$extensionEnabled) {
+            return;
+        }
+
+        /** @var AdapterInterface $connection */
+        $connection = $this->entitiesHelper->getConnection();
+        $tmpTable = $this->entitiesHelper->getTableName($context->getCode());
+        $tax_id_column_original = '_tax_class_id';
+
+        if ($taxColumns = $this->checkTaxColumnsExist($this->tax_id_columns, $tmpTable)) {
+            foreach ($taxColumns as $tax_id_column) {
+                try {
+                    $connection->query("UPDATE `".$tmpTable."` SET `".$tax_id_column."` = `".$tax_id_column_original."`");
+                } catch (Exception $e) {
+                    throw $e;
+                }
+            }
+        }
+        return;
     }
 
     /**

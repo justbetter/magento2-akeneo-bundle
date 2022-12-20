@@ -8,17 +8,12 @@
     "type": "magento2-module",
     "authors": [
         {
-            "name": "Tom Folkers",
-            "email": "tomfolkers@justbetter.nl"
-        },
-        {
             "name": "Pim Ruiter",
             "email": "pim@justbetter.nl"
         },
         {
-            "name": "Quinten Buis",
-            "email": "quinten@justbetter.nl",
-            "role": "Developer"
+            "name": "Robin Mulder",
+            "email": "robin@justbetter.nl"
         }
     ],
     "autoload": {
