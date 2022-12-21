@@ -97,7 +97,6 @@ class SetTaxClassId
             try {
                 $connection = $this->entitiesHelper->getConnection();
                 $connection->query($taxQuery);
-                $connection->query("ALTER TABLE `" . $tmpTable . "` DROP COLUMN `" . $tax_id_column . "`");
             } catch (Exception $e) {
                 throw $e;
             }
