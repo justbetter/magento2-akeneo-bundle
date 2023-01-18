@@ -69,6 +69,10 @@ class ImportMetricUnits
                 continue;
             }
 
+            if ($magentoAttribute->getData(self::EAV_ATTRIBUTE_UNIT_FIELD) == $unit) {
+                continue;
+            }
+
             $magentoAttribute->setData(self::EAV_ATTRIBUTE_UNIT_FIELD, $unit);
             $magentoAttribute->save();
 
