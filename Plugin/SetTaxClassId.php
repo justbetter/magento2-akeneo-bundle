@@ -3,7 +3,6 @@
 namespace JustBetter\AkeneoBundle\Plugin;
 
 use Akeneo\Connector\Job\Product;
-use Akeneo\Connector\Helper\Config;
 use Akeneo\Connector\Helper\Authenticator;
 use Akeneo\Connector\Helper\Store as StoreHelper;
 use Akeneo\Connector\Helper\Config as ConfigHelper;
@@ -98,6 +97,10 @@ class SetTaxClassId
      */
     public function beforeUpdateOption($subject)
     {
+        if (!$this->tax_id_columns) {
+            return [$subject];
+        }
+
         $connection = $this->entitiesHelper->getConnection();
         $tmpTable = $this->entitiesHelper->getTableName($subject->getCode());
 
