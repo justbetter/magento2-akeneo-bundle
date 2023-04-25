@@ -3,7 +3,6 @@
 namespace JustBetter\AkeneoBundle\Plugin;
 
 use Akeneo\Connector\Job\Product;
-use Akeneo\Connector\Helper\Config;
 use Akeneo\Connector\Helper\Authenticator;
 use Akeneo\Connector\Helper\Store as StoreHelper;
 use Akeneo\Connector\Helper\Config as ConfigHelper;
@@ -88,48 +87,35 @@ class SetTaxClassId
         if (empty($taxColumns)) {
             return;
         }
-
-        foreach ($taxColumns as $tax_id_column) {
-            $taxQuery = $this->createQuery($tax_id_column, $tmpTable);
-            if (!$taxQuery) {
-                return;
-            }
-            try {
-                $connection = $this->entitiesHelper->getConnection();
-                $connection->query($taxQuery);
-            } catch (Exception $e) {
-                throw $e;
-            }
-        }
     }
 
     /**
-     * In Case the Akeneo attribute is called tax_class_id
+     * Before UpdateOption - Map Akeneo Tax Class option to Magento counterpart
      *
-     * @param Product $context
+     * @param $subject
+     * @return array
      */
-    public function afterUpdateOption(Product $context): void
+    public function beforeUpdateOption($subject)
     {
-        $extensionEnabled = $this->scopeConfig->getValue('akeneo_connector/justbetter/settaxclass', scope::SCOPE_WEBSITE);
-        if (!$extensionEnabled) {
-            return;
+        if (!$this->tax_id_columns) {
+            return [$subject];
         }
 
-        /** @var AdapterInterface $connection */
         $connection = $this->entitiesHelper->getConnection();
-        $tmpTable = $this->entitiesHelper->getTableName($context->getCode());
-        $tax_id_column_original = '_tax_class_id';
+        $tmpTable = $this->entitiesHelper->getTableName($subject->getCode());
 
         if ($taxColumns = $this->checkTaxColumnsExist($this->tax_id_columns, $tmpTable)) {
             foreach ($taxColumns as $tax_id_column) {
                 try {
-                    $connection->query("UPDATE `".$tmpTable."` SET `".$tax_id_column."` = `".$tax_id_column_original."`");
+                    $taxQuery = $this->createQuery($tax_id_column, $tmpTable);
+                    $connection->query($taxQuery);
                 } catch (Exception $e) {
                     throw $e;
                 }
             }
         }
-        return;
+
+        return [$subject];
     }
 
     /**
@@ -144,7 +130,7 @@ class SetTaxClassId
     {
         $query = "
             UPDATE `" . $tableName . "`
-            SET `_tax_class_id` =
+            SET `".$tax_id_column."` =
             ";
 
         $query = $this->addCase($query, $tax_id_column);
@@ -179,8 +165,7 @@ class SetTaxClassId
             ";
         }
 
-        $query .= 'ELSE `_tax_class_id`
-        END';
+        $query .= 'END';
 
         return $query;
     }
