@@ -44,13 +44,13 @@ class Entities
         $additonalTypes = $this->attributeHelper->getAdditionalTypes();
 
         foreach ($additonalTypes as $key => $additonalType) {
-            if ($additonalType ===  'tax') {
+            if ($additonalType ===  'tax' && isset($data[$key])) {
                 if (isset($data['tax_class_id']) && $data['tax_class_id'] instanceof \Zend_Db_Expr) {
                     $defaultTaxClassId = $data['tax_class_id']->__toString();
                     $data['tax_class_id'] = new \Zend_Db_Expr(
                         "IF(`".$data[$key]."` IS NULL OR `".$data[$key]."` = '', '".$defaultTaxClassId."', `".$data[$key]."`)"
                     );
-                } elseif (isset($data[$key])) {
+                } else {
                     $data['tax_class_id'] = new \Zend_Db_Expr(
                         "IF(`".$data[$key]."` IS NULL OR `".$data[$key]."` = '', `_tax_class_id`, `".$data[$key]."`)"
                     );
