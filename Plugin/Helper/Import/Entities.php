@@ -50,7 +50,7 @@ class Entities
                     $data['tax_class_id'] = new \Zend_Db_Expr(
                         "IF(`".$data[$key]."` IS NULL OR `".$data[$key]."` = '', '".$defaultTaxClassId."', `".$data[$key]."`)"
                     );
-                } else {
+                } elseif (isset($data[$key])) {
                     $data['tax_class_id'] = new \Zend_Db_Expr(
                         "IF(`".$data[$key]."` IS NULL OR `".$data[$key]."` = '', `_tax_class_id`, `".$data[$key]."`)"
                     );
