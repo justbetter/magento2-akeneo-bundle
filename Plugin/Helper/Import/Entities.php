@@ -2,6 +2,7 @@
 
 namespace JustBetter\AkeneoBundle\Plugin\Helper\Import;
 
+use Magento\Framework\DB\Adapter\AdapterInterface;
 use Magento\Store\Model\ScopeInterface as scope;
 use Akeneo\Connector\Helper\Store as StoreHelper;
 use Magento\Framework\App\Config\ScopeConfigInterface;
@@ -39,7 +40,7 @@ class Entities
      * @param $mode
      * @return array
      */
-    public function beforesetValues($subject, $jobCode, $entityTable, $data, $entityTypeId, $storeId, $mode)
+    public function beforesetValues($subject, $jobCode, $entityTable, $data, $entityTypeId, $storeId, $mode = AdapterInterface::INSERT_ON_DUPLICATE)
     {
         $additonalTypes = $this->attributeHelper->getAdditionalTypes();
 
