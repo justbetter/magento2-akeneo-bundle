@@ -70,6 +70,7 @@ class SetTaxClassId
 
         $mappings = $this->serializer->unserialize($mappings);
 
+        $this->tax_id_columns = [];
         foreach ($attributes as $attribute) {
             if ($attribute['magento_type'] === "tax") {
                 $this->tax_id_columns[] = $attribute['pim_type'];
