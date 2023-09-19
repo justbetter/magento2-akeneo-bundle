@@ -33,6 +33,10 @@
         <plugin name="JustBetter_FormatMediaName" type="JustBetter\AkeneoBundle\Plugin\Helper\Import\Entities" sortOrder="1" />
     </type>
 
+    <type name="Akeneo\Connector\Helper\Import\Product">
+        <plugin name="JustBetter_ImportantAttributes" type="JustBetter\AkeneoBundle\Plugin\Helper\Import\Product" sortOrder="1" />
+    </type>
+
     <type name="Magento\Framework\Console\CommandList">
         <arguments>
             <argument name="commands" xsi:type="array">
