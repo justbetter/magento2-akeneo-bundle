@@ -46,148 +46,154 @@
             <group id="justbetter" translate="label" type="text" sortOrder="2000" showInDefault="1" showInWebsite="0"
                    showInStore="0">
                 <label>JustBetter Akeneo</label>
-                <field id="fixconfigurableurls" translate="label" type="select" sortOrder="1" showInDefault="1"
+                <field id="important_attributes" translate="label comment" type="multiselect" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Important Attributes</label>
+                    <comment>Select the attributes that should always be imported even if empty.</comment>
+                    <source_model>Akeneo\Connector\Model\Source\Filters\Attribute</source_model>
+                    <can_be_empty>1</can_be_empty>
+                </field>
+                <field id="fixconfigurableurls" translate="label" type="select" sortOrder="20" showInDefault="1"
                        showInWebsite="0" showInStore="0">
                     <label>Fix Configurable Urls</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Replaces configurable product urls with the original url + sku. (Default no)</comment>
                 </field>
-                <field id="tierprices" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="0"
+                <field id="tierprices" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="0"
                        showInStore="0">
                     <label>Tier Prices</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Map specific Akeneo attribute code with a Magento Customer group. (Default no)</comment>
                 </field>
-                <field id="categoryexist" translate="label" type="select" sortOrder="4" showInDefault="1"
+                <field id="categoryexist" translate="label" type="select" sortOrder="40" showInDefault="1"
                        showInWebsite="0" showInStore="0">
                     <label>Category Exist</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Skip inserting url path when category already exist. (Default no)</comment>
                 </field>
-                <field id="akeneomanager" translate="label" type="select" sortOrder="5" showInDefault="1"
+                <field id="akeneomanager" translate="label" type="select" sortOrder="50" showInDefault="1"
                        showInWebsite="0" showInStore="0">
                     <label>Akeneo Manager</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Manages akeneo codes and magento entity id's. (Default: no)</comment>
                 </field>
-                <field id="insertnewproducts" translate="label" type="select" sortOrder="6" showInDefault="1"
+                <field id="insertnewproducts" translate="label" type="select" sortOrder="60" showInDefault="1"
                        showInWebsite="0" showInStore="0">
                     <label>Insert New Products</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Imports new products from akeneo. (Default: yes)</comment>
                 </field>
-                <field id="settaxclass" translate="label" type="select" sortOrder="6" showInDefault="1"
+                <field id="settaxclass" translate="label" type="select" sortOrder="70" showInDefault="1"
                        showInWebsite="0" showInStore="0">
                     <label>Set Tax Class</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Map Akeneo tax class codes to Magento tax class (Default: no)</comment>
                 </field>
-                <field id="setproductsactive" translate="label" type="select" sortOrder="6" showInDefault="1"
+                <field id="setproductsactive" translate="label" type="select" sortOrder="80" showInDefault="1"
                        showInWebsite="0" showInStore="0">
                     <label>Set products active</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Set all products from import to active. (Default: no)</comment>
                 </field>
-                <field id="enablemanagestock" translate="label" type="select" sortOrder="6" showInDefault="1"
+                <field id="enablemanagestock" translate="label" type="select" sortOrder="90" showInDefault="1"
                        showInWebsite="0" showInStore="0">
                     <label>Enable manage stock by default</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Set manage stock on product always on (Default: no)</comment>
                 </field>
-                <field id="setstockstatus" translate="label" type="select" sortOrder="6" showInDefault="1"
+                <field id="setstockstatus" translate="label" type="select" sortOrder="100" showInDefault="1"
                        showInWebsite="0" showInStore="0">
                     <label>Set stock status</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Set stock status to "In Stock" when backorders are allowed</comment>
                 </field>
-                <field id="formatmedianame" translate="label" type="select" sortOrder="7" showInDefault="1"
+                <field id="formatmedianame" translate="label" type="select" sortOrder="110" showInDefault="1"
                        showInWebsite="0" showInStore="0">
                     <label>Apply SEO friendly media name formatting</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Format Media name from "_" to "-"</comment>
                 </field>
-                <field id="enablemetricunits" translate="label" type="select" sortOrder="7" showInDefault="1"
+                <field id="enablemetricunits" translate="label" type="select" sortOrder="120" showInDefault="1"
                        showInWebsite="0" showInStore="0">
                     <label>Enable retrieving metric units</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Units are retrieved and put in the eav_attribute table for metric attributes (Default: no)</comment>
                 </field>
-                <field id="metric_conversion_channel" translate="label" type="text" sortOrder="8" showInDefault="1"
+                <field id="metric_conversion_channel" translate="label" type="text" sortOrder="130" showInDefault="1"
                        showInWebsite="0" showInStore="0">
                     <label>Channel for metric conversions</label>
                     <comment>What channel to use for metric conversions</comment>
                 </field>
-                <field id="notvisiblefamilies" translate="label" type="multiselect" sortOrder="9" showInDefault="1"
+                <field id="notvisiblefamilies" translate="label" type="multiselect" sortOrder="140" showInDefault="1"
                        showInWebsite="0" showInStore="0">
                     <label>Set families to not visible individually after importing</label>
                     <source_model>JustBetter\AkeneoBundle\Data\FamilyOptions</source_model>
                     <comment>When a family is selected here all of the products will get the status not visible individually</comment>
                 </field>
-                <field id="defaultstorevalues" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="0"
+                <field id="defaultstorevalues" translate="label" type="select" sortOrder="150" showInDefault="1" showInWebsite="0"
                        showInStore="0">
                     <label>Set default value for required attributes</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Set the value on the default store for required attributes that are scopable or localizable. (Default no)</comment>
                 </field>
-                <group id="slack" translate="label" type="text" sortOrder="11" showInDefault="1" showInWebsite="0"
+                <group id="slack" translate="label" type="text" sortOrder="160" showInDefault="1" showInWebsite="0"
                        showInStore="0">
                     <label>Slack Akeneo import notifications</label>
-                    <field id="enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0"
+                    <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0"
                            showInStore="0">
                         <label>Enabled</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     </field>
-                    <field id="token" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0"
+                    <field id="token" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0"
                            showInStore="0">
                         <label>Token</label>
                         <comment>Authentication token bearing required scopes. This token is required to authorize this
                             app to send Slack messages.
                         </comment>
                     </field>
-                    <field id="username" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0"
+                    <field id="username" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="0"
                            showInStore="0">
                         <label>Username</label>
                         <comment>Set your bot's user name. This is the name that will be displayed at the Slack
                             messages.
                         </comment>
                     </field>
-                    <field id="channel" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0"
+                    <field id="channel" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="0"
                            showInStore="0">
                         <label>Channel</label>
                         <comment>Channel, private group, user or IM channel to send message to. Channels always start
                             with #. Could be an encoded ID, or a name.
                         </comment>
                     </field>
-                    <field id="api" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0"
+                    <field id="api" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="0"
                            showInStore="0">
                         <label>api</label>
                         <comment>Slack api url.</comment>
                     </field>
                 </group>
-                <group id="mailnotifications" translate="label" type="text" sortOrder="10" showInDefault="1"
+                <group id="mailnotifications" translate="label" type="text" sortOrder="170" showInDefault="1"
                        showInWebsite="0" showInStore="0">
                     <label>Akeneo import e-mail notifications</label>
-                    <field id="enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0"
+                    <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0"
                            showInStore="0">
                         <label>Enabled</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     </field>
-                    <field id="mail" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0"
+                    <field id="mail" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0"
                            showInStore="0">
                         <label>E-mail</label>
                         <comment>Enter your email where you want to receive notifications about akeneo imports.
                         </comment>
                     </field>
-                    <field id="frommail" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0"
+                    <field id="frommail" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="0"
                            showInStore="0">
                         <label>From E-mail</label>
                     </field>
-                    <field id="fromname" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0"
+                    <field id="fromname" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="0"
                            showInStore="0">
                         <label>From Name</label>
                     </field>
                 </group>
-                <group id="log_cleaner" translate="label" type="text" sortOrder="90" showInDefault="1"
+                <group id="log_cleaner" translate="label" type="text" sortOrder="180" showInDefault="1"
                        showInWebsite="0" showInStore="0">
                     <label>Akeneo import log cleaner</label>
                     <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0"
