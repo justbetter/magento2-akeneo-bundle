@@ -10,7 +10,12 @@ class Index extends \Magento\Backend\App\Action
     /**
      * @var PageFactory
      */
-    protected $resultPagee;
+    protected $resultPage;
+
+    /**
+     * @var \Magento\Framework\View\Result\PageFactory
+     **/
+    private \Magento\Framework\View\Result\PageFactory $resultPageFactory;
 
     /**
      * @param Context $context
@@ -41,4 +46,3 @@ class Index extends \Magento\Backend\App\Action
         return $resultPage;
     }
 }
-?>
