@@ -22,8 +22,6 @@ class Akeneo extends \Magento\Backend\Block\Widget\Container
 
     /**
      * Prepare button and grid
-     *
-     * @return \Magento\Catalog\Block\Adminhtml\Product
      */
     protected function _prepareLayout()
     {
@@ -61,8 +59,6 @@ class Akeneo extends \Magento\Backend\Block\Widget\Container
     }
 
     /**
-     *
-     *
      * @param string $type
      * @return string
      */

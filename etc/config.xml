@@ -3,7 +3,6 @@
     <default>
         <akeneo_connector>
             <justbetter>
-                <fixconfigurableurls>0</fixconfigurableurls>
                 <tierprices>0</tierprices>
                 <categoryexist>0</categoryexist>
                 <akeneomanager>0</akeneomanager>
@@ -21,16 +20,6 @@
                     <channel></channel>
                     <api>https://slack.com/api/chat.postMessage</api>
                 </slack>
-                <mailnotification>
-                    <enable>0</enable>
-                    <mail>john@example.com</mail>
-                    <frommail>noreply@akeneo-import.com</frommail>
-                    <fromname>Akeneo Import</fromname>
-                </mailnotification>
-                <log_cleaner>
-                    <enable>0</enable>
-                    <number_of_days>30</number_of_days>
-                </log_cleaner>
             </justbetter>
         </akeneo_connector>
     </default>

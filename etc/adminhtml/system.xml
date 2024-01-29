@@ -52,12 +52,6 @@
                     <source_model>Akeneo\Connector\Model\Source\Filters\Attribute</source_model>
                     <can_be_empty>1</can_be_empty>
                 </field>
-                <field id="fixconfigurableurls" translate="label" type="select" sortOrder="20" showInDefault="1"
-                       showInWebsite="0" showInStore="0">
-                    <label>Fix Configurable Urls</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <comment>Replaces configurable product urls with the original url + sku. (Default no)</comment>
-                </field>
                 <field id="tierprices" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="0"
                        showInStore="0">
                     <label>Tier Prices</label>
@@ -177,46 +171,6 @@
                            showInStore="0">
                         <label>api</label>
                         <comment>Slack api url.</comment>
-                    </field>
-                </group>
-                <group id="mailnotifications" translate="label" type="text" sortOrder="170" showInDefault="1"
-                       showInWebsite="0" showInStore="0">
-                    <label>Akeneo import e-mail notifications</label>
-                    <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0"
-                           showInStore="0">
-                        <label>Enabled</label>
-                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    </field>
-                    <field id="mail" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0"
-                           showInStore="0">
-                        <label>E-mail</label>
-                        <comment>Enter your email where you want to receive notifications about akeneo imports.
-                        </comment>
-                    </field>
-                    <field id="frommail" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="0"
-                           showInStore="0">
-                        <label>From E-mail</label>
-                    </field>
-                    <field id="fromname" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="0"
-                           showInStore="0">
-                        <label>From Name</label>
-                    </field>
-                </group>
-                <group id="log_cleaner" translate="label" type="text" sortOrder="180" showInDefault="1"
-                       showInWebsite="0" showInStore="0">
-                    <label>Akeneo import log cleaner</label>
-                    <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0"
-                           showInStore="0">
-                        <label>Enabled</label>
-                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    </field>
-                    <field id="number_of_days" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0"
-                           showInStore="0">
-                        <label>Number of days</label>
-                        <comment>The number of days the logs are kept.</comment>
-                        <depends>
-                            <field id="enable">1</field>
-                        </depends>
                     </field>
                 </group>
             </group>

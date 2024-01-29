@@ -55,7 +55,6 @@ class Main extends Generic implements TabInterface
      */
     protected function _prepareForm()
     {
-        /* @var $model \JustBetter\AkeneoBundle\Model\BlogPosts */
         $model = $this->_coreRegistry->registry('akeneo');
 
         $isElementDisabled = false;
