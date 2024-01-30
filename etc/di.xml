@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <type name="Akeneo\Connector\Job\Product">
-        <plugin name="JustBetter_FixConfigurableProductUrls" type="JustBetter\AkeneoBundle\Plugin\FixProductUrls" />
         <plugin name="JustBetter_TierPrices" type="JustBetter\AkeneoBundle\Plugin\SetTierPrices" />
         <plugin name="JustBetter_InsertNewProducts" type="JustBetter\AkeneoBundle\Plugin\InsertNewProducts" />
         <plugin name="JustBetter_setTaxClass" type="JustBetter\AkeneoBundle\Plugin\SetTaxClassId" />
@@ -42,7 +41,6 @@
             <argument name="commands" xsi:type="array">
                 <item name="import" xsi:type="object">Akeneo\Connector\Console\Command\AkeneoConnectorImportCommand</item>
                 <item name="slackNotificationCommand" xsi:type="object">JustBetter\AkeneoBundle\Console\Command\SlackNotificationCommand</item>
-                <item name="MailNotificationCommand" xsi:type="object">JustBetter\AkeneoBundle\Console\Command\MailNotificationCommand</item>
                 <item name="UpdateMetricUnits" xsi:type="object">JustBetter\AkeneoBundle\Console\Command\ImportMetricUnits</item>
                 <item name="SetNotVisible" xsi:type="object">JustBetter\AkeneoBundle\Console\Command\SetNotVisible</item>
             </argument>
