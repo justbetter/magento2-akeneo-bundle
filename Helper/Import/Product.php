@@ -12,7 +12,7 @@ class Product extends BaseProduct
         // This returns the result for the temp table DB columns. ex: 'name-nl_NL-ecommerce' => 'value'
         $mappedResult = parent::getColumnsFromResult($result, $keys);
 
-        if (!$this->scopeConfig->getValue('akeneo_connector/justbetter/defaultstorevalues')) {
+        if (!$this->scopeConfig->getValue('akeneo_connector/justbetter/defaultstorevalues') || !array_key_exists('values', $result)) {
             return $mappedResult;
         }
 
