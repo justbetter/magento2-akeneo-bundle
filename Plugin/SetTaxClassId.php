@@ -7,19 +7,20 @@ use Akeneo\Connector\Helper\Authenticator;
 use Akeneo\Connector\Helper\Store as StoreHelper;
 use Akeneo\Connector\Helper\Config as ConfigHelper;
 use Akeneo\Connector\Helper\Import\Product as ProductImportHelper;
+use Exception;
 use Magento\Store\Model\ScopeInterface as scope;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Eav\Model\Config as EavConfig;
 
 class SetTaxClassId
 {
     protected $entitiesHelper;
-    protected $configHelper;
-    protected $scopeConfig;
-    protected $tax_id_columns;
     protected $storeHelper;
     protected $serializer;
+    protected $configHelper;
+    protected $authenticator;
+    protected $scopeConfig;
+    protected $tax_id_columns;
 
     /**
      * @param ProductImportHelper  $entitiesHelper
@@ -28,7 +29,6 @@ class SetTaxClassId
      * @param ConfigHelper         $configHelper
      * @param Authenticator        $authenticator
      * @param ScopeConfigInterface $scopeConfig
-     * @param EavConfig            $eavConfig
      */
     public function __construct(
         ProductImportHelper $entitiesHelper,
@@ -37,7 +37,6 @@ class SetTaxClassId
         ConfigHelper $configHelper,
         Authenticator $authenticator,
         ScopeConfigInterface $scopeConfig,
-        EavConfig $eavConfig
     ) {
         $this->entitiesHelper = $entitiesHelper;
         $this->storeHelper = $storeHelper;
@@ -45,7 +44,6 @@ class SetTaxClassId
         $this->configHelper = $configHelper;
         $this->authenticator = $authenticator;
         $this->scopeConfig = $scopeConfig;
-        $this->eavConfig = $eavConfig;
     }
 
     /**
@@ -185,7 +183,7 @@ class SetTaxClassId
         /** @var AdapterInterface $connection */
         $connection = $this->entitiesHelper->getConnection();
 
-        foreach ($mappings as $key => $mapping) {
+        foreach ($mappings as $mapping) {
 
             $akeneoAttribute = $this->authenticator->getAkeneoApiClient()->getAttributeApi()->get($mapping);
 
@@ -197,7 +195,7 @@ class SetTaxClassId
 
             if (isset($akeneoAttribute['localizable'])) {
                 $mappedChannels = $this->configHelper->getMappedChannels();
-                foreach ($mappedChannels as $key => $channel) {
+                foreach ($mappedChannels as $channel) {
                     foreach ($this->storeHelper->getChannelStoreLangs($channel) as $locale) {
                         if ($connection->tableColumnExists($tmpTable, $mapping . '-' . $locale . '-' . $channel)) {
                             $newMappings[] = $mapping . '-' . $locale . '-' . $channel;

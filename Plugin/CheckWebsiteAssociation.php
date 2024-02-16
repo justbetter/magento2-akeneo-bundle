@@ -2,7 +2,6 @@
 
 namespace JustBetter\AkeneoBundle\Plugin;
 
-use Akeneo\Pim\ApiClient\Search\SearchBuilderFactory;
 use Magento\Framework\DB\Select;
 use Magento\Framework\DB\Statement\Pdo\Mysql;
 use Magento\Framework\Serialize\SerializerInterface;
@@ -20,6 +19,8 @@ class CheckWebsiteAssociation
     protected $entitiesHelper;
     protected $storeHelper;
     protected $config;
+    protected $configHelper;
+    protected $authenticator;
     protected $serializer;
 
     /**
@@ -32,7 +33,6 @@ class CheckWebsiteAssociation
         ScopeConfigInterface $config,
         ConfigHelper $configHelper,
         Authenticator $authenticator,
-        SearchBuilderFactory $searchBuilderFactory,
         SerializerInterface $serializer
     ) {
         $this->entitiesHelper = $entitiesHelper;
@@ -40,7 +40,6 @@ class CheckWebsiteAssociation
         $this->config = $config;
         $this->configHelper = $configHelper;
         $this->authenticator = $authenticator;
-        $this->searchBuilderFactory = $searchBuilderFactory;
         $this->serializer = $serializer;
     }
 

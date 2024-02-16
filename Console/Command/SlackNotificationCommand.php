@@ -33,5 +33,7 @@ class SlackNotificationCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->runSlackMessage->execute($input, $output);
+
+        return self::SUCCESS;
     }
 }

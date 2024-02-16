@@ -42,7 +42,7 @@ class Product extends BaseProduct
         return $mappedResult;
     }
 
-    protected function getFirstValue(array $values): string
+    protected function getFirstValue(array $values): mixed
     {
         $array = array_reverse($values);
         return array_pop($array)['data'] ?? '';
