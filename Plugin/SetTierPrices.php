@@ -18,6 +18,7 @@ class SetTierPrices
     protected $serializer;
     protected $config;
     protected $entitiesHelper;
+    protected $customerGroups;
     public $customerGroupsUnserialized;
 
     /**
