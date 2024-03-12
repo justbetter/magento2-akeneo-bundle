@@ -8,10 +8,8 @@ class Akeneo extends AbstractDb
 {
     /**
      * Initialize resource model
-     *
-     * @return void
      */
-    protected function _construct()
+    protected function _construct(): void
     {
         $this->_init('akeneo_connector_entities', 'id');
     }

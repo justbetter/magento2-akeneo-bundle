@@ -2,56 +2,35 @@
 
 namespace JustBetter\AkeneoBundle\Plugin;
 
-use Akeneo\Connector\Job\Product;
 use Akeneo\Connector\Helper\Authenticator;
-use Akeneo\Connector\Helper\Store as StoreHelper;
 use Akeneo\Connector\Helper\Config as ConfigHelper;
+use Akeneo\Connector\Helper\Store as StoreHelper;
 use Akeneo\Connector\Helper\Import\Product as ProductImportHelper;
+use Akeneo\Connector\Job\Product;
 use Exception;
-use Magento\Store\Model\ScopeInterface as scope;
-use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\DB\Adapter\AdapterInterface;
+use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Store\Model\ScopeInterface as scope;
 
 class SetTaxClassId
 {
-    protected $entitiesHelper;
-    protected $storeHelper;
-    protected $serializer;
-    protected $configHelper;
-    protected $authenticator;
-    protected $scopeConfig;
-    protected $tax_id_columns;
+    protected ?array $taxIdColumns = null;
 
-    /**
-     * @param ProductImportHelper  $entitiesHelper
-     * @param StoreHelper          $storeHelper
-     * @param Json                 $serializer
-     * @param ConfigHelper         $configHelper
-     * @param Authenticator        $authenticator
-     * @param ScopeConfigInterface $scopeConfig
-     */
     public function __construct(
-        ProductImportHelper $entitiesHelper,
-        StoreHelper $storeHelper,
-        Json $serializer,
-        ConfigHelper $configHelper,
-        Authenticator $authenticator,
-        ScopeConfigInterface $scopeConfig,
+        protected ProductImportHelper $entitiesHelper,
+        protected StoreHelper $storeHelper,
+        protected Json $serializer,
+        protected ConfigHelper $configHelper,
+        protected Authenticator $authenticator,
+        protected ScopeConfigInterface $scopeConfig,
     ) {
-        $this->entitiesHelper = $entitiesHelper;
-        $this->storeHelper = $storeHelper;
-        $this->serializer = $serializer;
-        $this->configHelper = $configHelper;
-        $this->authenticator = $authenticator;
-        $this->scopeConfig = $scopeConfig;
     }
 
     /**
      * Overwrite Magento Tax Class with the one from Akeneo.
-     *
-     * @param Product $context
      */
-    public function afterAddRequiredData(Product $context)
+    public function afterAddRequiredData(Product $context): void
     {
         $extensionEnabled = $this->scopeConfig->getValue('akeneo_connector/justbetter/settaxclass', scope::SCOPE_WEBSITE);
         if (!$extensionEnabled) {
@@ -68,20 +47,20 @@ class SetTaxClassId
 
         $mappings = $this->serializer->unserialize($mappings);
 
-        $this->tax_id_columns = [];
+        $this->taxIdColumns = [];
         foreach ($attributes as $attribute) {
             if ($attribute['magento_type'] === "tax") {
-                $this->tax_id_columns[] = $attribute['pim_type'];
+                $this->taxIdColumns[] = $attribute['pim_type'];
             }
         }
 
-        if (!$this->tax_id_columns || !count($mappings)) {
+        if (!$this->taxIdColumns || !(is_countable($mappings) ? count($mappings) : 0)) {
             return;
         }
 
         $tmpTable = $this->entitiesHelper->getTableName($context->getCode());
 
-        $taxColumns = $this->checkTaxColumnsExist($this->tax_id_columns, $tmpTable);
+        $taxColumns = $this->checkTaxColumnsExist($this->taxIdColumns, $tmpTable);
 
         if (empty($taxColumns)) {
             return;
@@ -89,28 +68,22 @@ class SetTaxClassId
     }
 
     /**
-     * Before UpdateOption - Map Akeneo Tax Class option to Magento counterpart
-     *
-     * @param $subject
-     * @return array
+     * Map Akeneo Tax Class option to Magento counterpart
+     * @throws Exception
      */
-    public function beforeUpdateOption($subject)
+    public function beforeUpdateOption(Product $subject): array
     {
-        if (!$this->tax_id_columns) {
+        if (!$this->taxIdColumns) {
             return [$subject];
         }
 
         $connection = $this->entitiesHelper->getConnection();
         $tmpTable = $this->entitiesHelper->getTableName($subject->getCode());
 
-        if ($taxColumns = $this->checkTaxColumnsExist($this->tax_id_columns, $tmpTable)) {
-            foreach ($taxColumns as $tax_id_column) {
-                try {
-                    $taxQuery = $this->createQuery($tax_id_column, $tmpTable);
-                    $connection->query($taxQuery);
-                } catch (Exception $e) {
-                    throw $e;
-                }
+        if ($taxColumns = $this->checkTaxColumnsExist($this->taxIdColumns, $tmpTable)) {
+            foreach ($taxColumns as $taxIdColumn) {
+                $taxQuery = $this->createQuery($taxIdColumn, $tmpTable);
+                $connection->query($taxQuery);
             }
         }
 
@@ -119,40 +92,28 @@ class SetTaxClassId
 
     /**
      * Create the query to update the rows.
-     *
-     * @param string $tax_id_column
-     * @param string $tableName
-     *
-     * @return string
      */
-    public function createQuery($tax_id_column, $tableName)
+    public function createQuery(string $taxIdColumn, string $tableName): string
     {
         $query = "
             UPDATE `" . $tableName . "`
-            SET `".$tax_id_column."` =
+            SET `".$taxIdColumn."` =
             ";
 
-        $query = $this->addCase($query, $tax_id_column);
-
-        return $query;
+        return $this->addCase($query, $taxIdColumn);
     }
 
     /**
      * Add the switch case to the query.
-     *
-     * @param string $query
-     * @param string $tax_id_column
-     *
-     * @return string
      */
-    public function addCase($query, $tax_id_column)
+    public function addCase(string $query, string $taxIdColumn): string
     {
         if (!($mappings = $this->scopeConfig->getValue('akeneo_connector/product/tax_id_mapping'))) {
-            return ;
+            return;
         }
         $mappings = $this->serializer->unserialize($mappings);
 
-        if (!count($mappings)) {
+        if (!(is_countable($mappings) ? count($mappings) : 0)) {
             return $query;
         }
 
@@ -160,7 +121,7 @@ class SetTaxClassId
         ";
 
         foreach ($mappings as $mapping) {
-            $query .= "WHEN `" . $tax_id_column . "` = '" . $mapping['akeneo'] . "' then '" . $mapping['magento'] . "'
+            $query .= "WHEN `" . $taxIdColumn . "` = '" . $mapping['akeneo'] . "' then '" . $mapping['magento'] . "'
             ";
         }
 
@@ -172,11 +133,9 @@ class SetTaxClassId
     /**
      * Check If the Tax Class is localizable and exist
      *
-     * @param $mappings
-     * @param $tmpTable
-     * @return array
+     * @throws Exception
      */
-    public function checkTaxColumnsExist($mappings, $tmpTable)
+    public function checkTaxColumnsExist(array $mappings, string $tmpTable): array
     {
         $newMappings = [];
 

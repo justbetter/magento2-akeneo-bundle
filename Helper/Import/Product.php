@@ -6,7 +6,9 @@ use Akeneo\Connector\Helper\Import\Product as BaseProduct;
 
 class Product extends BaseProduct
 {
-    /** Overwritten to set values for store view 0 when attributes are scopable/localizable and required */
+    /**
+     * Overwritten to set values for store view 0 when attributes are scopable/localizable and required
+     */
     protected function getColumnsFromResult(array $result, array $keys = []): array
     {
         // This returns the result for the temp table DB columns. ex: 'name-nl_NL-ecommerce' => 'value'
@@ -26,7 +28,7 @@ class Product extends BaseProduct
 
             if (
                 !array_key_exists($requiredAttribute, $result['values']) ||
-                count($result['values'][$requiredAttribute]) == 0 ||
+                (is_countable($result['values'][$requiredAttribute]) ? count($result['values'][$requiredAttribute]) : 0) == 0 ||
                 !$this->isScopableOrLocalizable($requiredAttribute, $mappedResult)
             ) {
                 continue;
@@ -48,7 +50,9 @@ class Product extends BaseProduct
         return array_pop($array)['data'] ?? '';
     }
 
-    /** Check if an attribute is scopeable or localizable based on the column result name, ex. name-nl_NL-ecommerce */
+    /**
+     * Check if an attribute is scopeable or localizable based on the column result name, ex. name-nl_NL-ecommerce
+     */
     protected function isScopableOrLocalizable(string $attributeCode, array $columnResult): bool
     {
         $columns = array_keys($columnResult);
@@ -59,7 +63,7 @@ class Product extends BaseProduct
                 return false;
             }
 
-            if (substr($column, 0, strlen($attributeCode)) === $attributeCode) {
+            if (str_starts_with($column, $attributeCode)) {
                 return true;
             }
         }
@@ -67,7 +71,9 @@ class Product extends BaseProduct
         return false;
     }
 
-    /** Get a list of Magento's required product attributes */
+    /**
+     * Get a list of Magento's required product attributes
+     */
     protected function getRequiredAttributes(): array
     {
         $eavAttributeTable = $this->connection->getTableName('eav_attribute');

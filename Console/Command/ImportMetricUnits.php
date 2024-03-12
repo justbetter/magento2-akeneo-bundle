@@ -9,12 +9,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ImportMetricUnits extends Command
 {
-    protected ImportMetricUnitsJob $job;
-
-    public function __construct(ImportMetricUnitsJob $job, string $name = null)
-    {
-        $this->job = $job;
-
+    public function __construct(
+        protected ImportMetricUnitsJob $job, string $name = null
+    ) {
         parent::__construct($name);
     }
 

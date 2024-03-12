@@ -2,60 +2,43 @@
 
 namespace JustBetter\AkeneoBundle\Plugin;
 
-use Magento\Framework\DB\Select;
+use Akeneo\Connector\Helper\Authenticator;
+use Akeneo\Connector\Helper\Config as ConfigHelper;
+use Akeneo\Connector\Helper\Import\Product as ProductImportHelper;
+use Akeneo\Connector\Helper\Store as StoreHelper;
+use Akeneo\Connector\Job\Product;
+use Exception;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\DB\Statement\Pdo\Mysql;
 use Magento\Framework\Serialize\SerializerInterface;
-use Zend_Db_Expr as expression;
-use Akeneo\Connector\Job\Product;
-use Magento\Store\Model\ScopeInterface as scope;
-use Akeneo\Connector\Helper\Store as StoreHelper;
-use Magento\Framework\App\Config\ScopeConfigInterface;
-use Akeneo\Connector\Helper\Import\Product as ProductImportHelper;
-use Akeneo\Connector\Helper\Config as ConfigHelper;
-use Akeneo\Connector\Helper\Authenticator;
+use Zend_Db_Statement_Exception;
 
 class CheckWebsiteAssociation
 {
-    protected $entitiesHelper;
-    protected $storeHelper;
-    protected $config;
-    protected $configHelper;
-    protected $authenticator;
-    protected $serializer;
-
-    /**
-     * construct function
-     * @param ProductImportHelper $entitiesHelper
-     */
     public function __construct(
-        ProductImportHelper $entitiesHelper,
-        StoreHelper $storeHelper,
-        ScopeConfigInterface $config,
-        ConfigHelper $configHelper,
-        Authenticator $authenticator,
-        SerializerInterface $serializer
+        protected ProductImportHelper $entitiesHelper,
+        protected StoreHelper $storeHelper,
+        protected ScopeConfigInterface $config,
+        protected ConfigHelper $configHelper,
+        protected Authenticator $authenticator,
+        protected SerializerInterface $serializer
     ) {
-        $this->entitiesHelper = $entitiesHelper;
-        $this->storeHelper = $storeHelper;
-        $this->config = $config;
-        $this->configHelper = $configHelper;
-        $this->authenticator = $authenticator;
-        $this->serializer = $serializer;
     }
 
-    public function beforeSetWebsites(product $subject)
+    /**
+     * @throws Zend_Db_Statement_Exception
+     * @throws Exception
+     */
+    public function beforeSetWebsites(Product $subject): array
     {
         $connection = $this->entitiesHelper->getConnection();
-        /** @var string $tmpTable */
         $tmpTable = $this->entitiesHelper->getTableName($subject->getCode());
         $websiteAttribute = $this->configHelper->getWebsiteAttribute();
-        $websites = $this->storeHelper->getStores('website_code');
         $websiteAssociation = $this->config->getValue('akeneo_connector/product/website_attribute');
 
         $requiredAttributes = $this->getRequiredAttributes();
 
         if ($connection->tableColumnExists($tmpTable, $websiteAttribute)) {
-            /** @var Select $select */
             $select = $connection->select()->from(
                 $tmpTable
             );
@@ -68,7 +51,7 @@ class CheckWebsiteAssociation
                     continue;
                 }
 
-                $websites = explode(',', $row[$websiteAssociation]);
+                $websites = explode(',', (string) $row[$websiteAssociation]);
                 $mapping = $this->getMappedWebsiteChannels();
 
                 foreach ($websites as $key => $website) {
@@ -104,12 +87,15 @@ class CheckWebsiteAssociation
                 );
             }
         }
+
         return [$subject];
     }
 
-    public function getMappedWebsiteChannels()
+    /**
+     * @throws Exception
+     */
+    public function getMappedWebsiteChannels(): array
     {
-        /** @var mixed[] $mapping */
         $mapping = $this->configHelper->getWebsiteMapping();
         /** @var string[] $channels */
         $channels = array_column($mapping, 'channel', 'website');
@@ -117,7 +103,10 @@ class CheckWebsiteAssociation
         return $channels;
     }
 
-    public function getRequiredAttributes()
+    /**
+     * @throws Exception
+     */
+    public function getRequiredAttributes(): float|array|bool|int|string|null
     {
         if (!($requiredAttributes = $this->config->getValue('akeneo_connector/product/required_attribute_mapping'))) {
             return [];

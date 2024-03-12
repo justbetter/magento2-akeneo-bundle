@@ -4,29 +4,20 @@ namespace JustBetter\AkeneoBundle\Plugin;
 
 use Akeneo\Connector\Helper\Import\Product as ProductImportHelper;
 use Akeneo\Connector\Job\Product as Subject;
+use Magento\CatalogInventory\Model\Stock;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\DB\Adapter\AdapterInterface;
 use Magento\Store\Model\ScopeInterface as Scope;
-use Magento\CatalogInventory\Model\Stock;
 
 class SetStockStatus
 {
-    /** @var ProductImportHelper */
-    protected $entitiesHelper;
-
-    /** @var AdapterInterface */
-    protected $connection;
-
-    /** @var ScopeConfigInterface */
-    protected $config;
+    protected ResourceConnection|AdapterInterface $connection;
 
     public function __construct(
-        ProductImportHelper $entitiesHelper,
-        ScopeConfigInterface $config
+        protected ProductImportHelper $entitiesHelper,
+        protected ScopeConfigInterface $config
     ) {
-        $this->entitiesHelper = $entitiesHelper;
-        $this->config = $config;
-
         $this->connection = $this->entitiesHelper->getConnection();
     }
 
@@ -44,6 +35,7 @@ class SetStockStatus
             $where = ['product_id' . ' IN(?)' => [$products], 'backorders' . ' IN(?)' => [Stock::BACKORDERS_YES_NONOTIFY, Stock::BACKORDERS_YES_NOTIFY]];
             $connection->update($this->entitiesHelper->getTable('cataloginventory_stock_item'), ['is_in_stock' => Stock::STOCK_IN_STOCK], $where);
         }
+
         return true;
     }
 

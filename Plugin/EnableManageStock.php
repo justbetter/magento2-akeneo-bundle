@@ -3,33 +3,24 @@
 namespace JustBetter\AkeneoBundle\Plugin;
 
 use Akeneo\Connector\Helper\Import\Product as ProductImportHelper;
-use Akeneo\Connector\Job\Product as Subject;
+use Akeneo\Connector\Job\Product;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\DB\Adapter\AdapterInterface;
 use Magento\Store\Model\ScopeInterface as Scope;
 
 class EnableManageStock
 {
-    /** @var ProductImportHelper */
-    protected $entitiesHelper;
-
-    /** @var AdapterInterface */
-    protected $connection;
-
-    /** @var ScopeConfigInterface */
-    protected $config;
+    protected ResourceConnection|AdapterInterface $connection;
 
     public function __construct(
-        ProductImportHelper $entitiesHelper,
-        ScopeConfigInterface $config
+        protected ProductImportHelper $entitiesHelper,
+        protected ScopeConfigInterface $config
     ) {
-        $this->entitiesHelper = $entitiesHelper;
-        $this->config = $config;
-
         $this->connection = $this->entitiesHelper->getConnection();
     }
 
-    public function afterInitStock(Subject $subject): bool
+    public function afterInitStock(Product $subject): bool
     {
         $extensionEnabled = $this->config->getValue('akeneo_connector/justbetter/enablemanagestock', Scope::SCOPE_WEBSITE);
 
@@ -46,7 +37,7 @@ class EnableManageStock
         return true;
     }
 
-    protected function getProducts(Subject $subject): array
+    protected function getProducts(Product $subject): array
     {
         $tmpTableName = $this->entitiesHelper->getTableName($subject->getCode());
         $query = $this->connection->select()->from(['t' => $tmpTableName],['c.entity_id'])->joinInner(
