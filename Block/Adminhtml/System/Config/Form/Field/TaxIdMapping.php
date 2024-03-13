@@ -41,14 +41,12 @@ class TaxIdMapping extends AbstractFieldArray
         Context $context,
         Factory $elementFactory,
         Product $productTaxClassSource,
-        Config $eavConfig,
         array $data = []
     ) {
         parent::__construct($context, $data);
 
         $this->elementFactory        = $elementFactory;
         $this->productTaxClassSource = $productTaxClassSource;
-        $this->eavConfig = $eavConfig;
     }
 
     /**

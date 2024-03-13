@@ -69,6 +69,7 @@ class Grid extends Extended
      */
     protected function _prepareCollection()
     {
+        /* @phpstan-ignore-next-line */
         $collection = $this->_akeneoFactory->create()->getCollection();
         $this->setCollection($collection);
 
@@ -191,7 +192,7 @@ class Grid extends Extended
     }
 
     /**
-     * @param \JustBetter\AkeneoBundle\Model\akeneo|\Magento\Framework\Object $row
+     * @param \JustBetter\AkeneoBundle\Model\Akeneo|\Magento\Framework\Object $row
      * @return string
      */
     public function getRowUrl($row)

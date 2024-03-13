@@ -9,7 +9,7 @@ use Magento\Backend\Model\View\Result\ForwardFactory;
 class NewAction extends Action
 {
     /**
-     * @var \Magento\Backend\Model\View\Result\Forward
+     * @var \Magento\Backend\Model\View\Result\ForwardFactory
      */
     protected $resultForwardFactory;
 
@@ -21,8 +21,8 @@ class NewAction extends Action
         Context $context,
         ForwardFactory $resultForwardFactory
     ) {
-        $this->resultForwardFactory = $resultForwardFactory;
         parent::__construct($context);
+        $this->resultForwardFactory = $resultForwardFactory;
     }
 
     /**

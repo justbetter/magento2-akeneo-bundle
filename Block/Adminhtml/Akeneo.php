@@ -59,7 +59,6 @@ class Akeneo extends \Magento\Backend\Block\Widget\Container
     }
 
     /**
-     * @param string $type
      * @return string
      */
     protected function _getCreateUrl()
