@@ -6,14 +6,12 @@ use Magento\Framework\Event\ManagerInterface as EventManager;
 
 class ImportFinished
 {
-    protected $eventManager;
-
-    public function __construct(EventManager $eventManager)
-    {
-        $this->eventManager = $eventManager;
+    public function __construct(
+        protected EventManager $eventManager
+    ) {
     }
 
-    public function beforeCleanCache($subject)
+    public function beforeCleanCache($subject): null
     {
         $this->eventManager->dispatch('akeneo_connector_import_finish_' . $subject->getCode());
 

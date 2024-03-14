@@ -2,9 +2,12 @@
 
 namespace JustBetter\AkeneoBundle\Block\Adminhtml;
 
+use JustBetter\AkeneoBundle\Block\Adminhtml\Akeneo\Grid;
+use Magento\Backend\Block\Widget\Button\SplitButton;
+use Magento\Backend\Block\Widget\Container;
 use Magento\Backend\Block\Widget\Context;
 
-class Akeneo extends \Magento\Backend\Block\Widget\Container
+class Akeneo extends Container
 {
     /**
      * @var string
@@ -23,14 +26,14 @@ class Akeneo extends \Magento\Backend\Block\Widget\Container
     /**
      * Prepare button and grid
      */
-    protected function _prepareLayout()
+    protected function _prepareLayout(): Akeneo
     {
         $addButtonProps = [
             'id' => 'add_new',
             'label' => __('Add New'),
             'class' => 'add',
             'button_class' => '',
-            'class_name' => 'Magento\Backend\Block\Widget\Button\SplitButton',
+            'class_name' => SplitButton::class,
             'options' => $this->_getAddButtonOptions(),
         ];
         $this->buttonList->add('add_new', $addButtonProps);
@@ -38,17 +41,12 @@ class Akeneo extends \Magento\Backend\Block\Widget\Container
 
         $this->setChild(
             'grid',
-            $this->getLayout()->createBlock('JustBetter\AkeneoBundle\Block\Adminhtml\Akeneo\Grid', 'justbetter.akeneo.grid')
+            $this->getLayout()->createBlock(Grid::class, 'justbetter.akeneo.grid')
         );
         return parent::_prepareLayout();
     }
 
-    /**
-     *
-     *
-     * @return array
-     */
-    protected function _getAddButtonOptions()
+    protected function _getAddButtonOptions(): array
     {
         $splitButtonOptions[] = [
             'label' => __('Add New'),
@@ -58,22 +56,14 @@ class Akeneo extends \Magento\Backend\Block\Widget\Container
         return $splitButtonOptions;
     }
 
-    /**
-     * @return string
-     */
-    protected function _getCreateUrl()
+    protected function _getCreateUrl(): string
     {
         return $this->getUrl(
             'akeneomanager/*/new'
         );
     }
 
-    /**
-     * Render grid
-     *
-     * @return string
-     */
-    public function getGridHtml()
+    public function getGridHtml(): string
     {
         return $this->getChildHtml('grid');
     }

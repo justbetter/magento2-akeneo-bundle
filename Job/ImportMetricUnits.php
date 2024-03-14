@@ -6,6 +6,7 @@ use Akeneo\Connector\Helper\Authenticator;
 use Akeneo\Pim\ApiClient\AkeneoPimClientInterface;
 use Akeneo\Pim\ApiClient\Pagination\ResourceCursor;
 use Akeneo\Pim\ApiClient\Search\SearchBuilder;
+use Exception;
 use Magento\Eav\Api\AttributeRepositoryInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -17,19 +18,16 @@ class ImportMetricUnits
     protected const CONFIG_PREFIX = 'akeneo_connector/justbetter/';
     protected const ENABLED_CONFIG_KEY = 'enablemetricunits';
     protected const CHANNEL_CONFIG_KEY = 'metric_conversion_channel';
-
-    protected AttributeRepositoryInterface $attributeRepository;
     protected ?AkeneoPimClientInterface $akeneoClient = null;
-    protected ScopeConfigInterface $config;
 
+    /**
+     * @throws Exception
+     */
     public function __construct(
         Authenticator $authenticator,
-        AttributeRepositoryInterface $attributeRepository,
-        ScopeConfigInterface $config
+        protected AttributeRepositoryInterface $attributeRepository,
+        protected ScopeConfigInterface $config
     ) {
-        $this->attributeRepository = $attributeRepository;
-        $this->config = $config;
-
         if (($client = $authenticator->getAkeneoApiClient())) {
             $this->akeneoClient = $client;
         }
@@ -38,16 +36,12 @@ class ImportMetricUnits
     public function execute(OutputInterface $output = null): void
     {
         if (! $this->akeneoClient) {
-            if ($output) {
-                $output->writeln('<error>Akeneo client not configured!</error>');
-            }
+            $output?->writeln('<error>Akeneo client not configured!</error>');
             return;
         }
         
         if (!$this->config->getValue(static::CONFIG_PREFIX . static::ENABLED_CONFIG_KEY)) {
-            if ($output) {
-                $output->writeln('<error>Metrics not enabled!</error>');
-            }
+            $output?->writeln('<error>Metrics not enabled!</error>');
             return;
         }
 
@@ -62,10 +56,8 @@ class ImportMetricUnits
 
             try {
                 $magentoAttribute = $this->attributeRepository->get('catalog_product', $code);
-            } catch (NoSuchEntityException $e) {
-                if ($output) {
-                    $output->writeln("<error>Skipping $code because it does not exist in Magento</error>");
-                }
+            } catch (NoSuchEntityException) {
+                $output?->writeln("<error>Skipping $code because it does not exist in Magento</error>");
                 continue;
             }
 
@@ -76,14 +68,10 @@ class ImportMetricUnits
             $magentoAttribute->setData(self::EAV_ATTRIBUTE_UNIT_FIELD, $unit);
             $magentoAttribute->save();
 
-            if ($output) {
-                $output->writeln("Set unit for <info>$code</info> to <info>$unit</info>");
-            }
+            $output?->writeln("Set unit for <info>$code</info> to <info>$unit</info>");
         }
 
-        if ($output) {
-            $output->writeln("<info>Done</info>");
-        }
+        $output?->writeln("<info>Done</info>");
     }
 
     protected function getMetricAttributes(): ResourceCursor

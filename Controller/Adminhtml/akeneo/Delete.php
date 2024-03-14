@@ -1,24 +1,23 @@
 <?php
 
-namespace JustBetter\AkeneoBundle\Controller\Adminhtml\akeneo;
+namespace JustBetter\AkeneoBundle\Controller\Adminhtml\Akeneo;
 
-class Delete extends \Magento\Backend\App\Action
+use JustBetter\AkeneoBundle\Model\Akeneo;
+use Magento\Backend\App\Action;
+use Magento\Backend\Model\View\Result\Redirect;
+
+class Delete extends Action
 {
-    /**
-     * Delete action
-     *
-     * @return \Magento\Backend\Model\View\Result\Redirect
-     */
-    public function execute()
+    public function execute(): Redirect
     {
         // check if we know what should be deleted
         $id = $this->getRequest()->getParam('id');
-        /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
+        /** @var Redirect $resultRedirect */
         $resultRedirect = $this->resultRedirectFactory->create();
         if ($id) {
             try {
                 // init model and delete
-                $model = $this->_objectManager->create('JustBetter\AkeneoBundle\Model\Akeneo');
+                $model = $this->_objectManager->create(Akeneo::class);
                 $model->load($id);
                 $model->delete();
                 // display success message

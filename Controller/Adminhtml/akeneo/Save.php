@@ -1,34 +1,27 @@
 <?php
 
-namespace JustBetter\AkeneoBundle\Controller\Adminhtml\akeneo;
+namespace JustBetter\AkeneoBundle\Controller\Adminhtml\Akeneo;
 
 use Magento\Backend\App\Action;
-use Magento\Framework\App\Filesystem\DirectoryList;
+use Magento\Backend\Model\View\Result\Redirect;
+use Magento\Framework\Controller\ResultInterface;
 
-class Save extends \Magento\Backend\App\Action
+class Save extends Action
 {
-
-    /**
-     * @param Action\Context $context
-     */
-    public function __construct(Action\Context $context)
-    {
+    public function __construct(
+        Action\Context $context
+    ) {
         parent::__construct($context);
     }
 
-    /**
-     * Save action
-     *
-     * @return \Magento\Framework\Controller\ResultInterface
-     */
-    public function execute()
+    public function execute(): ResultInterface
     {
         $data = $this->getRequest()->getPostValue();
 
-        /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
+        /** @var Redirect $resultRedirect */
         $resultRedirect = $this->resultRedirectFactory->create();
         if ($data) {
-            $model = $this->_objectManager->create('JustBetter\AkeneoBundle\Model\Akeneo');
+            $model = $this->_objectManager->create(\JustBetter\AkeneoBundle\Model\Akeneo::class);
 
             $id = $this->getRequest()->getParam('id');
             if ($id) {
@@ -41,14 +34,12 @@ class Save extends \Magento\Backend\App\Action
             try {
                 $model->save();
                 $this->messageManager->addSuccess(__('The Akeneo has been saved.'));
-                $this->_objectManager->get('Magento\Backend\Model\Session')->setFormData(false);
+                $this->_objectManager->get(\Magento\Backend\Model\Session::class)->setFormData(false);
                 if ($this->getRequest()->getParam('back')) {
                     return $resultRedirect->setPath('*/*/edit', ['id' => $model->getId(), '_current' => true]);
                 }
                 return $resultRedirect->setPath('*/*/');
-            } catch (\Magento\Framework\Exception\LocalizedException $e) {
-                $this->messageManager->addError($e->getMessage());
-            } catch (\RuntimeException $e) {
+            } catch (\Magento\Framework\Exception\LocalizedException|\RuntimeException $e) {
                 $this->messageManager->addError($e->getMessage());
             } catch (\Exception $e) {
                 $this->messageManager->addException($e, __('Something went wrong while saving the Akeneo.'));
@@ -57,6 +48,7 @@ class Save extends \Magento\Backend\App\Action
             $this->_getSession()->setFormData($data);
             return $resultRedirect->setPath('*/*/edit', ['id' => $this->getRequest()->getParam('id')]);
         }
+
         return $resultRedirect->setPath('*/*/');
     }
 }

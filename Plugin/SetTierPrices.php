@@ -15,35 +15,20 @@ use Akeneo\Connector\Helper\Import\Product as ProductImportHelper;
  */
 class SetTierPrices
 {
-    protected $serializer;
-    protected $config;
-    protected $entitiesHelper;
-    protected $customerGroups;
-    public $customerGroupsUnserialized;
+    protected mixed $customerGroups;
+    public string $customerGroupsUnserialized;
 
-    /**
-     * @param Json $serializer
-     * @param ScopeConfigInterface $config
-     * @param ProductImportHelper $entitiesHelper
-     */
     public function __construct(
-        Json $serializer,
-        ScopeConfigInterface $config,
-        ProductImportHelper $entitiesHelper
+        protected Json $serializer,
+        protected ScopeConfigInterface $config,
+        protected ProductImportHelper $entitiesHelper
     ) {
-        $this->serializer = $serializer;
-        $this->config = $config;
-        $this->entitiesHelper = $entitiesHelper;
     }
 
     /**
-     * AfterImportMedia function
-     *
-     * @param product $subject
-     * @param bool $result
-     * @return bool $result
+     * @throws Exception
      */
-    public function afterImportMedia(product $subject, $result)
+    public function afterImportMedia(Product $subject, bool $result): bool
     {
         $extensionEnabled = $this->config->getValue('akeneo_connector/justbetter/tierprices', scope::SCOPE_WEBSITE);
         if (!$extensionEnabled) {
@@ -70,34 +55,27 @@ class SetTierPrices
     }
 
     /**
-     * Remove tierprices function
+     * Remove tier prices function
      * Remove all tier prices that match with the tmp table
      */
-    public function removeTierPrices()
+    public function removeTierPrices(): void
     {
-        try {
-            $connection = $this->entitiesHelper->getConnection();
-            $connection->query(
-                "
-                DELETE cpetp FROM `catalog_product_entity_tier_price` AS cpetp
-                INNER JOIN `tmp_akeneo_connector_entities_product` AS tacep
-                ON cpetp.`entity_id` = tacep.`_entity_id`
-                "
-            );
-        } catch (Exception $e) {
-            throw $e;
-        }
+        $connection = $this->entitiesHelper->getConnection();
+        $connection->query(
+            "
+            DELETE cpetp FROM `catalog_product_entity_tier_price` AS cpetp
+            INNER JOIN `tmp_akeneo_connector_entities_product` AS tacep
+            ON cpetp.`entity_id` = tacep.`_entity_id`
+            "
+        );
     }
 
     /**
-     * set tierprices function
-     *
-     * @param string $tmpTableName
-     * @return void
+     * Set tier prices function
      */
-    public function setTierPrices($tmpTableName)
+    public function setTierPrices(string $tmpTableName): void
     {
-        foreach ($this->customerGroupsUnserialized as $option) {
+        foreach ($this->customerGroups as $option) {
             $connection = $this->entitiesHelper->getConnection();
             $exist = $connection->tableColumnExists($tmpTableName, $option['pim_type']);
             if ($exist) {

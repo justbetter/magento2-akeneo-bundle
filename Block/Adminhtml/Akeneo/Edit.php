@@ -2,38 +2,26 @@
 
 namespace JustBetter\AkeneoBundle\Block\Adminhtml\Akeneo;
 
-use Magento\Framework\Registry;
 use Magento\Backend\Block\Widget\Context;
+use Magento\Backend\Block\Widget\Form\Container;
+use Magento\Framework\Phrase;
+use Magento\Framework\Registry;
+use Magento\Framework\View\Element\AbstractBlock;
 
-class Edit extends \Magento\Backend\Block\Widget\Form\Container
+class Edit extends Container
 {
-    /**
-     * Core registry
-     *
-     * @var Registry
-     */
-    protected $_coreRegistry = null;
-
-    /**
-     * @param Context $context
-     * @param Registry $registry
-     * @param array $data
-     */
     public function __construct(
         Context $context,
-        Registry $registry,
+        protected Registry $coreRegistry,
         array $data = []
     ) {
-        $this->_coreRegistry = $registry;
         parent::__construct($context, $data);
     }
 
     /**
      * Initialize akeneo edit block
-     *
-     * @return void
      */
-    protected function _construct()
+    protected function _construct(): void
     {
         $this->_objectId = 'id';
         $this->_blockGroup = 'JustBetter_AkeneoBundle';
@@ -61,13 +49,11 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
 
     /**
      * Retrieve text for header element depending on loaded post
-     *
-     * @return \Magento\Framework\Phrase
      */
-    public function getHeaderText()
+    public function getHeaderText(): Phrase
     {
-        if ($this->_coreRegistry->registry('akeneo')->getId()) {
-            return __("Edit Akeneo '%1'", $this->escapeHtml($this->_coreRegistry->registry('akeneo')->getTitle()));
+        if ($this->coreRegistry->registry('akeneo')->getId()) {
+            return __("Edit Akeneo '%1'", $this->escapeHtml($this->coreRegistry->registry('akeneo')->getTitle()));
         } else {
             return __('New Akeneo');
         }
@@ -76,20 +62,13 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
     /**
      * Getter of url for "Save and Continue" button
      * tab_id will be replaced by desired by JS later
-     *
-     * @return string
      */
-    protected function _getSaveAndContinueUrl()
+    protected function _getSaveAndContinueUrl(): string
     {
         return $this->getUrl('akeneomanager/*/save', ['_current' => true, 'back' => 'edit', 'active_tab' => '{{tab_id}}']);
     }
 
-    /**
-     * Prepare layout
-     *
-     * @return \Magento\Framework\View\Element\AbstractBlock
-     */
-    protected function _prepareLayout()
+    protected function _prepareLayout(): AbstractBlock
     {
         $this->_formScripts[] = "
             function toggleEditor() {
@@ -100,6 +79,7 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
                 }
             };
         ";
+
         return parent::_prepareLayout();
     }
 }

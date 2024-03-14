@@ -2,31 +2,24 @@
 
 namespace JustBetter\AkeneoBundle\Plugin;
 
-use Akeneo\Connector\Job\Product;
 use Akeneo\Connector\Helper\Import\Entities;
+use Akeneo\Connector\Job\Product;
+use Magento\Catalog\Model\Product\Attribute\Source\Status;
 use Magento\Catalog\Model\ResourceModel\Eav\Attribute;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\DB\Adapter\AdapterInterface;
 use Magento\Store\Model\ScopeInterface as Scope;
-use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Catalog\Model\Product\Attribute\Source\Status;
 
 class SetProductsActive
 {
     protected const CONFIG_KEY = 'akeneo_connector/justbetter/setproductsactive';
-
-    protected ScopeConfigInterface $config;
-    protected Entities $entitiesHelper;
     protected AdapterInterface $connection;
-    protected Attribute $attribute;
 
     public function __construct(
-        ScopeConfigInterface $config,
-        Entities $entitiesHelper,
-        Attribute $attribute
+        protected ScopeConfigInterface $config,
+        protected Entities $entitiesHelper,
+        protected Attribute $attribute
     ) {
-        $this->config = $config;
-        $this->entitiesHelper = $entitiesHelper;
-        $this->attribute = $attribute;
         $this->connection = $this->entitiesHelper->getConnection();
     }
 
@@ -60,9 +53,7 @@ class SetProductsActive
 
     protected function update(array $products): void
     {
-        $ids = array_map(function ($product) {
-            return $product['_entity_id'];
-        }, $products);
+        $ids = array_map(fn($product) => $product['_entity_id'], $products);
 
         $table = $this->connection->getTableName('catalog_product_entity_int');
         $attributeId = $this->attribute->getIdByCode('catalog_product', 'status');

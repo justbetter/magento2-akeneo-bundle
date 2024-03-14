@@ -3,6 +3,7 @@
 namespace JustBetter\AkeneoBundle\Block\Adminhtml\Akeneo\Edit\Tab;
 
 use IntlDateFormatter;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Registry;
 use Magento\Store\Model\System\Store;
 use Magento\Framework\Data\FormFactory;
@@ -16,34 +17,14 @@ use Magento\Backend\Block\Widget\Tab\TabInterface;
  */
 class Main extends Generic implements TabInterface
 {
-    /**
-     * @var Store
-     */
-    protected $_systemStore;
-
-    /**
-     * @var Status
-     */
-    protected $_status;
-
-    /**
-     * @param Context     $context
-     * @param Registry    $registry
-     * @param FormFactory $formFactory
-     * @param Store       $systemStore
-     * @param Status      $status
-     * @param array       $data
-     */
     public function __construct(
         Context $context,
         Registry $registry,
         FormFactory $formFactory,
-        Store $systemStore,
-        Status $status,
+        protected Store $systemStore,
+        protected Status $status,
         array $data = []
     ) {
-        $this->_systemStore = $systemStore;
-        $this->_status = $status;
         parent::__construct($context, $registry, $formFactory, $data);
     }
 
@@ -52,14 +33,14 @@ class Main extends Generic implements TabInterface
      *
      * @return $this
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     * @throws LocalizedException
      */
-    protected function _prepareForm()
+    protected function _prepareForm(): static
     {
         $model = $this->_coreRegistry->registry('akeneo');
 
         $isElementDisabled = false;
 
-        /** @var \Magento\Framework\Data\Form $form */
         $form = $this->_formFactory->create();
 
         $form->setHtmlIdPrefix('page_');
@@ -187,9 +168,6 @@ class Main extends Generic implements TabInterface
 
     public function getTargetOptionArray()
     {
-        return array(
-            '_self'  => "Self",
-            '_blank' => "New Page",
-        );
+        return ['_self'  => 'Self', '_blank' => 'New Page'];
     }
 }

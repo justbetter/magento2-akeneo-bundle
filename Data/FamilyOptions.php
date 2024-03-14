@@ -7,21 +7,16 @@ use Magento\Framework\Data\OptionSourceInterface;
 
 class FamilyOptions implements OptionSourceInterface
 {
-    protected CollectionFactory $collectionFactory;
-
     public function __construct(
-        CollectionFactory $collectionFactory
+        protected CollectionFactory $collectionFactory
     ) {
-        $this->collectionFactory = $collectionFactory;
     }
 
     public function toOptionArray(): array
     {
-        return array_map(function ($set) {
-            return [
-                'value' => $set->getData('attribute_set_id'),
-                'label' => $set->getData('attribute_set_name')
-            ];
-        }, $this->collectionFactory->create()->getItems());
+        return array_map(fn($set) => [
+            'value' => $set->getData('attribute_set_id'),
+            'label' => $set->getData('attribute_set_name')
+        ], $this->collectionFactory->create()->getItems());
     }
 }

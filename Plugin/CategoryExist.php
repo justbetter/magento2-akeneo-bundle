@@ -3,37 +3,30 @@
 namespace JustBetter\AkeneoBundle\Plugin;
 
 use Akeneo\Connector\Helper\Import\Entities;
-use Magento\Store\Model\ScopeInterface as scope;
 use Akeneo\Connector\Helper\Store as StoreHelper;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Store\Model\ScopeInterface as Scope;
 
 class CategoryExist
 {
-    protected $config;
-    protected $entitiesHelper;
-    protected $storeHelper;
-
     public function __construct(
-        ScopeConfigInterface $config,
-        Entities $entitiesHelper,
-        StoreHelper $storeHelper
+        protected ScopeConfigInterface $config,
+        protected Entities $entitiesHelper,
+        protected StoreHelper $storeHelper
     ) {
-        $this->config = $config;
-        $this->entitiesHelper = $entitiesHelper;
-        $this->storeHelper = $storeHelper;
     }
 
-    public function beforeSetValues()
+    public function beforeSetValues(): void
     {
-        $extensionEnabled = $this->config->getValue('akeneo_connector/justbetter/categoryexist', scope::SCOPE_WEBSITE);
+        $extensionEnabled = $this->config->getValue('akeneo_connector/justbetter/categoryexist', Scope::SCOPE_WEBSITE);
         if (!$extensionEnabled) {
-            return ;
+            return;
         }
 
         $connection = $this->entitiesHelper->getConnection();
 
         $stores = $this->storeHelper->getStores('lang');
-        foreach ($stores as $local => $affected) {
+        foreach ($stores as $affected) {
             foreach ($affected as $store) {
                 $updateUrl = [
                     'url_key-' . $store['lang'] => null

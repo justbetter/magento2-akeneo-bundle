@@ -9,12 +9,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class SetNotVisible extends Command
 {
-    protected SetNotVisibleJob $job;
-
-    public function __construct(SetNotVisibleJob $job, string $name = null)
-    {
-        $this->job = $job;
-
+    public function __construct(
+        protected SetNotVisibleJob $job, string $name = null
+    ) {
         parent::__construct($name);
     }
 

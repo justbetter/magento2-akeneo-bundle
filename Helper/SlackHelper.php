@@ -7,14 +7,9 @@ use Magento\Framework\App\Helper\AbstractHelper;
 
 class SlackHelper extends AbstractHelper
 {
-    const XML_PATH = 'akeneo_connector/justbetter/slack/';
+    public const XML_PATH = 'akeneo_connector/justbetter/slack/';
 
-    /**
-     * getConfigValue function
-     * @param  String $field
-     * @param  Int $storeId
-     */
-    public function getConfigValue($field, $storeId = null)
+    public function getConfigValue(string $field, ?int $storeId = null): mixed
     {
         return $this->scopeConfig->getValue(
             $field,
@@ -23,21 +18,12 @@ class SlackHelper extends AbstractHelper
         );
     }
 
-    /**
-     * getGeneralConfig function
-     * @param  String $code
-     * @param  null $storeId
-     */
-    public function getGeneralConfig($code, $storeId = null)
+    public function getGeneralConfig(string $code, ?int $storeId = null)
     {
         return $this->getConfigValue(self::XML_PATH . $code, $storeId);
     }
 
-    /**
-     * isEnable function
-     * @return boolean
-     */
-    public function isEnable()
+    public function isEnable(): bool
     {
         return $this->getGeneralConfig('enable');
     }

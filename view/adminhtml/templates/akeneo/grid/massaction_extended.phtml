@@ -1,31 +1,32 @@
-<div id="<?php echo $block->getHtmlId() ?>">
+<?php /** @var \Magento\Backend\Block\Widget\Grid\Massaction\AbstractMassaction $block */ ?>
+<div id="<?= $block->getHtmlId() ?>">
     <div class="massaction">
         <div class="entry-edit">
             <?php if ($block->getHideFormElement() !== true):?>
-            <form action="" id="<?php echo $block->getHtmlId() ?>-form" method="post">
+            <form action="" id="<?= $block->getHtmlId() ?>-form" method="post">
                 <?php endif ?>
-                <?php echo $block->getBlockHtml('formkey')?>
+                <?= $block->getBlockHtml('formkey')?>
                 <span class="field-row">
-                    <label class="label"><?php echo __('Select Product Actions') ?></label>
-                    <select id="<?php echo $block->getHtmlId() ?>-select" class="select absolute-advice local-validation">
-                        <option value=""><?php echo __('-- Please select --')?></option>
+                    <label class="label"><?= __('Select Product Actions') ?></label>
+                    <select id="<?= $block->getHtmlId() ?>-select" class="select absolute-advice local-validation">
+                        <option value=""><?= __('-- Please select --')?></option>
                         <?php foreach ($block->getItems() as $_item): ?>
-                            <option value="<?php echo $_item->getId() ?>"<?php echo($_item->getSelected() ? ' selected="selected"' : '')?>><?php echo $_item->getLabel() ?></option>
+                            <option value="<?= $_item->getId() ?>"<?=($_item->getSelected() ? ' selected="selected"' : '')?>><?= $_item->getLabel() ?></option>
                         <?php endforeach; ?>
                     </select>
                 </span>
-                <span class="outer-span" id="<?php echo $block->getHtmlId() ?>-form-hiddens"></span>
-                <span class="outer-span" id="<?php echo $block->getHtmlId() ?>-form-additional"></span>
+                <span class="outer-span" id="<?= $block->getHtmlId() ?>-form-hiddens"></span>
+                <span class="outer-span" id="<?= $block->getHtmlId() ?>-form-additional"></span>
                 <span class="field-row">
-                    <?php echo $block->getApplyButtonHtml() ?>
+                    <?= $block->getApplyButtonHtml() ?>
                 </span>
                 <?php if ($block->getHideFormElement() !== true):?>
             </form>
         <?php endif ?>
             <div class="no-display">
                 <?php foreach ($block->getItems() as $_item): ?>
-                    <div id="<?php echo $block->getHtmlId() ?>-item-<?php echo $_item->getId() ?>-block">
-                        <?php echo $_item->getAdditionalActionBlockHtml() ?>
+                    <div id="<?= $block->getHtmlId() ?>-item-<?= $_item->getId() ?>-block">
+                        <?= $_item->getAdditionalActionBlockHtml() ?>
                     </div>
                 <?php endforeach; ?>
             </div>
@@ -33,25 +34,25 @@
         <div class="entry-select">
             <select id="massaction-select" class="select">
                 <option value="">
-                    <?php echo __('Mass Actions')?>
+                    <?= __('Mass Actions')?>
                 </option>
                 <?php if ($block->getUseSelectAll()):?>
                     <option value="selectAll">
-                        <?php echo __('Select All') ?>
+                        <?= __('Select All') ?>
                     </option>
                     <option value="unselectAll">
-                        <?php echo __('Unselect All') ?>
+                        <?= __('Unselect All') ?>
                     </option>
                 <?php endif; ?>
                 <option value="selectVisible">
-                    <?php echo __('Select Visible') ?>
+                    <?= __('Select Visible') ?>
                 </option>
                 <option value="unselectVisible">
-                    <?php echo __('Unselect Visible') ?>
+                    <?= __('Unselect Visible') ?>
                 </option>
             </select>
         <span class="items">
-            <strong id="<?php echo $block->getHtmlId() ?>-count">0</strong> <?php echo __('items selected') ?>
+            <strong id="<?= $block->getHtmlId() ?>-count">0</strong> <?= __('items selected') ?>
         </span>
         </div>
     </div>
@@ -63,17 +64,17 @@
                 switch (massAction) {
                     <?php if ($block->getUseSelectAll()):?>
                     case 'selectAll':
-                        return <?php echo $block->getJsObjectName() ?>.selectAll();
+                        return <?= $block->getJsObjectName() ?>.selectAll();
                         break
                     case 'unselectAll':
-                        return <?php echo $block->getJsObjectName() ?>.unselectAll();
+                        return <?= $block->getJsObjectName() ?>.unselectAll();
                         break
                     <?php endif; ?>
                     case 'selectVisible':
-                        return <?php echo $block->getJsObjectName() ?>.selectVisible();
+                        return <?= $block->getJsObjectName() ?>.selectVisible();
                         break
                     case 'unselectVisible':
-                        return <?php echo $block->getJsObjectName() ?>.unselectVisible();
+                        return <?= $block->getJsObjectName() ?>.unselectVisible();
                         break
                 }
             });
@@ -81,7 +82,7 @@
         });
 
         <?php if (!$block->getParentBlock()->canDisplayContainer()): ?>
-        <?php echo $block->getJsObjectName() ?>.setGridIds('<?php echo $block->getGridIdsJson() ?>');
+        <?= $block->getJsObjectName() ?>.setGridIds('<?= $block->getGridIdsJson() ?>');
         <?php endif; ?>
     </script>
 </div>

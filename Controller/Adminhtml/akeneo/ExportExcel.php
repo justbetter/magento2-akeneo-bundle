@@ -1,32 +1,36 @@
 <?php
 
-namespace JustBetter\AkeneoBundle\Controller\Adminhtml\akeneo;
+namespace JustBetter\AkeneoBundle\Controller\Adminhtml\Akeneo;
 
+use Exception;
+use JustBetter\AkeneoBundle\Block\Adminhtml\Akeneo\Grid;
 use Magento\Backend\App\Action;
-use Magento\Framework\App\ObjectManager;
-use Magento\Framework\App\ResponseInterface;
+use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\App\Response\Http\FileFactory;
+use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Controller\ResultInterface;
 
-class ExportExcel extends \Magento\Backend\App\Action
+class ExportExcel extends Action
 {
-    protected $_fileFactory;
+    public function __construct(
+        Context $context,
+        protected FileFactory $fileFactory
+    ) {
+        parent::__construct($context);
+    }
 
-    public function execute()
+    /**
+     * @throws Exception
+     */
+    public function execute(): ResultInterface|ResponseInterface
     {
         $this->_view->loadLayout(false);
 
-        $fileName = 'akeneo.xml';
+        $exportBlock = $this->_view->getLayout()->createBlock(Grid::class);
 
-        $exportBlock = $this->_view->getLayout()->createBlock('JustBetter\AkeneoBundle\Block\Adminhtml\Akeneo\Grid');
-
-        $objectManager = ObjectManager::getInstance();
-
-        $this->_fileFactory = $objectManager->create('Magento\Framework\App\Response\Http\FileFactory');
-
-
-        return $this->_fileFactory->create(
-            $fileName,
+        return $this->fileFactory->create(
+            'akeneo.xml',
             $exportBlock->getExcelFile(),
             DirectoryList::VAR_DIR
         );

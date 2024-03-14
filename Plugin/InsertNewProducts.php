@@ -4,34 +4,18 @@ namespace JustBetter\AkeneoBundle\Plugin;
 
 use Akeneo\Connector\Job\Product;
 use Akeneo\Connector\Helper\Import\Entities;
-use Magento\Store\Model\ScopeInterface as scope;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Store\Model\ScopeInterface as scope;
 
 class InsertNewProducts
 {
-    protected $config;
-    protected $entitiesHelper;
-
-    /**
-     * __construct function
-     * @param ScopeConfigInterface $config
-     * @param Entities $entitiesHelper
-     */
     public function __construct(
-        ScopeConfigInterface $config,
-        Entities $entitiesHelper
+        protected ScopeConfigInterface $config,
+        protected Entities $entitiesHelper
     ) {
-        $this->config = $config;
-        $this->entitiesHelper = $entitiesHelper;
     }
 
-    /**
-     * afterInsertData function
-     * @param  product $subject
-     * @param  bool $result
-     * @return bool $result
-     */
-    public function afterInsertData(product $subject, $result)
+    public function afterInsertData(Product $subject, bool $result): bool
     {
         $extensionEnabled = $this->config->getValue('akeneo_connector/justbetter/insertnewproducts', scope::SCOPE_WEBSITE);
         if (!$extensionEnabled) {
@@ -42,6 +26,7 @@ class InsertNewProducts
         $tmpTableName = $this->entitiesHelper->getTableName($subject->getCode());
 
         $connection->delete($tmpTableName, ['_is_new = ?' => 1]);
+
         return $result;
     }
 }
