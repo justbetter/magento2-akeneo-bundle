@@ -16,10 +16,6 @@ class Product extends BaseProduct
             return $mappedResult;
         }
 
-        $adminChannel = $this->scopeConfig->getValue('akeneo_connector/akeneo_api/admin_channel');
-
-        $defaultLanguage = $this->scopeConfig->getValue('akeneo_connector/justbetter/defaultlanguage');
-
         $requiredAttributes = $this->getRequiredAttributes();
 
         foreach ($requiredAttributes as $requiredAttribute) {
@@ -30,10 +26,6 @@ class Product extends BaseProduct
                 !$this->isScopableOrLocalizable($requiredAttribute, $mappedResult)
             ) {
                 continue;
-            }
-
-            if (!array_key_exists($requiredAttribute.'-'.$defaultLanguage.'-'.$adminChannel, $mappedResult) && $defaultLanguage) {
-                $mappedResult[$requiredAttribute.'-'.$defaultLanguage.'-'.$adminChannel] = $this->getFirstValue($result['values'][$requiredAttribute]);
             }
 
             $mappedResult[$requiredAttribute] = $this->getFirstValue($result['values'][$requiredAttribute]);
