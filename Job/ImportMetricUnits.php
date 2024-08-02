@@ -18,8 +18,8 @@ class ImportMetricUnits
     protected const ENABLED_CONFIG_KEY = 'enablemetricunits';
     protected const CHANNEL_CONFIG_KEY = 'metric_conversion_channel';
 
+    protected Authenticator $authenticator;
     protected AttributeRepositoryInterface $attributeRepository;
-    protected ?AkeneoPimClientInterface $akeneoClient = null;
     protected ScopeConfigInterface $config;
 
     public function __construct(
@@ -27,17 +27,14 @@ class ImportMetricUnits
         AttributeRepositoryInterface $attributeRepository,
         ScopeConfigInterface $config
     ) {
+        $this->authenticator = $authenticator;
         $this->attributeRepository = $attributeRepository;
         $this->config = $config;
-
-        if (($client = $authenticator->getAkeneoApiClient())) {
-            $this->akeneoClient = $client;
-        }
     }
 
     public function execute(OutputInterface $output = null): void
     {
-        if (! $this->akeneoClient) {
+        if (! $this->authenticator->getAkeneoApiClient()) {
             if ($output) {
                 $output->writeln('<error>Akeneo client not configured!</error>');
             }
@@ -90,13 +87,13 @@ class ImportMetricUnits
     {
         $search = (new SearchBuilder())->addFilter('type', 'IN', ['pim_catalog_metric']);
 
-        return $this->akeneoClient->getAttributeApi()->all(100, ['search' => $search->getFilters()]);
+        return $this->authenticator->getAkeneoApiClient()->getAttributeApi()->all(100, ['search' => $search->getFilters()]);
     }
 
     protected function getChannelConversions(): array
     {
         $channel = $this->config->getValue(static::CONFIG_PREFIX . static::CHANNEL_CONFIG_KEY);
 
-        return $this->akeneoClient->getChannelApi()->get($channel)['conversion_units'] ?? [];
+        return $this->authenticator->getAkeneoApiClient()->getChannelApi()->get($channel)['conversion_units'] ?? [];
     }
 }
