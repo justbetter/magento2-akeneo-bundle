@@ -2,6 +2,7 @@
 
 namespace JustBetter\AkeneoBundle\Console\Command;
 
+use Exception;
 use JustBetter\AkeneoBundle\Job\ImportMetricUnits as ImportMetricUnitsJob;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -23,8 +24,13 @@ class ImportMetricUnits extends Command
         parent::configure();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    /**
+     * @throws Exception
+     */
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->job->execute($output);
+
+        return 0;
     }
 }

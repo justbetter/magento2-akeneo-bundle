@@ -44,9 +44,7 @@ class CheckWebsiteAssociation
             );
             /** @var Mysql $query */
             $query = $connection->query($select);
-            /** @var array $row */
             while (($row = $query->fetch())) {
-                
                 if(!isset($row[$websiteAssociation])) {
                     continue;
                 }

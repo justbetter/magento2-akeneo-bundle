@@ -3,6 +3,7 @@
 namespace JustBetter\AkeneoBundle\Block\Adminhtml\Akeneo;
 
 use Exception;
+use Magento\Backend\Block\Widget\Grid\Massaction;
 use Magento\Backend\Helper\Data;
 use Magento\Framework\Module\Manager;
 use Magento\Backend\Block\Template\Context;
@@ -116,7 +117,9 @@ class Grid extends Extended
         $this->setMassactionIdField('id');
         $this->getMassactionBlock()->setFormFieldName('akeneo');
 
-        $this->getMassactionBlock()->addItem(
+        /** @var Massaction $massactionBlock */
+        $massactionBlock = $this->getMassactionBlock();
+        $massactionBlock->addItem(
             'delete',
             [
                 'label' => __('Delete'),
@@ -127,7 +130,7 @@ class Grid extends Extended
 
         $statuses = $this->status->getOptionArray();
 
-        $this->getMassactionBlock()->addItem(
+        $massactionBlock->addItem(
             'status',
             [
                 'label' => __('Change status'),

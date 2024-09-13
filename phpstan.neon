@@ -5,7 +5,7 @@ parameters:
         - .
     excludePaths:
         - vendor
-    level: 1
+    level: 4
     ignoreErrors:
         - '#Magento\\Backend\\Model\\View\\Result\\ForwardFactory#'
         - '#Magento\\Eav\\Model\\ResourceModel\\Entity\\Attribute\\Set\\CollectionFactory#'

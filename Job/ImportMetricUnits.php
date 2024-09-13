@@ -4,10 +4,11 @@ namespace JustBetter\AkeneoBundle\Job;
 
 use Akeneo\Connector\Helper\Authenticator;
 use Akeneo\Pim\ApiClient\AkeneoPimClientInterface;
-use Akeneo\Pim\ApiClient\Pagination\ResourceCursor;
+use Akeneo\Pim\ApiClient\Pagination\ResourceCursorInterface;
 use Akeneo\Pim\ApiClient\Search\SearchBuilder;
 use Exception;
 use Magento\Eav\Api\AttributeRepositoryInterface;
+use Magento\Eav\Model\Entity\Attribute;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -33,6 +34,9 @@ class ImportMetricUnits
         }
     }
 
+    /**
+     * @throws Exception
+     */
     public function execute(OutputInterface $output = null): void
     {
         if (! $this->akeneoClient) {
@@ -55,6 +59,7 @@ class ImportMetricUnits
                 : $akeneoAttribute['default_metric_unit'];
 
             try {
+                /** @var Attribute $magentoAttribute */
                 $magentoAttribute = $this->attributeRepository->get('catalog_product', $code);
             } catch (NoSuchEntityException) {
                 $output?->writeln("<error>Skipping $code because it does not exist in Magento</error>");
@@ -66,7 +71,7 @@ class ImportMetricUnits
             }
 
             $magentoAttribute->setData(self::EAV_ATTRIBUTE_UNIT_FIELD, $unit);
-            $magentoAttribute->save();
+            $magentoAttribute->save(); // @phpstan-ignore-line
 
             $output?->writeln("Set unit for <info>$code</info> to <info>$unit</info>");
         }
@@ -74,7 +79,7 @@ class ImportMetricUnits
         $output?->writeln("<info>Done</info>");
     }
 
-    protected function getMetricAttributes(): ResourceCursor
+    protected function getMetricAttributes(): ResourceCursorInterface
     {
         $search = (new SearchBuilder())->addFilter('type', 'IN', ['pim_catalog_metric']);
 

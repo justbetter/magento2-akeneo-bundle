@@ -3,7 +3,8 @@
     "description": "Magento2 bundle for extending the Akeneo connector with awesome features.",
     "require": {
         "php": ">=8.2",
-        "akeneo/module-magento2-connector-community": "*"
+        "akeneo/module-magento2-connector-community": "^104.3.12",
+        "ext-intl": "*"
     },
     "require-dev": {
         "bitexpert/phpstan-magento": "^0.11.0",

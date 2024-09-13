@@ -6,6 +6,7 @@ use Exception;
 use JustBetter\AkeneoBundle\Block\Adminhtml\Akeneo\Grid;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
+use Magento\Backend\Block\Widget\Grid\Export;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\App\Response\Http\FileFactory;
 use Magento\Framework\App\ResponseInterface;
@@ -27,6 +28,7 @@ class ExportExcel extends Action
     {
         $this->_view->loadLayout(false);
 
+        /** @var Export $exportBlock */
         $exportBlock = $this->_view->getLayout()->createBlock(Grid::class);
 
         return $this->fileFactory->create(

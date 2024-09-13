@@ -31,7 +31,7 @@ class Product
             $this->codes = explode(',', (string)$this->config->getValue('akeneo_connector/justbetter/important_attributes'));
         }
 
-        if (!(is_countable($this->codes) ? count($this->codes) : 0)) {
+        if (!count($this->codes)) {
             return [$result, $tableSuffix, $family];
         }
 
