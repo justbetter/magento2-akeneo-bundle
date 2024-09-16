@@ -109,7 +109,7 @@ class SetTaxClassId
     public function addCase(string $query, string $taxIdColumn): ?string
     {
         if (!($mappings = $this->scopeConfig->getValue('akeneo_connector/product/tax_id_mapping'))) {
-            return null;
+            return $query;
         }
 
         $mappings = $this->serializer->unserialize($mappings);
