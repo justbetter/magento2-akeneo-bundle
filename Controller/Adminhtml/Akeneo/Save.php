@@ -4,6 +4,7 @@ namespace JustBetter\AkeneoBundle\Controller\Adminhtml\Akeneo;
 
 use JustBetter\AkeneoBundle\Model\Akeneo;
 use Magento\Backend\App\Action;
+use Magento\Backend\Model\Session;
 use Magento\Backend\Model\View\Result\Redirect;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\LocalizedException;
@@ -39,7 +40,7 @@ class Save extends Action
             try {
                 $model->save();
                 $this->messageManager->addSuccess(__('The Akeneo has been saved.'));
-                $this->_objectManager->get(\Magento\Backend\Model\Session::class)->setFormData(false);
+                $this->_objectManager->get(Session::class)->setFormData(false);
                 if ($request->getParam('back')) {
                     return $resultRedirect->setPath('*/*/edit', ['id' => $model->getId(), '_current' => true]);
                 }
