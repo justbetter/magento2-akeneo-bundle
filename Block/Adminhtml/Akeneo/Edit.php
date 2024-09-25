@@ -50,7 +50,7 @@ class Edit extends Container
     /**
      * Retrieve text for header element depending on loaded post
      */
-    public function getHeaderText(): Phrase
+    public function getHeaderText(): Phrase|string
     {
         if ($this->coreRegistry->registry('akeneo')->getId()) {
             return __("Edit Akeneo '%1'", $this->escapeHtml($this->coreRegistry->registry('akeneo')->getTitle()));

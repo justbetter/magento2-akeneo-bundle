@@ -3,6 +3,7 @@
 namespace JustBetter\AkeneoBundle\Helper\Import;
 
 use Akeneo\Connector\Helper\Import\Product as BaseProduct;
+use Magento\Framework\DB\Adapter\AdapterInterface;
 
 class Product extends BaseProduct
 {
@@ -43,7 +44,7 @@ class Product extends BaseProduct
     }
 
     /**
-     * Check if an attribute is scopeable or localizable based on the column result name, ex. name-nl_NL-ecommerce
+     * Check if an attribute is scopable or localizable based on the column result name, ex. name-nl_NL-ecommerce
      */
     protected function isScopableOrLocalizable(string $attributeCode, array $columnResult): bool
     {
@@ -71,13 +72,15 @@ class Product extends BaseProduct
         $eavAttributeTable = $this->connection->getTableName('eav_attribute');
         $eavEntityTypeTable = $this->connection->getTableName('eav_entity_type');
 
-        $select = $this->connection->select()
+        /** @var AdapterInterface $connection */
+        $connection = $this->connection;
+        $select = $connection->select()
             ->from("$eavAttributeTable AS attr")
             ->join("$eavEntityTypeTable AS type",
                 "attr.entity_type_id = type.entity_type_id AND type.entity_type_code = 'catalog_product'")
             ->where('is_required = 1');
 
-        $requiredAttributes = $this->connection->fetchAll($select);
+        $requiredAttributes = $connection->fetchAll($select);
 
         return array_map(fn (array $attribute) => $attribute['attribute_code'], $requiredAttributes);
     }

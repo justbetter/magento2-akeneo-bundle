@@ -3,7 +3,9 @@
 namespace JustBetter\AkeneoBundle\Block\Adminhtml\Akeneo\Edit\Tab;
 
 use IntlDateFormatter;
+use JustBetter\AkeneoBundle\Block\Adminhtml\Akeneo\Grid;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Phrase;
 use Magento\Framework\Registry;
 use Magento\Store\Model\System\Store;
 use Magento\Framework\Data\FormFactory;
@@ -31,15 +33,12 @@ class Main extends Generic implements TabInterface
     /**
      * Prepare form
      *
-     * @return $this
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      * @throws LocalizedException
      */
     protected function _prepareForm(): static
     {
         $model = $this->_coreRegistry->registry('akeneo');
-
-        $isElementDisabled = false;
 
         $form = $this->_formFactory->create();
 
@@ -59,8 +58,8 @@ class Main extends Generic implements TabInterface
                 'title' => __('Type'),
                 'name' => 'import',
                 'required' => true,
-                'options' => \JustBetter\AkeneoBundle\Block\Adminhtml\Akeneo\Grid::getOptionArray0(),
-                'disabled' => $isElementDisabled
+                'options' => Grid::getOptionArray0(),
+                'disabled' => false
             ]
         );
 
@@ -72,7 +71,7 @@ class Main extends Generic implements TabInterface
                 'label' => __('Code'),
                 'title' => __('Code'),
                 'required' => true,
-                'disabled' => $isElementDisabled
+                'disabled' => false
             ]
         );
 
@@ -84,7 +83,7 @@ class Main extends Generic implements TabInterface
                 'label' => __('Magento Entity ID'),
                 'title' => __('Magento Entity ID'),
                 'required' => true,
-                'disabled' => $isElementDisabled
+                'disabled' => false
             ]
         );
 
@@ -103,14 +102,12 @@ class Main extends Generic implements TabInterface
                 'label'       => __('Created'),
                 'title'       => __('Created'),
                 'date_format' => $dateFormat,
-                //'time_format' => $timeFormat,
-
-                'disabled' => $isElementDisabled,
+                'disabled' => false
             ]
         );
 
         if (!$model->getId()) {
-            $model->setData('is_active', $isElementDisabled ? '0' : '1');
+            $model->setData('is_active', '1');
         }
 
         $form->setValues($model->getData());
@@ -121,20 +118,16 @@ class Main extends Generic implements TabInterface
 
     /**
      * Prepare label for tab
-     *
-     * @return \Magento\Framework\Phrase
      */
-    public function getTabLabel()
+    public function getTabLabel(): Phrase|string
     {
         return __('Item Information');
     }
 
     /**
      * Prepare title for tab
-     *
-     * @return \Magento\Framework\Phrase
      */
-    public function getTabTitle()
+    public function getTabTitle(): Phrase|string
     {
         return __('Item Information');
     }
@@ -142,7 +135,7 @@ class Main extends Generic implements TabInterface
     /**
      * {@inheritdoc}
      */
-    public function canShowTab()
+    public function canShowTab(): bool
     {
         return true;
     }
@@ -150,23 +143,20 @@ class Main extends Generic implements TabInterface
     /**
      * {@inheritdoc}
      */
-    public function isHidden()
+    public function isHidden(): bool
     {
         return false;
     }
 
     /**
      * Check permission for passed action
-     *
-     * @param string $resourceId
-     * @return bool
      */
-    protected function _isAllowedAction($resourceId)
+    protected function _isAllowedAction(string $resourceId): bool
     {
         return $this->_authorization->isAllowed($resourceId);
     }
 
-    public function getTargetOptionArray()
+    public function getTargetOptionArray(): array
     {
         return ['_self'  => 'Self', '_blank' => 'New Page'];
     }

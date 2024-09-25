@@ -45,11 +45,7 @@ class TaxIdMapping extends AbstractFieldArray
             return parent::renderCellTemplate($columnName);
         }
 
-        $options = [];
-
-        if (isset($this->_columns[$columnName])) {
-            $options = $this->productTaxClassSource->getAllOptions();
-        }
+        $options = $this->productTaxClassSource->getAllOptions();
 
         /** @var Select $element */
         $element = $this->elementFactory->create('select');

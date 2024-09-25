@@ -97,23 +97,26 @@ class RunSlackMessage
      */
     protected function send(string $message): string
     {
-        try {
-            $slackApi = $this->helperData->getGeneralConfig('api');
-            $this->client->request('POST', $slackApi, [
-                'form_params' => [
-                    'token' => $this->helperData->getGeneralConfig('token'),
-                    'channel' => $this->helperData->getGeneralConfig('channel'),
-                    'text' => $message,
-                    'username' => $this->helperData->getGeneralConfig('username')
-                ]]);
+        $config = [
+            'api' => $this->helperData->getGeneralConfig('api'),
+            'token' => $this->helperData->getGeneralConfig('token'),
+            'channel' => $this->helperData->getGeneralConfig('channel'),
+            'username' => $this->helperData->getGeneralConfig('username')
+        ];
 
-            return '<info>✅ Message has been send to Slack channel: '
-                . $this->helperData->getGeneralConfig('channel') . '</info>';
+        try {
+            $this->client->request('POST', $config['api'], ['form_params' => [
+                'token' => $config['token'],
+                'channel' => $config['channel'],
+                'text' => $message,
+                'username' => $config['username']
+            ]]);
+
+            return "<info>✅ Message sent to Slack channel: {$config['channel']}</info>";
         } catch (RequestException $e) {
-            return '<fg=red>⚠️  There\'s a problem with sending the message to Slack channel: '
-            . $this->helperData->getGeneralConfig('channel') . " \n\n"
-            . 'The following exception appeared:</>'
-            . '<error>' . "\n\n" . $e->getResponse() . '</error>';
+            $response = $e->getResponse() ? $e->getResponse()->getBody() : 'No response body';
+            return "<fg=red>⚠️ Problem sending message to Slack channel: {$config['channel']}\n\n"
+                . "Exception:\n<error>{$response}</error></>";
         }
     }
 }

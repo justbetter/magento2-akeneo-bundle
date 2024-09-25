@@ -106,11 +106,12 @@ class SetTaxClassId
     /**
      * Add the switch case to the query.
      */
-    public function addCase(string $query, string $taxIdColumn): string
+    public function addCase(string $query, string $taxIdColumn): ?string
     {
         if (!($mappings = $this->scopeConfig->getValue('akeneo_connector/product/tax_id_mapping'))) {
-            return;
+            return $query;
         }
+
         $mappings = $this->serializer->unserialize($mappings);
 
         if (!(is_countable($mappings) ? count($mappings) : 0)) {

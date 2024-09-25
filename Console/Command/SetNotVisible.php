@@ -23,12 +23,14 @@ class SetNotVisible extends Command
         parent::configure();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('Starting');
 
         $this->job->execute($output);
 
         $output->writeln('Finished!');
+
+        return 0;
     }
 }
