@@ -129,6 +129,15 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Set the value on the default store for required attributes that are scopable or localizable. (Default no)</comment>
                 </field>
+                <field id="defaultlanguage" translate="label" type="text" sortOrder="155" showInDefault="1" showInWebsite="0"
+                       showInStore="0">
+                    <label>Default language for admin channel</label>
+                    <comment>If a value of the admin channel is missing, then this setting can be used to map a certain value as your definitive fallback value for a required attribute for example 'nl_NL'
+                    </comment>
+                    <depends>
+                        <field id="akeneo_connector/justbetter/defaultstorevalues">1</field>
+                    </depends>
+                </field>
                 <group id="slack" translate="label" type="text" sortOrder="160" showInDefault="1" showInWebsite="0"
                        showInStore="0">
                     <label>Slack Akeneo import notifications</label>
