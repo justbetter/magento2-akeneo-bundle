@@ -174,6 +174,26 @@
                     </field>
                 </group>
             </group>
+            <group id="products_filters" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Filter Products</label>
+                <field id="excluded_families" translate="label comment" type="multiselect" sortOrder="145" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Families to exclude</label>
+                    <source_model>Akeneo\Connector\Model\Source\Filters\Family</source_model>
+                    <comment>
+                        <![CDATA[Select the families you want to exclude from retrieving products.<br/><br/>
+                        <b>Import Logic Explanation:</b><br/>
+                        <ul>
+                            <li><b>"Families to exclude" is empty:</b> Only the families selected in "Families to import" will be imported.</li>
+                            <li><b>"Families to import" is empty:</b> All families will be imported, except those selected in "Families to exclude".</li>
+                            <li><b>Both selections are empty:</b> All families will be imported.</li>
+                        </ul>]]>
+                    </comment>
+                    <depends>
+                        <field id="mode">standard</field>
+                    </depends>
+                    <can_be_empty>1</can_be_empty>
+                </field>
+            </group>
         </section>
     </system>
 </config>
