@@ -23,9 +23,8 @@ class Product
 
     public function afterGetFamiliesToImport(
         AkeneoProduct $subject,
-        array $result
+        array $families
     ): array {
-        $families = $result;
         $familiesToExclude = explode(',', $this->getFamiliesToExport());
       
         if (!$families || $families[0] === '') {
