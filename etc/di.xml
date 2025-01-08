@@ -24,6 +24,10 @@
         <plugin name="JustBetter_ImportFinished" type="JustBetter\AkeneoBundle\Plugin\ImportFinished" sortOrder="1" />
     </type>
 
+    <type name="Akeneo\Connector\Job\Product">
+        <plugin name="JustBetter_FamiliesToExclude" type="JustBetter\AkeneoBundle\Plugin\Job\Product" sortOrder="1" />
+    </type>
+
     <type name="Akeneo\Connector\Job\Option">
         <plugin name="JustBetter_ImportFinished" type="JustBetter\AkeneoBundle\Plugin\ImportFinished" sortOrder="1" />
     </type>

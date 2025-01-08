@@ -26,6 +26,7 @@ These features can be enabled / disabled via an extra configuration section call
 | Unset Website when empty Product Attribute Mapping                                               | When enabled this will unset the website from the product when a required attribute has no specific value. For example when the Name attribute in Akeneo is empty for the associated website                                                |
 | Slack Akeneo import notifications                                                                | Setup Slack notifications of Akeneo imports                                                                                                                                                                                                 |
 | <a href="#import-finished-events">Import finished events</a>                                     | Fires an event for every job that is fully finished                                                                                                                                                                                         |                                                                                                                                                                                               |
+| Exclude Families from Import | Allows you to exclude specific families from being imported from Akeneo. _(Stores > Configuration > Catalog > Akeneo Connector > JustBetter Akeneo)_ | |
 
 ## Installation
 ```
