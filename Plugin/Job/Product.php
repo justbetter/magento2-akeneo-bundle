@@ -16,7 +16,7 @@ class Product
     ) {
     }
 
-    public function getFamiliesToExport(): ?string
+    public function getFamiliesToExclude(): ?string
     {
         return $this->scopeConfig->getValue(self::PRODUCTS_FILTERS_EXCLUDED_FAMILIES);
     }
@@ -25,7 +25,7 @@ class Product
         AkeneoProduct $subject,
         array $families
     ): array {
-        $familiesToExclude = explode(',', $this->getFamiliesToExport());
+        $familiesToExclude = explode(',', $this->getFamiliesToExclude() ?? '');
       
         if (!$families || $families[0] === '') {
             $families = array_values($this->familyFilter->getFamilies() ?? []);
