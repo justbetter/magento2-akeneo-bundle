@@ -1,31 +1,34 @@
 <?php
 
-namespace JustBetter\AkeneoBundle\Plugin;
+namespace JustBetter\AkeneoBundle\Observer;
 
 use Akeneo\Connector\Executor\JobExecutor;
 use Akeneo\Connector\Helper\Import\Entities;
 use Akeneo\Connector\Helper\Output;
 use Magento\Framework\App\ResourceConnection;
+use Magento\Framework\Event\Observer;
+use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 
-class RemoveRedundantEav
+class RemoveRedundantEav implements ObserverInterface
 {
     public const CATALOG_PRODUCT_ENTITY_DATA_TYPES = ['int', 'text', 'decimal', 'gallery', 'varchar', 'datetime'];
 
     public function __construct(
         protected Entities $entities,
         protected ResourceConnection $resourceConnection,
+        protected Output $outputHelper,
         protected JobExecutor $jobExecutor,
-        protected Output $outputHelper
+        protected ScopeConfigInterface $scopeConfig
     ) {
     }
 
-    public function beforeRefreshIndex(): void
+    public function execute(Observer $observer): void
     {
-        self::removeRedundantEAV();
-    }
+        if (!$this->scopeConfig->isSetFlag('akeneo_connector/justbetter/remove_redundant_eav')) {
+            return;
+        }
 
-    public function removeRedundantEAV(): void
-    {
         $this->jobExecutor->displayInfo((string)$this->outputHelper->getPrefix() . __('Remove Redundant EAV attribute values'));
         $connection = $this->resourceConnection->getConnection();
 
