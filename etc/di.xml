@@ -9,6 +9,7 @@
         <plugin name="JustBetter_SetStockStatus" type="JustBetter\AkeneoBundle\Plugin\SetStockStatus" sortOrder="2" />
         <plugin name="JustBetter_ImportFinished" type="JustBetter\AkeneoBundle\Plugin\ImportFinished" sortOrder="10" />
         <plugin name="JustBetter_CheckWebsiteAssociation" type="JustBetter\AkeneoBundle\Plugin\CheckWebsiteAssociation" />
+        <plugin name="JustBetter_RemoveRedundantEav" type="JustBetter\AkeneoBundle\Plugin\RemoveRedundantEav" />
     </type>
 
     <type name="Akeneo\Connector\Job\Category">
