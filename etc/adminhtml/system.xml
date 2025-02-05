@@ -141,7 +141,15 @@
                 <field id="remove_redundant_eav" translate="label" type="select" sortOrder="160" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Remove Redundant EAV</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <comment>Enable or disable the removal of redundant EAV attribute values. (Default: no)</comment>
+                    <comment>
+                        <![CDATA[
+                        Enable or disable the removal of redundant EAV attribute values. (Default: no)
+                        <br/><br/>
+                        When a product's family (attribute set) changes in Akeneo, attributes no longer in the new set may still have values stored in the database.
+                        <br/><br/>
+                        Enabling this option removes these redundant values during import, keeping the database clean and consistent.
+                        ]]>
+                    </comment>
                 </field>
                 <group id="slack" translate="label" type="text" sortOrder="160" showInDefault="1" showInWebsite="0"
                        showInStore="0">
