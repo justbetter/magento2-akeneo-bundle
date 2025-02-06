@@ -4,5 +4,6 @@
     </event>
     <event name="akeneo_connector_import_finish_product">
         <observer name="set_not_visible" instance="JustBetter\AkeneoBundle\Observer\SetNotVisible"/>
+        <observer name="remove_redundant_eav" instance="JustBetter\AkeneoBundle\Observer\RemoveRedundantEav" />
     </event>
 </config>
