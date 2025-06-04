@@ -3,31 +3,24 @@
 namespace JustBetter\AkeneoBundle\Plugin;
 
 use Akeneo\Connector\Helper\Import\Entities;
-use Magento\Store\Model\ScopeInterface as scope;
 use Akeneo\Connector\Helper\Store as StoreHelper;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Store\Model\ScopeInterface;
 
 class CategoryExist
 {
-    protected $config;
-    protected $entitiesHelper;
-    protected $storeHelper;
-
     public function __construct(
-        ScopeConfigInterface $config,
-        Entities $entitiesHelper,
-        StoreHelper $storeHelper
+        protected ScopeConfigInterface $config,
+        protected Entities $entitiesHelper,
+        protected StoreHelper $storeHelper
     ) {
-        $this->config = $config;
-        $this->entitiesHelper = $entitiesHelper;
-        $this->storeHelper = $storeHelper;
     }
 
     public function beforeSetValues()
     {
-        $extensionEnabled = $this->config->getValue('akeneo_connector/justbetter/categoryexist', scope::SCOPE_WEBSITE);
+        $extensionEnabled = $this->config->getValue('akeneo_connector/justbetter/categoryexist', ScopeInterface::SCOPE_WEBSITE);
         if (!$extensionEnabled) {
-            return ;
+            return;
         }
 
         $connection = $this->entitiesHelper->getConnection();
@@ -35,15 +28,29 @@ class CategoryExist
         $stores = $this->storeHelper->getStores('lang');
         foreach ($stores as $local => $affected) {
             foreach ($affected as $store) {
-                $updateUrl = [
-                    'url_key-' . $store['lang'] => null
-                ];
-
-                $connection->update(
-                    'tmp_akeneo_connector_entities_category',
-                    $updateUrl,
-                    '_is_new = 0'
-                );
+                $columnName = 'url_key-' . $store['lang'];
+                
+                $query = "
+                    UPDATE tmp_akeneo_connector_entities_category temp
+                    LEFT JOIN catalog_category_entity_varchar eav ON (
+                        eav.entity_id = temp._entity_id 
+                        AND eav.attribute_id = (
+                            SELECT attribute_id 
+                            FROM eav_attribute 
+                            WHERE attribute_code = 'url_key' 
+                            AND entity_type_id = (
+                                SELECT entity_type_id 
+                                FROM eav_entity_type 
+                                WHERE entity_type_code = 'catalog_category'
+                            )
+                        )
+                        AND eav.store_id = {$store['store_id']}
+                    )
+                    SET temp.`{$columnName}` = eav.value
+                    WHERE temp._is_new = 0 AND eav.value IS NOT NULL
+                ";
+                
+                $connection->query($query);
             }
         }
     }
