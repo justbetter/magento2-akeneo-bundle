@@ -23,7 +23,7 @@ class RunSlackMessage
         $message = $this->getMessage();
         if ($this->helperData->isEnable()) {
             $output ? $output->writeln($this->send($message)) : $this->send($message);
-        } else {
+        } elseif ($output !== null) {
             $output->writeln(
                 '<fg=red>This function has been disabled. ' . "\n"
                 . 'To enable: Go to Stores/Configuration/Catalog/Akeneo Connector/JustBetter Akeneo/Slack and set Enabled to Yes</>'
