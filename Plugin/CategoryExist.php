@@ -43,6 +43,7 @@ class CategoryExist
                                 FROM eav_entity_type 
                                 WHERE entity_type_code = 'catalog_category'
                             )
+                            AND eav.`value` != ''
                         )
                         AND eav.store_id = {$store['store_id']}
                     )
