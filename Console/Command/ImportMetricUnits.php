@@ -11,7 +11,7 @@ class ImportMetricUnits extends Command
 {
     protected ImportMetricUnitsJob $job;
 
-    public function __construct(ImportMetricUnitsJob $job, string $name = null)
+    public function __construct(ImportMetricUnitsJob $job, ?string $name = null)
     {
         $this->job = $job;
 

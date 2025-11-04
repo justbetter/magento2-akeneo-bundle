@@ -29,7 +29,7 @@ class SetNotVisible
         $this->action = $action;
     }
 
-    public function execute(OutputInterface $output = null): void
+    public function execute(?OutputInterface $output = null): void
     {
         $products = $this->collectionFactory->create()
             ->addFieldToFilter('attribute_set_id', ['in' => $this->getNotVisibleFamilies()])

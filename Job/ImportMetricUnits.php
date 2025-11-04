@@ -32,7 +32,7 @@ class ImportMetricUnits
         $this->config = $config;
     }
 
-    public function execute(OutputInterface $output = null): void
+    public function execute(?OutputInterface $output = null): void
     {
         if (! $this->authenticator->getAkeneoApiClient()) {
             if ($output) {
@@ -40,7 +40,7 @@ class ImportMetricUnits
             }
             return;
         }
-        
+
         if (!$this->config->getValue(static::CONFIG_PREFIX . static::ENABLED_CONFIG_KEY)) {
             if ($output) {
                 $output->writeln('<error>Metrics not enabled!</error>');

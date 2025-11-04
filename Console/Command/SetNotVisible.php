@@ -11,7 +11,7 @@ class SetNotVisible extends Command
 {
     protected SetNotVisibleJob $job;
 
-    public function __construct(SetNotVisibleJob $job, string $name = null)
+    public function __construct(SetNotVisibleJob $job, ?string $name = null)
     {
         $this->job = $job;
 
