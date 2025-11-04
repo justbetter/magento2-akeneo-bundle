@@ -15,7 +15,7 @@ class SlackNotificationCommand extends Command
 {
     protected $runSlackMessage;
 
-    public function __construct(RunSlackMessage $runSlackMessage, $name = null)
+    public function __construct(RunSlackMessage $runSlackMessage, ?string $name = null)
     {
         $this->runSlackMessage = $runSlackMessage;
         parent::__construct($name);
