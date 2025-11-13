@@ -14,7 +14,7 @@ class SlackHelper extends AbstractHelper
      * @param  String $field
      * @param  Int $storeId
      */
-    public function getConfigValue($field, ?int $storeId = null)
+    public function getConfigValue($field, int|string|null $storeId = null)
     {
         return $this->scopeConfig->getValue(
             $field,
@@ -28,7 +28,7 @@ class SlackHelper extends AbstractHelper
      * @param  String $code
      * @param  null $storeId
      */
-    public function getGeneralConfig($code, ?int $storeId = null)
+    public function getGeneralConfig($code, int|string|null $storeId = null)
     {
         return $this->getConfigValue(self::XML_PATH . $code, $storeId);
     }
