@@ -15,7 +15,7 @@ class Product
     ) {
     }
 
-    public function beforeCreateTmpTableFromApi($subject, $result, $tableSuffix, $family = null)
+    public function beforeCreateTmpTableFromApi($subject, $result, $tableSuffix, mixed $family = null)
     {
         if (is_null($this->codes)) {
             $this->codes = explode(',', (string)$this->config->getValue('akeneo_connector/justbetter/important_attributes'));

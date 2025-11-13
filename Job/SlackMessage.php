@@ -29,7 +29,7 @@ class SlackMessage
      * @param Collection $processingLogs
      * @return string
      */
-    public function warning(Collection $errorLogs = null, Collection $processingLogs = null)
+    public function warning(?Collection $errorLogs = null, ?Collection $processingLogs = null)
     {
         $message = ':warning: *Warning!* There\'s a problem with today’s imports in *' . $this->store->getName()
             . "*.\n\n";

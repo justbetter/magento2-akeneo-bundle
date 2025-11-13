@@ -18,7 +18,7 @@ class RunSlackMessage
     protected $logs;
     protected $slackMessage;
 
-    public function execute(InputInterface $input = null, OutputInterface $output = null)
+    public function execute(?InputInterface $input = null, ?OutputInterface $output = null)
     {
         $message = $this->getMessage();
         if ($this->helperData->isEnable()) {
