@@ -1,6 +1,6 @@
 <?php
 
-namespace JustBetter\AkeneoBundle\Controller\Adminhtml\akeneo;
+namespace JustBetter\AkeneoBundle\Controller\Adminhtml\Akeneo;
 
 use JustBetter\AkeneoBundle\Block\Adminhtml\Akeneo\Grid;
 use Magento\Backend\App\Action;
@@ -10,7 +10,7 @@ use Magento\Framework\App\Response\Http\FileFactory;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\View\LayoutFactory;
 
-class ExportExcel extends Action implements HttpGetActionInterface
+class ExportCsv extends Action implements HttpGetActionInterface
 {
     public function __construct(
         Action\Context $context,
@@ -22,7 +22,7 @@ class ExportExcel extends Action implements HttpGetActionInterface
 
     public function execute(): ResponseInterface
     {
-        $fileName = 'akeneo.xml';
+        $fileName = 'akeneo.csv';
 
         $layout = $this->layoutFactory->create();
         /** @var Grid $exportBlock */
@@ -30,7 +30,7 @@ class ExportExcel extends Action implements HttpGetActionInterface
 
         return $this->fileFactory->create(
             $fileName,
-            $exportBlock->getExcelFile(),
+            $exportBlock->getCsvFile(),
             DirectoryList::VAR_DIR
         );
     }

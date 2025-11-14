@@ -13,6 +13,9 @@ use Magento\Framework\Data\Form\Element\Select;
 
 class Type extends AbstractFieldArray
 {
+    /**
+     * @param array<string, mixed> $data
+     */
     public function __construct(
         Context $context,
         protected ElementFactory $elementFactory,
@@ -28,7 +31,7 @@ class Type extends AbstractFieldArray
         $this->addColumn('pim_type', ['label' => __('Akeneo Price Attribute Code (-EUR)')]);
         $this->addColumn('magento_type', ['label' => __('Magento Customer Group')]);
         $this->_addAfter = false;
-        $this->_addButtonLabel = __('Add');
+        $this->_addButtonLabel = (string)__('Add');
 
         parent::_construct();
     }

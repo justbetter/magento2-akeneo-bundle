@@ -11,6 +11,9 @@ class Akeneo extends Container
 {
     protected $_template = 'akeneo/akeneo.phtml';
 
+    /**
+     * @param array<string, mixed> $data
+     */
     public function __construct(
         Context $context,
         array $data = []
@@ -32,7 +35,7 @@ class Akeneo extends Container
 
         $this->setChild(
             'grid',
-            $this->getLayout()->createBlock(
+            $this->getLayout()->createBlock( // @phpstan-ignore-line
                 'JustBetter\AkeneoBundle\Block\Adminhtml\Akeneo\Grid',
                 'justbetter.akeneo.grid'
             )
@@ -41,6 +44,9 @@ class Akeneo extends Container
         return parent::_prepareLayout();
     }
 
+    /**
+     * @return array<int, array<string, mixed>>
+     */
     protected function getAddButtonOptions(): array
     {
         return [

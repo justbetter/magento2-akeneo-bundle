@@ -1,6 +1,6 @@
 <?php
 
-namespace JustBetter\AkeneoBundle\Controller\Adminhtml\akeneo;
+namespace JustBetter\AkeneoBundle\Controller\Adminhtml\Akeneo;
 
 use JustBetter\AkeneoBundle\Model\AkeneoFactory;
 use Magento\Backend\App\Action;
@@ -38,6 +38,8 @@ class MassStatus extends Action implements HttpPostActionInterface
             }
         }
 
-        return $this->resultRedirectFactory->create()->setPath('akeneomanager/*/index');
+        /** @var Redirect $resultRedirect */
+        $resultRedirect = $this->resultRedirectFactory->create();
+        return $resultRedirect->setPath('akeneomanager/*/index');
     }
 }

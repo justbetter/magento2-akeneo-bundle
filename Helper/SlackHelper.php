@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\AkeneoBundle\Helper;
 
 use Magento\Framework\App\Helper\AbstractHelper;

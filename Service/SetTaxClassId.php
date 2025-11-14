@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\AkeneoBundle\Service;
 
 use Akeneo\Connector\Helper\Authenticator;
@@ -13,6 +15,9 @@ use Magento\Store\Model\ScopeInterface;
 
 class SetTaxClassId
 {
+    /**
+     * @var array<int, string>
+     */
     protected array $taxIdColumns = [];
 
     public function __construct(
@@ -38,17 +43,21 @@ class SetTaxClassId
             return;
         }
 
-        $attributes = $this->serializer->unserialize($attributes);
-        $mappings = $this->serializer->unserialize($mappings);
+        $unserializedAttributes = $this->serializer->unserialize($attributes);
+        $unserializedMappings = $this->serializer->unserialize($mappings);
+        
+        if (!is_array($unserializedAttributes) || !is_array($unserializedMappings)) {
+            return;
+        }
 
         $this->taxIdColumns = [];
-        foreach ($attributes as $attribute) {
-            if ($attribute['magento_type'] === "tax") {
+        foreach ($unserializedAttributes as $attribute) {
+            if (is_array($attribute) && isset($attribute['magento_type']) && $attribute['magento_type'] === "tax") {
                 $this->taxIdColumns[] = $attribute['pim_type'];
             }
         }
 
-        if (!$this->taxIdColumns || !count($mappings)) {
+        if (!$this->taxIdColumns || !count($unserializedMappings)) {
             return;
         }
 
@@ -83,15 +92,18 @@ class SetTaxClassId
         if (!($mappings = $this->scopeConfig->getValue('akeneo_connector/product/tax_id_mapping'))) {
             return $query;
         }
-        $mappings = $this->serializer->unserialize($mappings);
+        $unserializedMappings = $this->serializer->unserialize($mappings);
 
-        if (!count($mappings)) {
+        if (!is_array($unserializedMappings) || !count($unserializedMappings)) {
             return $query;
         }
 
         $query .= "CASE ";
 
-        foreach ($mappings as $mapping) {
+        foreach ($unserializedMappings as $mapping) {
+            if (!is_array($mapping)) {
+                continue;
+            }
             $query .= "WHEN `" . $taxIdColumn . "` = '" . $mapping['akeneo'] . "' then '" . $mapping['magento'] . "' ";
         }
 
@@ -100,6 +112,10 @@ class SetTaxClassId
         return $query;
     }
 
+    /**
+     * @param array<int, string> $mappings
+     * @return array<int, string>
+     */
     protected function checkTaxColumnsExist(array $mappings, string $tmpTable): array
     {
         $newMappings = [];

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\AkeneoBundle\Service;
 
 use Akeneo\Connector\Helper\Authenticator;
@@ -38,7 +40,7 @@ class CheckWebsiteAssociation
         $select = $connection->select()->from($tmpTable);
         $query = $connection->query($select);
 
-        while (($row = $query->fetch())) {
+        while (($row = $query->fetch()) && is_array($row)) {
             if (!isset($row[$websiteAssociation])) {
                 continue;
             }
@@ -54,6 +56,9 @@ class CheckWebsiteAssociation
 
                 $locales = $this->storeHelper->getChannelStoreLangs($channel);
                 foreach ($requiredAttributes as $attribute) {
+                    if (!is_array($attribute)) {
+                        continue;
+                    }
                     if (isset($attribute['localizable']) && $attribute['localizable'] === true) {
                         foreach ($locales as $locale) {
                             if (empty($row[$attribute['akeneo_attribute'] . '-' . $locale . '-' . $channel])) {
@@ -63,7 +68,8 @@ class CheckWebsiteAssociation
                             }
                         }
                     } else {
-                        if (empty($row[$attribute])) {
+                        $attrKey = $attribute['akeneo_attribute'] ?? '';
+                        if (empty($row[$attrKey])) {
                             unset($websites[$key]);
 
                             break 2;
@@ -82,6 +88,9 @@ class CheckWebsiteAssociation
         }
     }
 
+    /**
+     * @return array<string, string>
+     */
     protected function getMappedWebsiteChannels(): array
     {
         $mapping = $this->configHelper->getWebsiteMapping();
@@ -89,18 +98,28 @@ class CheckWebsiteAssociation
         return array_column($mapping, 'channel', 'website');
     }
 
+    /**
+     * @return array<int, array<string, mixed>>
+     */
     protected function getRequiredAttributes(): array
     {
         if (!($requiredAttributes = $this->config->getValue('akeneo_connector/product/required_attribute_mapping'))) {
             return [];
         }
-        $requiredAttributes = $this->serializer->unserialize($requiredAttributes);
+        $unserialized = $this->serializer->unserialize($requiredAttributes);
+        
+        if (!is_array($unserialized)) {
+            return [];
+        }
 
-        foreach ($requiredAttributes as $key => &$requiredAttribute) {
+        foreach ($unserialized as $key => &$requiredAttribute) {
+            if (!is_array($requiredAttribute)) {
+                continue;
+            }
             $akeneoAttribute = $this->authenticator->getAkeneoApiClient()->getAttributeApi()->get($requiredAttribute['akeneo_attribute']);
             $requiredAttribute['localizable'] = $akeneoAttribute['localizable'];
         }
 
-        return $requiredAttributes;
+        return $unserialized;
     }
 }

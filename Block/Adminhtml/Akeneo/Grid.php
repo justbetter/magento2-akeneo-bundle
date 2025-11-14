@@ -13,10 +13,13 @@ use Magento\Framework\Module\Manager;
 
 class Grid extends Extended
 {
+    /**
+     * @param array<string, mixed> $data
+     */
     public function __construct(
         Context $context,
         Data $backendHelper,
-        protected CollectionFactory $collectionFactory,
+        protected CollectionFactory $collectionFactory, // @phpstan-ignore-line
         protected Status $status,
         protected Manager $moduleManager,
         array $data = []
@@ -37,7 +40,7 @@ class Grid extends Extended
 
     protected function _prepareCollection(): Grid
     {
-        $collection = $this->collectionFactory->create();
+        $collection = $this->collectionFactory->create(); // @phpstan-ignore-line
         $this->setCollection($collection);
 
         parent::_prepareCollection();
@@ -94,12 +97,12 @@ class Grid extends Extended
             ]
         );
 
-        $this->addExportType($this->getUrl('akeneomanager/*/exportCsv', ['_current' => true]), __('CSV'));
-        $this->addExportType($this->getUrl('akeneomanager/*/exportExcel', ['_current' => true]), __('Excel XML'));
+        $this->addExportType($this->getUrl('akeneomanager/*/exportCsv', ['_current' => true]), (string)__('CSV'));
+        $this->addExportType($this->getUrl('akeneomanager/*/exportExcel', ['_current' => true]), (string)__('Excel XML'));
 
         $block = $this->getLayout()->getBlock('grid.bottom.links');
         if ($block) {
-            $this->setChild('grid.bottom.links', $block);
+            $this->setChild('grid.bottom.links', $block); // @phpstan-ignore-line
         }
 
         return parent::_prepareColumns();
@@ -110,7 +113,7 @@ class Grid extends Extended
         $this->setMassactionIdField('id');
         $this->getMassactionBlock()->setFormFieldName('akeneo');
 
-        $this->getMassactionBlock()->addItem(
+        $this->getMassactionBlock()->addItem( // @phpstan-ignore-line
             'delete',
             [
                 'label' => __('Delete'),
@@ -121,7 +124,7 @@ class Grid extends Extended
 
         $statuses = $this->status->getOptionArray();
 
-        $this->getMassactionBlock()->addItem(
+        $this->getMassactionBlock()->addItem( // @phpstan-ignore-line
             'status',
             [
                 'label' => __('Change status'),
@@ -151,6 +154,9 @@ class Grid extends Extended
         return $this->getUrl('akeneomanager/*/edit', ['id' => $row->getId()]);
     }
 
+    /**
+     * @return array<string, string>
+     */
     public static function getOptionArray0(): array
     {
         return [
@@ -162,6 +168,9 @@ class Grid extends Extended
         ];
     }
 
+    /**
+     * @return array<int, array<string, string>>
+     */
     public static function getValueArray0(): array
     {
         return array_map(

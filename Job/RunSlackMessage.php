@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\AkeneoBundle\Job;
 
 use Akeneo\Connector\Api\Data\ImportInterface;
@@ -38,16 +40,18 @@ class RunSlackMessage
 
     protected function getLogs(): Log\Collection
     {
+        $tomorrow = strtotime(date('Y-m-d') . ' +1 day');
+        
         return $this->logCollection
             ->addFieldToFilter('created_at', ['gteq' => date('Y-m-d')])
-            ->addFieldToFilter('created_at', ['lt' => date('Y-m-d', strtotime(date('Y-m-d') . ' +1 day'))]);
+            ->addFieldToFilter('created_at', ['lt' => date('Y-m-d', $tomorrow !== false ? $tomorrow : time() + 86400)]);
     }
 
     protected function getLogsByStatus(int $status): Log\Collection
     {
         $logs = clone $this->logs;
 
-        return $logs->addFieldToFilter('status', $status);
+        return $logs->addFieldToFilter('status', (string)$status);
     }
 
     protected function checkLogStatus(int $status): bool
@@ -93,10 +97,13 @@ class RunSlackMessage
             return '<info>✅ Message has been send to Slack channel: '
                 . $this->helperData->getGeneralConfig('channel') . '</info>';
         } catch (RequestException $e) {
+            $response = $e->getResponse();
+            $responseBody = $response ? (string)$response->getBody() : 'No response body';
+            
             return '<fg=red>⚠️  There\'s a problem with sending the message to Slack channel: '
                 . $this->helperData->getGeneralConfig('channel') . " \n\n"
                 . 'The following exception appeared:</>'
-                . '<error>' . "\n\n" . $e->getResponse() . '</error>';
+                . '<error>' . "\n\n" . $responseBody . '</error>';
         }
     }
 }

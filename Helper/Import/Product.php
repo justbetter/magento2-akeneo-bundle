@@ -1,11 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\AkeneoBundle\Helper\Import;
 
 use Akeneo\Connector\Helper\Import\Product as BaseProduct;
 
 class Product extends BaseProduct
 {
+    /**
+     * @param array<string, mixed> $result
+     * @param array<int, string> $keys
+     * @return array<string, mixed>
+     */
     protected function getColumnsFromResult(array $result, array $keys = []): array
     {
         $mappedResult = parent::getColumnsFromResult($result, $keys);
@@ -36,6 +43,9 @@ class Product extends BaseProduct
         return $mappedResult;
     }
 
+    /**
+     * @param array<int, array<string, mixed>> $values
+     */
     protected function getFirstValue(array $values): mixed
     {
         $array = array_reverse($values);
@@ -43,6 +53,9 @@ class Product extends BaseProduct
         return array_pop($array)['data'] ?? '';
     }
 
+    /**
+     * @param array<string, mixed> $columnResult
+     */
     protected function isScopableOrLocalizable(string $attributeCode, array $columnResult): bool
     {
         $columns = array_keys($columnResult);
@@ -60,12 +73,15 @@ class Product extends BaseProduct
         return false;
     }
 
+    /**
+     * @return array<int, string>
+     */
     protected function getRequiredAttributes(): array
     {
         $eavAttributeTable = $this->connection->getTableName('eav_attribute');
         $eavEntityTypeTable = $this->connection->getTableName('eav_entity_type');
 
-        $select = $this->connection->select()
+        $select = $this->connection->select() // @phpstan-ignore-line
             ->from("$eavAttributeTable AS attr")
             ->join(
                 "$eavEntityTypeTable AS type",
@@ -73,7 +89,7 @@ class Product extends BaseProduct
             )
             ->where('is_required = 1');
 
-        $requiredAttributes = $this->connection->fetchAll($select);
+        $requiredAttributes = $this->connection->fetchAll($select); // @phpstan-ignore-line
 
         return array_map(fn (array $attribute) => $attribute['attribute_code'], $requiredAttributes);
     }

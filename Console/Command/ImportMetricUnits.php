@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\AkeneoBundle\Console\Command;
 
 use JustBetter\AkeneoBundle\Job\ImportMetricUnits as ImportMetricUnitsJob;

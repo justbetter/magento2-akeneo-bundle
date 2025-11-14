@@ -1,6 +1,6 @@
 <?php
 
-namespace JustBetter\AkeneoBundle\Controller\Adminhtml\akeneo;
+namespace JustBetter\AkeneoBundle\Controller\Adminhtml\Akeneo;
 
 use Magento\Backend\App\Action;
 use Magento\Backend\Model\View\Result\Forward;
@@ -11,7 +11,7 @@ class NewAction extends Action implements HttpGetActionInterface
 {
     public function __construct(
         Action\Context $context,
-        protected ForwardFactory $resultForwardFactory
+        protected ForwardFactory $resultForwardFactory // @phpstan-ignore-line
     ) {
         parent::__construct($context);
     }
@@ -19,7 +19,7 @@ class NewAction extends Action implements HttpGetActionInterface
     public function execute(): Forward
     {
         /** @var Forward $resultForward */
-        $resultForward = $this->resultForwardFactory->create();
+        $resultForward = $this->resultForwardFactory->create(); // @phpstan-ignore-line
 
         return $resultForward->forward('edit');
     }

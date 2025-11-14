@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\AkeneoBundle\Model;
 
 use Magento\Framework\ObjectManagerInterface;
@@ -11,6 +13,9 @@ class AkeneoFactory
     ) {
     }
 
+    /**
+     * @param array<string, mixed> $arguments
+     */
     public function create(array $arguments = []): Akeneo
     {
         return $this->objectManager->create(Akeneo::class, $arguments);

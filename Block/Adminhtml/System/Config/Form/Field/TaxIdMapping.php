@@ -12,6 +12,9 @@ use Magento\Tax\Model\TaxClass\Source\Product;
 
 class TaxIdMapping extends AbstractFieldArray
 {
+    /**
+     * @param array<string, mixed> $data
+     */
     public function __construct(
         Context $context,
         protected Factory $elementFactory,
@@ -26,7 +29,7 @@ class TaxIdMapping extends AbstractFieldArray
         $this->addColumn('akeneo', ['label' => __('Akeneo Attribute Option Code')]);
         $this->addColumn('magento', ['label' => __('Magento')]);
         $this->_addAfter = false;
-        $this->_addButtonLabel = __('Add');
+        $this->_addButtonLabel = (string)__('Add');
 
         parent::_construct();
     }

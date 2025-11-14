@@ -14,6 +14,9 @@ class Edit extends Container
 {
     protected Escaper $escaper;
 
+    /**
+     * @param array<string, mixed> $data
+     */
     public function __construct(
         Context $context,
         protected AkeneoFactory $akeneoFactory,
@@ -31,7 +34,7 @@ class Edit extends Container
 
         parent::_construct();
 
-        $this->buttonList->update('save', 'label', __('Save Akeneo'));
+        $this->buttonList->update('save', 'label', (string)__('Save Akeneo'));
         $this->buttonList->add(
             'saveandcontinue',
             [
@@ -46,10 +49,10 @@ class Edit extends Container
             -100
         );
 
-        $this->buttonList->update('delete', 'label', __('Delete Akeneo'));
+        $this->buttonList->update('delete', 'label', (string)__('Delete Akeneo'));
     }
 
-    public function getHeaderText(): Phrase
+    public function getHeaderText(): string
     {
         $id = (int)$this->getRequest()->getParam('id');
         
@@ -58,11 +61,11 @@ class Edit extends Container
             $model->load($id); // @phpstan-ignore-line
             
             if ($model->getId()) {
-                return __("Edit Akeneo '%1'", $this->escaper->escapeHtml($model->getTitle()));
+                return (string)__("Edit Akeneo '%1'", $this->escaper->escapeHtml($model->getTitle()));
             }
         }
 
-        return __('New Akeneo');
+        return (string)__('New Akeneo');
     }
 
     protected function _getSaveAndContinueUrl(): string

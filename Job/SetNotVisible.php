@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\AkeneoBundle\Job;
 
 use Magento\Catalog\Model\ResourceModel\Product\Action;
@@ -13,7 +15,7 @@ class SetNotVisible
     protected const NOT_VISIBLE_CONFIG_KEY = 'notvisiblefamilies';
 
     public function __construct(
-        protected CollectionFactory $collectionFactory,
+        protected CollectionFactory $collectionFactory, // @phpstan-ignore-line
         protected ScopeConfigInterface $config,
         protected Action $action
     ) {
@@ -21,7 +23,7 @@ class SetNotVisible
 
     public function execute(?OutputInterface $output = null): void
     {
-        $products = $this->collectionFactory->create()
+        $products = $this->collectionFactory->create() // @phpstan-ignore-line
             ->addFieldToFilter('attribute_set_id', ['in' => $this->getNotVisibleFamilies()])
             ->addFieldToFilter('visibility', ['neq' => '1'])
             ->getItems();
@@ -43,6 +45,9 @@ class SetNotVisible
         $this->action->updateAttributes($entityIds, ['visibility' => '1'], 0);
     }
 
+    /**
+     * @return array<int, string>
+     */
     protected function getNotVisibleFamilies(): array
     {
         return explode(

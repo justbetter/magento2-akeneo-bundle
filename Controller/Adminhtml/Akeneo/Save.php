@@ -1,6 +1,6 @@
 <?php
 
-namespace JustBetter\AkeneoBundle\Controller\Adminhtml\akeneo;
+namespace JustBetter\AkeneoBundle\Controller\Adminhtml\Akeneo;
 
 use JustBetter\AkeneoBundle\Model\AkeneoFactory;
 use Magento\Backend\App\Action;
@@ -20,7 +20,9 @@ class Save extends Action implements HttpPostActionInterface
 
     public function execute(): Redirect
     {
-        $data = $this->getRequest()->getPostValue();
+        /** @var \Magento\Framework\App\Request\Http $request */
+        $request = $this->getRequest();
+        $data = $request->getPostValue();
 
         /** @var Redirect $resultRedirect */
         $resultRedirect = $this->resultRedirectFactory->create();

@@ -7,6 +7,9 @@ class Status
     public const STATUS_ENABLED = 1;
     public const STATUS_DISABLED = 2;
 
+    /**
+     * @return array<int, string>
+     */
     public static function getOptionArray(): array
     {
         return [
@@ -15,6 +18,9 @@ class Status
         ];
     }
 
+    /**
+     * @return array<int, array{value: int, label: string}>
+     */
     public function getAllOptions(): array
     {
         $result = [];

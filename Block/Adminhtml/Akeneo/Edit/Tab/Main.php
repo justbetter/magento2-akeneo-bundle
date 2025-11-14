@@ -18,6 +18,9 @@ use Magento\Store\Model\System\Store;
 
 class Main extends Generic implements TabInterface
 {
+    /**
+     * @param array<string, mixed> $data
+     */
     public function __construct(
         Context $context,
         Registry $registry,
@@ -107,7 +110,7 @@ class Main extends Generic implements TabInterface
         );
 
         if (!$model->getId()) {
-            $model->setData('is_active', $isElementDisabled ? '0' : '1');
+            $model->setData('is_active', '1');
         }
 
         $form->setValues($model->getData());
@@ -116,14 +119,14 @@ class Main extends Generic implements TabInterface
         return parent::_prepareForm();
     }
 
-    public function getTabLabel(): Phrase
+    public function getTabLabel(): string
     {
-        return __('Item Information');
+        return (string)__('Item Information');
     }
 
-    public function getTabTitle(): Phrase
+    public function getTabTitle(): string
     {
-        return __('Item Information');
+        return (string)__('Item Information');
     }
 
     public function canShowTab(): bool
@@ -141,6 +144,9 @@ class Main extends Generic implements TabInterface
         return $this->_authorization->isAllowed($resourceId);
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function getTargetOptionArray(): array
     {
         return [

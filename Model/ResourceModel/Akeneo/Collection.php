@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\AkeneoBundle\Model\ResourceModel\Akeneo;
 
 use JustBetter\AkeneoBundle\Model\Akeneo;
