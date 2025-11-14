@@ -3,17 +3,17 @@
 namespace JustBetter\AkeneoBundle\Service;
 
 use Akeneo\Connector\Helper\Authenticator;
-use Akeneo\Connector\Helper\Store as StoreHelper;
 use Akeneo\Connector\Helper\Config as ConfigHelper;
 use Akeneo\Connector\Helper\Import\Product as ProductImportHelper;
+use Akeneo\Connector\Helper\Store as StoreHelper;
 use Exception;
-use Magento\Store\Model\ScopeInterface as scope;
-use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Store\Model\ScopeInterface;
 
 class SetTaxClassId
 {
-    protected array $tax_id_columns = [];
+    protected array $taxIdColumns = [];
 
     public function __construct(
         protected ProductImportHelper $entitiesHelper,
@@ -27,13 +27,12 @@ class SetTaxClassId
 
     public function execute(string $code): void
     {
-        $extensionEnabled = $this->scopeConfig->getValue('akeneo_connector/justbetter/settaxclass', scope::SCOPE_WEBSITE);
+        $extensionEnabled = $this->scopeConfig->getValue('akeneo_connector/justbetter/settaxclass', ScopeInterface::SCOPE_WEBSITE);
         if (!$extensionEnabled) {
             return;
         }
 
-        if (
-            !($attributes = $this->scopeConfig->getValue(ConfigHelper::ATTRIBUTE_TYPES)) ||
+        if (!($attributes = $this->scopeConfig->getValue(ConfigHelper::ATTRIBUTE_TYPES)) ||
             !($mappings = $this->scopeConfig->getValue('akeneo_connector/product/tax_id_mapping'))
         ) {
             return;
@@ -42,19 +41,19 @@ class SetTaxClassId
         $attributes = $this->serializer->unserialize($attributes);
         $mappings = $this->serializer->unserialize($mappings);
 
-        $this->tax_id_columns = [];
+        $this->taxIdColumns = [];
         foreach ($attributes as $attribute) {
             if ($attribute['magento_type'] === "tax") {
-                $this->tax_id_columns[] = $attribute['pim_type'];
+                $this->taxIdColumns[] = $attribute['pim_type'];
             }
         }
 
-        if (!$this->tax_id_columns || !count($mappings)) {
+        if (!$this->taxIdColumns || !count($mappings)) {
             return;
         }
 
         $tmpTable = $this->entitiesHelper->getTableName($code);
-        $taxColumns = $this->checkTaxColumnsExist($this->tax_id_columns, $tmpTable);
+        $taxColumns = $this->checkTaxColumnsExist($this->taxIdColumns, $tmpTable);
 
         if (empty($taxColumns)) {
             return;
@@ -62,9 +61,9 @@ class SetTaxClassId
 
         $connection = $this->entitiesHelper->getConnection();
 
-        foreach ($taxColumns as $tax_id_column) {
+        foreach ($taxColumns as $taxIdColumn) {
             try {
-                $taxQuery = $this->createQuery($tax_id_column, $tmpTable);
+                $taxQuery = $this->createQuery($taxIdColumn, $tmpTable);
                 $connection->query($taxQuery);
             } catch (Exception $e) {
                 throw $e;
@@ -72,13 +71,14 @@ class SetTaxClassId
         }
     }
 
-    protected function createQuery(string $tax_id_column, string $tableName): string
+    protected function createQuery(string $taxIdColumn, string $tableName): string
     {
-        $query = "UPDATE `" . $tableName . "` SET `" . $tax_id_column . "` = ";
-        return $this->addCase($query, $tax_id_column);
+        $query = "UPDATE `" . $tableName . "` SET `" . $taxIdColumn . "` = ";
+
+        return $this->addCase($query, $taxIdColumn);
     }
 
-    protected function addCase(string $query, string $tax_id_column): string
+    protected function addCase(string $query, string $taxIdColumn): string
     {
         if (!($mappings = $this->scopeConfig->getValue('akeneo_connector/product/tax_id_mapping'))) {
             return $query;
@@ -92,7 +92,7 @@ class SetTaxClassId
         $query .= "CASE ";
 
         foreach ($mappings as $mapping) {
-            $query .= "WHEN `" . $tax_id_column . "` = '" . $mapping['akeneo'] . "' then '" . $mapping['magento'] . "' ";
+            $query .= "WHEN `" . $taxIdColumn . "` = '" . $mapping['akeneo'] . "' then '" . $mapping['magento'] . "' ";
         }
 
         $query .= 'END';

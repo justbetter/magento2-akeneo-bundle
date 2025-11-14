@@ -2,34 +2,41 @@
 
 namespace JustBetter\AkeneoBundle\Controller\Adminhtml\akeneo;
 
+use JustBetter\AkeneoBundle\Model\AkeneoFactory;
 use Magento\Backend\App\Action;
+use Magento\Backend\Model\View\Result\Redirect;
+use Magento\Framework\App\Action\HttpPostActionInterface;
 
-/**
- * Class MassDelete
- */
-class MassDelete extends Action
+class MassDelete extends Action implements HttpPostActionInterface
 {
-    /**
-     * @return \Magento\Backend\Model\View\Result\Redirect
-     */
-    public function execute()
+    public function __construct(
+        Action\Context $context,
+        protected AkeneoFactory $akeneoFactory
+    ) {
+        parent::__construct($context);
+    }
+
+    public function execute(): Redirect
     {
         $itemIds = $this->getRequest()->getParam('akeneo');
+
         if (!is_array($itemIds) || empty($itemIds)) {
-            $this->messageManager->addError(__('Please select item(s).'));
+            $this->messageManager->addErrorMessage(__('Please select item(s).'));
         } else {
             try {
                 foreach ($itemIds as $itemId) {
-                    $post = $this->_objectManager->get('JustBetter\AkeneoBundle\Model\Akeneo')->load($itemId);
-                    $post->delete();
+                    $model = $this->akeneoFactory->create();
+                    $model->load($itemId); // @phpstan-ignore-line
+                    $model->delete(); // @phpstan-ignore-line
                 }
-                $this->messageManager->addSuccess(
+                $this->messageManager->addSuccessMessage(
                     __('A total of %1 record(s) have been deleted.', count($itemIds))
                 );
             } catch (\Exception $e) {
-                $this->messageManager->addError($e->getMessage());
+                $this->messageManager->addErrorMessage($e->getMessage());
             }
         }
+
         return $this->resultRedirectFactory->create()->setPath('akeneomanager/*/index');
     }
 }

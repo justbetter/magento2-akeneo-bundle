@@ -4,29 +4,18 @@ namespace JustBetter\AkeneoBundle\Model;
 
 class Status
 {
-    /**#@+
-     * Status values
-     */
-    const STATUS_ENABLED = 1;
+    public const STATUS_ENABLED = 1;
+    public const STATUS_DISABLED = 2;
 
-    const STATUS_DISABLED = 2;
-
-    /**
-     * Retrieve option array
-     *
-     * @return string[]
-     */
-    public static function getOptionArray()
+    public static function getOptionArray(): array
     {
-        return [self::STATUS_ENABLED => __('Enabled'), self::STATUS_DISABLED => __('Disabled')];
+        return [
+            self::STATUS_ENABLED => __('Enabled'),
+            self::STATUS_DISABLED => __('Disabled'),
+        ];
     }
 
-    /**
-     * Retrieve option array with empty value
-     *
-     * @return string[]
-     */
-    public function getAllOptions()
+    public function getAllOptions(): array
     {
         $result = [];
 
@@ -37,16 +26,10 @@ class Status
         return $result;
     }
 
-    /**
-     * Retrieve option text by option value
-     *
-     * @param string $optionId
-     * @return string
-     */
-    public function getOptionText($optionId)
+    public function getOptionText(string $optionId): ?string
     {
         $options = self::getOptionArray();
 
-        return isset($options[$optionId]) ? $options[$optionId] : null;
+        return $options[$optionId] ?? null;
     }
 }

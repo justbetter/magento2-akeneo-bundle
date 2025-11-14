@@ -2,38 +2,43 @@
 
 namespace JustBetter\AkeneoBundle\Controller\Adminhtml\akeneo;
 
-class Delete extends \Magento\Backend\App\Action
+use JustBetter\AkeneoBundle\Model\AkeneoFactory;
+use Magento\Backend\App\Action;
+use Magento\Backend\Model\View\Result\Redirect;
+use Magento\Framework\App\Action\HttpPostActionInterface;
+
+class Delete extends Action implements HttpPostActionInterface
 {
-    /**
-     * Delete action
-     *
-     * @return \Magento\Backend\Model\View\Result\Redirect
-     */
-    public function execute()
+    public function __construct(
+        Action\Context $context,
+        protected AkeneoFactory $akeneoFactory
+    ) {
+        parent::__construct($context);
+    }
+
+    public function execute(): Redirect
     {
-        // check if we know what should be deleted
-        $id = $this->getRequest()->getParam('id');
-        /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
+        $id = (int)$this->getRequest()->getParam('id');
+        /** @var Redirect $resultRedirect */
         $resultRedirect = $this->resultRedirectFactory->create();
+
         if ($id) {
             try {
-                // init model and delete
-                $model = $this->_objectManager->create('JustBetter\AkeneoBundle\Model\Akeneo');
-                $model->load($id);
-                $model->delete();
-                // display success message
-                $this->messageManager->addSuccess(__('The item has been deleted.'));
+                $model = $this->akeneoFactory->create();
+                $model->load($id); // @phpstan-ignore-line
+                $model->delete(); // @phpstan-ignore-line
+                $this->messageManager->addSuccessMessage(__('The item has been deleted.'));
+
                 return $resultRedirect->setPath('*/*/');
             } catch (\Exception $e) {
-                // display error message
-                $this->messageManager->addError($e->getMessage());
-                // go back to edit form
+                $this->messageManager->addErrorMessage($e->getMessage());
+
                 return $resultRedirect->setPath('*/*/edit', ['id' => $id]);
             }
         }
-        // display error message
-        $this->messageManager->addError(__('We can\'t find a item to delete.'));
-        // go to grid
+
+        $this->messageManager->addErrorMessage(__('We can\'t find an item to delete.'));
+
         return $resultRedirect->setPath('*/*/');
     }
 }

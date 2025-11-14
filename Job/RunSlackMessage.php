@@ -2,23 +2,28 @@
 
 namespace JustBetter\AkeneoBundle\Job;
 
+use Akeneo\Connector\Api\Data\ImportInterface;
+use Akeneo\Connector\Model\ResourceModel\Log;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
-use Akeneo\Connector\Api\Data\ImportInterface;
 use JustBetter\AkeneoBundle\Helper\SlackHelper;
-use Akeneo\Connector\Model\ResourceModel\Log;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class RunSlackMessage
 {
-    protected $client;
-    protected $helperData;
-    protected $logCollection;
-    protected $logs;
-    protected $slackMessage;
+    protected Log\Collection $logs;
 
-    public function execute(?InputInterface $input = null, ?OutputInterface $output = null)
+    public function __construct(
+        protected Client $client,
+        protected SlackHelper $helperData,
+        protected Log\Collection $logCollection,
+        protected SlackMessage $slackMessage
+    ) {
+        $this->logs = $this->getLogs();
+    }
+
+    public function execute(?InputInterface $input = null, ?OutputInterface $output = null): void
     {
         $message = $this->getMessage();
         if ($this->helperData->isEnable()) {
@@ -31,77 +36,49 @@ class RunSlackMessage
         }
     }
 
-    public function __construct(Client $client, SlackHelper $helperData, Log\Collection $logCollection, SlackMessage $slackMessage)
-    {
-        $this->client = $client;
-        $this->helperData = $helperData;
-        $this->logCollection = $logCollection;
-        $this->logs = $this->getLogs();
-        $this->slackMessage = $slackMessage;
-    }
-
-    /**
-     * Gets a collection of all Import logs of today
-     * @return Log\Collection
-     */
-    protected function getLogs()
+    protected function getLogs(): Log\Collection
     {
         return $this->logCollection
             ->addFieldToFilter('created_at', ['gteq' => date('Y-m-d')])
             ->addFieldToFilter('created_at', ['lt' => date('Y-m-d', strtotime(date('Y-m-d') . ' +1 day'))]);
     }
 
-    /**
-     * Gets a collection of all Import logs of today with a specific status
-     * @param int $status
-     * @return Log\Collection
-     */
-    protected function getLogsByStatus(int $status)
+    protected function getLogsByStatus(int $status): Log\Collection
     {
         $logs = clone $this->logs;
+
         return $logs->addFieldToFilter('status', $status);
     }
 
-    /**
-     * Checks if a log with a specific status exists in the collection
-     * @param int $status
-     * @return bool
-     */
-    protected function checkLogStatus(int $status)
+    protected function checkLogStatus(int $status): bool
     {
         foreach ($this->logs as $log) {
-            if ($log->getStatus() == $status) {
+            if ($log->getStatus() === $status) {
                 return true;
             }
         }
+
         return false;
     }
 
-    /**
-     * Get the message to be sent
-     * @return string
-     */
-    protected function getMessage()
+    protected function getMessage(): string
     {
         if (!$this->logs->getData()) {
             return $this->slackMessage->noImports();
-        } elseif ($this->checkLogStatus(ImportInterface::IMPORT_ERROR) ||
+        }
+
+        if ($this->checkLogStatus(ImportInterface::IMPORT_ERROR) ||
             $this->checkLogStatus(ImportInterface::IMPORT_PROCESSING)) {
             return $this->slackMessage->warning(
                 $this->getLogsByStatus(ImportInterface::IMPORT_ERROR),
                 $this->getLogsByStatus(ImportInterface::IMPORT_PROCESSING)
             );
         }
+
         return $this->slackMessage->success();
     }
 
-    /**
-     * Sends the message to Slack
-     * @param string $message
-     * @return string
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    protected function send(string $message)
+    protected function send(string $message): string
     {
         try {
             $slackApi = $this->helperData->getGeneralConfig('api');
@@ -110,17 +87,16 @@ class RunSlackMessage
                     'token' => $this->helperData->getGeneralConfig('token'),
                     'channel' => $this->helperData->getGeneralConfig('channel'),
                     'text' => $message,
-                    'username' => $this->helperData->getGeneralConfig('username')
+                    'username' => $this->helperData->getGeneralConfig('username'),
                 ]]);
+
             return '<info>✅ Message has been send to Slack channel: '
                 . $this->helperData->getGeneralConfig('channel') . '</info>';
         } catch (RequestException $e) {
-            $response =
-                '<fg=red>⚠️  There\'s a problem with sending the message to Slack channel: '
+            return '<fg=red>⚠️  There\'s a problem with sending the message to Slack channel: '
                 . $this->helperData->getGeneralConfig('channel') . " \n\n"
                 . 'The following exception appeared:</>'
                 . '<error>' . "\n\n" . $e->getResponse() . '</error>';
-            return $response;
         }
     }
 }

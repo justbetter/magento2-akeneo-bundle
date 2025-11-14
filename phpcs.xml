@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<ruleset name="JustBetter Magento2 Akeneo Bundle">
+    <description>Magento 2 Coding Standard for Akeneo Bundle</description>
+    
+    <!-- Scan only PHP files -->
+    <arg name="extensions" value="php"/>
+    
+    <!-- Show progress and colors -->
+    <arg value="p"/>
+    <arg name="colors"/>
+    
+    <!-- Don't show warnings -->
+    <arg name="warning-severity" value="0"/>
+    
+    <!-- Parallel processing -->
+    <arg name="parallel" value="8"/>
+    
+    <!-- Scan these paths -->
+    <file>.</file>
+    
+    <!-- Exclude vendor and legacy Block directory -->
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+    <exclude-pattern>*/Block/*</exclude-pattern>
+    
+    <!-- Use Magento2 coding standard -->
+    <rule ref="vendor/magento/magento-coding-standard/Magento2">
+        <!-- Exclude documentation-related sniffs -->
+        <exclude name="Magento2.Commenting.ClassAndInterfacePHPDocFormatting"/>
+        <exclude name="Magento2.Commenting.ConstantsPHPDocFormatting"/>
+        <exclude name="Magento2.Commenting.ClassPropertyPHPDocFormatting"/>
+        <exclude name="Magento2.Annotation.MethodAnnotationStructure"/>
+        <exclude name="Magento2.Annotation.MethodArguments"/>
+        <exclude name="Generic.Files.LineLength"/>
+    </rule>
+</ruleset>

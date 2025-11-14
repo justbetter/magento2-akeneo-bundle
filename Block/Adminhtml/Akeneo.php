@@ -1,29 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\AkeneoBundle\Block\Adminhtml;
 
+use Magento\Backend\Block\Widget\Container;
 use Magento\Backend\Block\Widget\Context;
 
-class Akeneo extends \Magento\Backend\Block\Widget\Container
+class Akeneo extends Container
 {
-    /**
-     * @var string
-     */
     protected $_template = 'akeneo/akeneo.phtml';
 
-    /**
-     * @param Context $context
-     * @param array $data
-     */
-    public function __construct(Context $context, array $data = [])
-    {
+    public function __construct(
+        Context $context,
+        array $data = []
+    ) {
         parent::__construct($context, $data);
     }
 
-    /**
-     * Prepare button and grid
-     */
-    protected function _prepareLayout()
+    protected function _prepareLayout(): Akeneo
     {
         $addButtonProps = [
             'id' => 'add_new',
@@ -31,49 +26,37 @@ class Akeneo extends \Magento\Backend\Block\Widget\Container
             'class' => 'add',
             'button_class' => '',
             'class_name' => 'Magento\Backend\Block\Widget\Button\SplitButton',
-            'options' => $this->_getAddButtonOptions(),
+            'options' => $this->getAddButtonOptions(),
         ];
         $this->buttonList->add('add_new', $addButtonProps);
-        
 
         $this->setChild(
             'grid',
-            $this->getLayout()->createBlock('JustBetter\AkeneoBundle\Block\Adminhtml\Akeneo\Grid', 'justbetter.akeneo.grid')
+            $this->getLayout()->createBlock(
+                'JustBetter\AkeneoBundle\Block\Adminhtml\Akeneo\Grid',
+                'justbetter.akeneo.grid'
+            )
         );
+
         return parent::_prepareLayout();
     }
 
-    /**
-     *
-     *
-     * @return array
-     */
-    protected function _getAddButtonOptions()
+    protected function getAddButtonOptions(): array
     {
-        $splitButtonOptions[] = [
-            'label' => __('Add New'),
-            'onclick' => "setLocation('" . $this->_getCreateUrl() . "')"
+        return [
+            [
+                'label' => __('Add New'),
+                'onclick' => "setLocation('" . $this->getCreateUrl() . "')"
+            ]
         ];
-
-        return $splitButtonOptions;
     }
 
-    /**
-     * @return string
-     */
-    protected function _getCreateUrl()
+    protected function getCreateUrl(): string
     {
-        return $this->getUrl(
-            'akeneomanager/*/new'
-        );
+        return $this->getUrl('akeneomanager/*/new');
     }
 
-    /**
-     * Render grid
-     *
-     * @return string
-     */
-    public function getGridHtml()
+    public function getGridHtml(): string
     {
         return $this->getChildHtml('grid');
     }

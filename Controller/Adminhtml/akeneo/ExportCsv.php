@@ -2,29 +2,33 @@
 
 namespace JustBetter\AkeneoBundle\Controller\Adminhtml\akeneo;
 
+use JustBetter\AkeneoBundle\Block\Adminhtml\Akeneo\Grid;
 use Magento\Backend\App\Action;
-use Magento\Framework\App\ObjectManager;
-use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\App\Response\Http\FileFactory;
+use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\View\LayoutFactory;
 
-class ExportCsv extends \Magento\Backend\App\Action
+class ExportCsv extends Action implements HttpGetActionInterface
 {
-    protected $_fileFactory;
+    public function __construct(
+        Action\Context $context,
+        protected FileFactory $fileFactory,
+        protected LayoutFactory $layoutFactory
+    ) {
+        parent::__construct($context);
+    }
 
-    public function execute()
+    public function execute(): ResponseInterface
     {
-        $this->_view->loadLayout(false);
-
         $fileName = 'akeneo.csv';
 
-        $exportBlock = $this->_view->getLayout()->createBlock('JustBetter\AkeneoBundle\Block\Adminhtml\Akeneo\Grid');
+        $layout = $this->layoutFactory->create();
+        /** @var Grid $exportBlock */
+        $exportBlock = $layout->createBlock(Grid::class);
 
-        $objectManager = ObjectManager::getInstance();
-
-        $this->_fileFactory = $objectManager->create('Magento\Framework\App\Response\Http\FileFactory');
-
-        return $this->_fileFactory->create(
+        return $this->fileFactory->create(
             $fileName,
             $exportBlock->getCsvFile(),
             DirectoryList::VAR_DIR

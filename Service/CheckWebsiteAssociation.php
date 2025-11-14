@@ -2,14 +2,12 @@
 
 namespace JustBetter\AkeneoBundle\Service;
 
-use Magento\Framework\DB\Select;
-use Magento\Framework\DB\Statement\Pdo\Mysql;
-use Magento\Framework\Serialize\SerializerInterface;
+use Akeneo\Connector\Helper\Authenticator;
+use Akeneo\Connector\Helper\Config as ConfigHelper;
+use Akeneo\Connector\Helper\Import\Product as ProductImportHelper;
 use Akeneo\Connector\Helper\Store as StoreHelper;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Akeneo\Connector\Helper\Import\Product as ProductImportHelper;
-use Akeneo\Connector\Helper\Config as ConfigHelper;
-use Akeneo\Connector\Helper\Authenticator;
+use Magento\Framework\Serialize\SerializerInterface;
 
 class CheckWebsiteAssociation
 {
@@ -60,12 +58,14 @@ class CheckWebsiteAssociation
                         foreach ($locales as $locale) {
                             if (empty($row[$attribute['akeneo_attribute'] . '-' . $locale . '-' . $channel])) {
                                 unset($websites[$key]);
+
                                 break 2;
                             }
                         }
                     } else {
                         if (empty($row[$attribute])) {
                             unset($websites[$key]);
+
                             break 2;
                         }
                     }
@@ -85,6 +85,7 @@ class CheckWebsiteAssociation
     protected function getMappedWebsiteChannels(): array
     {
         $mapping = $this->configHelper->getWebsiteMapping();
+
         return array_column($mapping, 'channel', 'website');
     }
 

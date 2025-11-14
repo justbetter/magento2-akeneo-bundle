@@ -2,41 +2,23 @@
 
 namespace JustBetter\AkeneoBundle\Controller\Adminhtml\akeneo;
 
-use Magento\Backend\App\Action\Context;
+use Magento\Backend\App\Action;
+use Magento\Backend\Model\View\Result\Page;
+use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\View\Result\PageFactory;
 
-class Index extends \Magento\Backend\App\Action
+class Index extends Action implements HttpGetActionInterface
 {
-    /**
-     * @var PageFactory
-     */
-    protected $resultPage;
-
-    /**
-     * @var \Magento\Framework\View\Result\PageFactory
-     **/
-    private \Magento\Framework\View\Result\PageFactory $resultPageFactory;
-
-    /**
-     * @param Context $context
-     * @param PageFactory $resultPageFactory
-     */
     public function __construct(
-        Context $context,
-        PageFactory $resultPageFactory
+        Action\Context $context,
+        protected PageFactory $resultPageFactory
     ) {
         parent::__construct($context);
-        $this->resultPageFactory = $resultPageFactory;
     }
 
-    /**
-     * Index action
-     *
-     * @return void
-     */
-    public function execute()
+    public function execute(): Page
     {
-        /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
+        /** @var Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
         $resultPage->setActiveMenu('JustBetter_AkeneoBundle::akeneo');
         $resultPage->addBreadcrumb(__('JustBetter'), __('JustBetter'));

@@ -2,36 +2,42 @@
 
 namespace JustBetter\AkeneoBundle\Controller\Adminhtml\akeneo;
 
+use JustBetter\AkeneoBundle\Model\AkeneoFactory;
 use Magento\Backend\App\Action;
+use Magento\Backend\Model\View\Result\Redirect;
+use Magento\Framework\App\Action\HttpPostActionInterface;
 
-class MassStatus extends Action
+class MassStatus extends Action implements HttpPostActionInterface
 {
-    /**
-     * Update blog post(s) status action
-     *
-     * @return \Magento\Backend\Model\View\Result\Redirect
-     * @throws \Magento\Framework\Exception\LocalizedException|\Exception
-     */
-    public function execute()
+    public function __construct(
+        Action\Context $context,
+        protected AkeneoFactory $akeneoFactory
+    ) {
+        parent::__construct($context);
+    }
+
+    public function execute(): Redirect
     {
         $itemIds = $this->getRequest()->getParam('akeneo');
+
         if (!is_array($itemIds) || empty($itemIds)) {
-            $this->messageManager->addError(__('Please select item(s).'));
+            $this->messageManager->addErrorMessage(__('Please select item(s).'));
         } else {
             try {
-                $status = (int) $this->getRequest()->getParam('status');
-                foreach ($itemIds as $postId) {
-                    $post = $this->_objectManager->get('JustBetter\AkeneoBundle\Model\Akeneo')->load($postId);
-                    $post->setIsActive($status)->save();
+                $status = (int)$this->getRequest()->getParam('status');
+                foreach ($itemIds as $itemId) {
+                    $model = $this->akeneoFactory->create();
+                    $model->load($itemId); // @phpstan-ignore-line
+                    $model->setIsActive($status)->save(); // @phpstan-ignore-line
                 }
-                $this->messageManager->addSuccess(
+                $this->messageManager->addSuccessMessage(
                     __('A total of %1 record(s) have been updated.', count($itemIds))
                 );
             } catch (\Exception $e) {
-                $this->messageManager->addError($e->getMessage());
+                $this->messageManager->addErrorMessage($e->getMessage());
             }
         }
+
         return $this->resultRedirectFactory->create()->setPath('akeneomanager/*/index');
     }
-
 }

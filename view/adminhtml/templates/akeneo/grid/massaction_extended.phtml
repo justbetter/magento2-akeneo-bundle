@@ -1,31 +1,44 @@
-<div id="<?php echo $block->getHtmlId() ?>">
+<?php
+/**
+ * Extended mass action block for Akeneo grid
+ *
+ * @var \Magento\Backend\Block\Widget\Grid\Massaction\Extended $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+
+$escaper = $block->getEscaper();
+?>
+<div id="<?= $escaper->escapeHtmlAttr($block->getHtmlId()) ?>">
     <div class="massaction">
         <div class="entry-edit">
-            <?php if ($block->getHideFormElement() !== true):?>
-            <form action="" id="<?php echo $block->getHtmlId() ?>-form" method="post">
-                <?php endif ?>
-                <?php echo $block->getBlockHtml('formkey')?>
-                <span class="field-row">
-                    <label class="label"><?php echo __('Select Product Actions') ?></label>
-                    <select id="<?php echo $block->getHtmlId() ?>-select" class="select absolute-advice local-validation">
-                        <option value=""><?php echo __('-- Please select --')?></option>
-                        <?php foreach ($block->getItems() as $_item): ?>
-                            <option value="<?php echo $_item->getId() ?>"<?php echo($_item->getSelected() ? ' selected="selected"' : '')?>><?php echo $_item->getLabel() ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </span>
-                <span class="outer-span" id="<?php echo $block->getHtmlId() ?>-form-hiddens"></span>
-                <span class="outer-span" id="<?php echo $block->getHtmlId() ?>-form-additional"></span>
-                <span class="field-row">
-                    <?php echo $block->getApplyButtonHtml() ?>
-                </span>
-                <?php if ($block->getHideFormElement() !== true):?>
-            </form>
-        <?php endif ?>
+            <?php if ($block->getHideFormElement() !== true): ?>
+                <form action="" id="<?= $escaper->escapeHtmlAttr($block->getHtmlId()) ?>-form" method="post">
+            <?php endif; ?>
+                    <?= /* @noEscape */ $block->getBlockHtml('formkey') ?>
+                    <span class="field-row">
+                        <label class="label"><?= $escaper->escapeHtml(__('Select Product Actions')) ?></label>
+                        <select id="<?= $escaper->escapeHtmlAttr($block->getHtmlId()) ?>-select"
+                                class="select absolute-advice local-validation">
+                            <option value=""><?= $escaper->escapeHtml(__('-- Please select --')) ?></option>
+                            <?php foreach ($block->getItems() as $_item): ?>
+                                <option value="<?= $escaper->escapeHtmlAttr($_item->getId()) ?>"<?= $_item->getSelected() ? ' selected="selected"' : '' ?>>
+                                    <?= $escaper->escapeHtml($_item->getLabel()) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </span>
+                    <span class="outer-span" id="<?= $escaper->escapeHtmlAttr($block->getHtmlId()) ?>-form-hiddens"></span>
+                    <span class="outer-span" id="<?= $escaper->escapeHtmlAttr($block->getHtmlId()) ?>-form-additional"></span>
+                    <span class="field-row">
+                        <?= /* @noEscape */ $block->getApplyButtonHtml() ?>
+                    </span>
+            <?php if ($block->getHideFormElement() !== true): ?>
+                </form>
+            <?php endif; ?>
             <div class="no-display">
                 <?php foreach ($block->getItems() as $_item): ?>
-                    <div id="<?php echo $block->getHtmlId() ?>-item-<?php echo $_item->getId() ?>-block">
-                        <?php echo $_item->getAdditionalActionBlockHtml() ?>
+                    <div id="<?= $escaper->escapeHtmlAttr($block->getHtmlId()) ?>-item-<?= $escaper->escapeHtmlAttr($_item->getId()) ?>-block">
+                        <?= /* @noEscape */ $_item->getAdditionalActionBlockHtml() ?>
                     </div>
                 <?php endforeach; ?>
             </div>
@@ -33,55 +46,53 @@
         <div class="entry-select">
             <select id="massaction-select" class="select">
                 <option value="">
-                    <?php echo __('Mass Actions')?>
+                    <?= $escaper->escapeHtml(__('Mass Actions')) ?>
                 </option>
-                <?php if ($block->getUseSelectAll()):?>
+                <?php if ($block->getUseSelectAll()): ?>
                     <option value="selectAll">
-                        <?php echo __('Select All') ?>
+                        <?= $escaper->escapeHtml(__('Select All')) ?>
                     </option>
                     <option value="unselectAll">
-                        <?php echo __('Unselect All') ?>
+                        <?= $escaper->escapeHtml(__('Unselect All')) ?>
                     </option>
                 <?php endif; ?>
                 <option value="selectVisible">
-                    <?php echo __('Select Visible') ?>
+                    <?= $escaper->escapeHtml(__('Select Visible')) ?>
                 </option>
                 <option value="unselectVisible">
-                    <?php echo __('Unselect Visible') ?>
+                    <?= $escaper->escapeHtml(__('Unselect Visible')) ?>
                 </option>
             </select>
-        <span class="items">
-            <strong id="<?php echo $block->getHtmlId() ?>-count">0</strong> <?php echo __('items selected') ?>
-        </span>
+            <span class="items">
+                <strong id="<?= $escaper->escapeHtmlAttr($block->getHtmlId()) ?>-count">0</strong>
+                <?= $escaper->escapeHtml(__('items selected')) ?>
+            </span>
         </div>
     </div>
     <script>
-        require(['jquery'], function($){
+        require(['jquery'], function ($) {
             'use strict';
+
             $('#massaction-select').change(function () {
                 var massAction = $('option:selected', this).val();
+
                 switch (massAction) {
-                    <?php if ($block->getUseSelectAll()):?>
+                    <?php if ($block->getUseSelectAll()): ?>
                     case 'selectAll':
-                        return <?php echo $block->getJsObjectName() ?>.selectAll();
-                        break
+                        return <?= /* @noEscape */ $block->getJsObjectName() ?>.selectAll();
                     case 'unselectAll':
-                        return <?php echo $block->getJsObjectName() ?>.unselectAll();
-                        break
+                        return <?= /* @noEscape */ $block->getJsObjectName() ?>.unselectAll();
                     <?php endif; ?>
                     case 'selectVisible':
-                        return <?php echo $block->getJsObjectName() ?>.selectVisible();
-                        break
+                        return <?= /* @noEscape */ $block->getJsObjectName() ?>.selectVisible();
                     case 'unselectVisible':
-                        return <?php echo $block->getJsObjectName() ?>.unselectVisible();
-                        break
+                        return <?= /* @noEscape */ $block->getJsObjectName() ?>.unselectVisible();
                 }
             });
-
         });
 
         <?php if (!$block->getParentBlock()->canDisplayContainer()): ?>
-        <?php echo $block->getJsObjectName() ?>.setGridIds('<?php echo $block->getGridIdsJson() ?>');
+            <?= /* @noEscape */ $block->getJsObjectName() ?>.setGridIds('<?= $escaper->escapeJs($block->getGridIdsJson()) ?>');
         <?php endif; ?>
     </script>
 </div>

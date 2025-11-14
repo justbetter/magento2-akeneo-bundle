@@ -26,7 +26,7 @@ class Product
         array $families
     ): array {
         $familiesToExclude = explode(',', $this->getFamiliesToExclude() ?? '');
-      
+
         if (!$families || $families[0] === '') {
             $families = array_values($this->familyFilter->getFamilies() ?? []);
         }

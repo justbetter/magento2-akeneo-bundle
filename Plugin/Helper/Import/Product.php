@@ -7,15 +7,15 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
 
 class Product
 {
-    protected $codes = null;
+    protected ?array $codes = null;
 
     public function __construct(
         protected ScopeConfigInterface $config,
-        protected StoreHelper $storeHelper,
+        protected StoreHelper $storeHelper
     ) {
     }
 
-    public function beforeCreateTmpTableFromApi($subject, $result, $tableSuffix, mixed $family = null)
+    public function beforeCreateTmpTableFromApi($subject, $result, $tableSuffix, mixed $family = null): array
     {
         if (is_null($this->codes)) {
             $this->codes = explode(',', (string)$this->config->getValue('akeneo_connector/justbetter/important_attributes'));
@@ -31,7 +31,7 @@ class Product
             foreach ($affectedStores as $affectedStore) {
                 $storeCodes[$affectedStore['lang'] . '-' . $affectedStore['channel_code']] = [
                     $affectedStore['lang'],
-                    $affectedStore['channel_code']
+                    $affectedStore['channel_code'],
                 ];
             }
         }
@@ -41,9 +41,9 @@ class Product
                 continue;
             }
             $result['values'][$code] = [[
-                    'locale' => null,
-                    'scope' => null,
-                    'data' => null,
+                'locale' => null,
+                'scope' => null,
+                'data' => null,
             ]];
 
             foreach ($storeCodes as $store) {

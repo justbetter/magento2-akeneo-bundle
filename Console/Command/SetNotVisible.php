@@ -9,12 +9,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class SetNotVisible extends Command
 {
-    protected SetNotVisibleJob $job;
-
-    public function __construct(SetNotVisibleJob $job, ?string $name = null)
-    {
-        $this->job = $job;
-
+    public function __construct(
+        protected SetNotVisibleJob $job,
+        ?string $name = null
+    ) {
         parent::__construct($name);
     }
 
@@ -26,12 +24,14 @@ class SetNotVisible extends Command
         parent::configure();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('Starting');
 
         $this->job->execute($output);
 
         $output->writeln('Finished!');
+
+        return self::SUCCESS;
     }
 }
