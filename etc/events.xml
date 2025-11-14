@@ -6,4 +6,13 @@
         <observer name="set_not_visible" instance="JustBetter\AkeneoBundle\Observer\SetNotVisible"/>
         <observer name="remove_redundant_eav" instance="JustBetter\AkeneoBundle\Observer\RemoveRedundantEav" />
     </event>
+    <event name="akeneo_connector_import_step_start_product">
+        <observer name="product_import" instance="JustBetter\AkeneoBundle\Observer\ProductImport"/>
+    </event>
+    <event name="akeneo_connector_import_step_start_category">
+        <observer name="category_import" instance="JustBetter\AkeneoBundle\Observer\CategoryImport"/>
+    </event>
+    <event name="akeneo_connector_import_step_start">
+        <observer name="import_finished" instance="JustBetter\AkeneoBundle\Observer\ImportFinished"/>
+    </event>
 </config>

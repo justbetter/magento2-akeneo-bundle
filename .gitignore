@@ -1,2 +1,26 @@
-vendor
+# Composer
+vendor/
 composer.lock
+
+# PHP CS Fixer
+.php-cs-fixer.cache
+.php-cs-fixer.php
+
+# PHPStan
+.phpstan.cache
+phpstan-baseline.neon
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build
+build/
+dist/

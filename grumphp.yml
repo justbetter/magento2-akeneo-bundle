@@ -1,0 +1,12 @@
+grumphp:
+  tasks:
+    phpstan:
+      configuration: phpstan.neon
+      memory_limit: "1G"
+      use_grumphp_paths: false
+      triggered_by: ['php']
+  
+  testsuites:
+    git_commit:
+      tasks:
+        - phpstan
