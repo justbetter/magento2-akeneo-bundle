@@ -3,7 +3,7 @@
     "description": "Magento2 bundle for extending the Akeneo connector with awesome features.",
     "require": {
         "php": "^8.2 || ^8.3 || ^8.4",
-        "akeneo/module-magento2-connector-community": "*"
+        "akeneo/module-magento2-connector-community": "^105.1.0"
     },
     "require-dev": {
         "bitexpert/phpstan-magento": "^0.11.0",
@@ -40,5 +40,17 @@
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "phpro/grumphp": true
         }
+    },
+    "scripts": {
+        "analyse": "phpstan analyse --memory-limit=1G",
+        "codestyle": "vendor/bin/phpcs",
+        "codestyle:fix": "vendor/bin/phpcbf",
+        "grumphp": "grumphp run"
+    },
+    "scripts-descriptions": {
+        "analyse": "Run PHPStan static analysis",
+        "codestyle": "Check code style with PHP_CodeSniffer",
+        "codestyle:fix": "Automatically fix code style issues",
+        "grumphp": "Run all GrumPHP tasks (phpcs + phpstan)"
     }
 }

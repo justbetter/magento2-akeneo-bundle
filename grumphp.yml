@@ -1,5 +1,12 @@
 grumphp:
   tasks:
+    phpcs:
+      standard: phpcs.xml
+      triggered_by: ['php']
+      ignore_patterns:
+        - vendor/
+        - Block/
+    
     phpstan:
       configuration: phpstan.neon
       memory_limit: "1G"
@@ -9,4 +16,5 @@ grumphp:
   testsuites:
     git_commit:
       tasks:
+        - phpcs
         - phpstan

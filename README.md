@@ -1,16 +1,21 @@
+<a href="https://github.com/justbetter/magento2-akeneo-bundle" title="JustBetter Magento 2 Akeneo Bundle">
+    <img src="./.github/assets/banner.svg" alt="JustBetter Magento 2 Akeneo Bundle - Essential features the Akeneo Connector is missing">
+</a>
 <h1>JustBeter - Magento 2 Akeneo Bundle</h1>
 <a id="readme-top"></a>
 
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
+[![Latest Version on Packagist][packagist-version-shield]][packagist-version-url]
+[![GPL-3.0 License][license-shield]][license-url]
+[![Total Downloads][packagist-downloads-shield]][packagist-downloads-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
-[![GPL-3.0 License][license-shield]][license-url]
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
 
 <br />
 <div align="center">
   <a href="https://justbetter.nl">
-    <img src="https://raw.githubusercontent.com/justbetter/art/master/justbetter-logo.png" alt="Logo" width="200">
+    <img src="https://raw.githubusercontent.com/justbetter/art/master/justbetter-logo.png" alt="JustBetter Logo" width="200">
   </a>
 
   <h3 align="center">JustBeter - Magento 2 Akeneo Bundle</h3>
@@ -28,7 +33,7 @@
   <summary>Table of Contents</summary>
   <ol>
     <li>
-      <a href="#about-the-project">About The Project</a>
+      <a href="#about-the-package">About The Package</a>
       <ul>
         <li><a href="#built-with">Built With</a></li>
       </ul>
@@ -50,19 +55,25 @@
   </ol>
 </details>
 
-## About The Project
+## About The Package
 
 This Magento 2 extension made by [JustBetter](https://justbetter.nl) extends the official [Akeneo Connector](https://github.com/akeneo/magento2-connector-community) with several features and optimizations.
 
 These features can be enabled / disabled via an extra configuration section called `JustBetter Akeneo` that is added to the default Akeneo Connector Configuration in Magento.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Built With
 
 * [![PHP][PHP-badge]][PHP-url]
 * [![Magento][Magento-badge]][Magento-url]
 * [![Akeneo][Akeneo-badge]][Akeneo-url]
+
+### Contributors
+
+Thanks to all the people who have contributed to this project:
+
+<a href="https://github.com/justbetter/magento2-akeneo-bundle/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=justbetter/magento2-akeneo-bundle" alt="Contributors" />
+</a>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -71,8 +82,8 @@ These features can be enabled / disabled via an extra configuration section call
 ### Prerequisites
 
 * PHP >=8.2 <=8.4
-* Magento 2.4.4+
-* Akeneo Connector Community Edition
+* Magento >=2.4.4+
+* Akeneo Connector Community Edition >=105.1.0
 
 ### Installation
 
@@ -95,111 +106,65 @@ These features can be enabled / disabled via an extra configuration section call
 
 ## Features
 
-| Feature                                                                                          | Description                                                                                                                                                                                                                                 |
-|--------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Important Attributes                                                                             | Select attributes that should always be added to the product tables even if all are empty, this fixes cases where you bulk empty attributes and it is not reflected in Magento.                                                             |
-| Tier Prices                                                                                      | Maps specific Akeneo attribute code with a Magento Customer group. This ensures that the tier prices from Akeneo are imported into Magento customer tier prices                                                                             |
-| Set default value for required attributes                                                        | Set a default value for required attributes if the value is missing                                                                                                                                                                         |
-| Category exist                                                                                   | Skip inserting url paths when the category already exist                                                                                                                                                                                    |
-| Akeneo Manager                                                                                   | Manual adjustment of Akeneo codes vs magento entity id’s connector mapping. When enabled you can make adjustments of the values via the Menu option `JUSTBETTER > Akeneo Manager`                                                           |
-| Insert New Products                                                                              | Disable the insertion of new products                                                                                                                                                                                                       |
-| Set Tax Class                                                                                    | When you have multiple tax classes in Akeneo and you want to use them in Magento. Map Akeneo tax class codes to Magento tax class - See configuration                                                                                       |
-| Set Required admin attribute                                                                     | When having multiple stores and channels, the main attribute for de admin channel isn't always set. This means adding an attribute with the default language to do this for you.                                                            |
-| Set products active                                                                              | Enable all products from Akeneo                                                                                                                                                                                                             |
-| Enable Manage stock by default                                                                   | This sets the manage stock to value `Yes` for imported products by default                                                                                                                                                                  |
-| Set stock status                                                                                 | Automatically sets the stock status of imported products to "In Stock" when backorder-able                                                                                                                                                  |
-| Apply SEO friendly media name formatting                                                         | Formats the Media name from "_" to "-"                                                                                                                                                                                                      |
-| <a href="#metric-units">Enable retrieving metric units</a>                                       | Sets Akeneo's metric unit in the eav_attribute - See configuration                                                                                                                                                                          |
-| Channel for metric conversions                                                                   | What channel to use for metric conversions                                                                                                                                                                                                  |
-| <a href="#not-visible-individually">Set families to not visible individually after importing</a> | Sets products in selected families to `Not Visible Individually`                                                                                                                                                                            |
-| Unset Website when empty Product Attribute Mapping                                               | When enabled this will unset the website from the product when a required attribute has no specific value. For example when the Name attribute in Akeneo is empty for the associated website                                                |
-| Slack Akeneo import notifications                                                                | Setup Slack notifications of Akeneo imports                                                                                                                                                                                                 |
-| <a href="#import-finished-events">Import finished events</a>                                     | Fires an event for every job that is fully finished                                                                                                                                                                                         |
-| Exclude Families from Import                                                                     | Allows you to exclude specific families from being imported from Akeneo. _(Stores > Configuration > Catalog > Akeneo Connector > JustBetter Akeneo)_                                                                                        |
+### Feature Overview
+
+For detailed documentation of each feature, see **[FEATURES.md](FEATURES.md)**.  
+For configuration instructions and best practices, see **[Configuration Guide](FEATURES.md#configuration-guide)**.
+
+| Category | Feature | Configuration Path |
+|----------|---------|-------------------|
+| **<a href="FEATURES.md#product-import-features">Product Import</a>** | <a href="FEATURES.md#important-attributes">Important Attributes</a> | JustBetter Akeneo > Important Attributes |
+| | <a href="FEATURES.md#tier-prices">Tier Prices</a> | Products > Customer Group Pricing |
+| | <a href="FEATURES.md#default-store-values">Default Store Values</a> | JustBetter Akeneo > Default Store Values |
+| | <a href="FEATURES.md#exclude-families">Exclude Families from Import</a> | Products Filters > Excluded Families |
+| | <a href="FEATURES.md#insert-new-products">Insert New Products</a> | JustBetter Akeneo > Insert New Products |
+| | <a href="FEATURES.md#set-products-active">Set Products Active</a> | JustBetter Akeneo > Set Products Active |
+| | <a href="FEATURES.md#enable-manage-stock">Enable Manage Stock</a> | JustBetter Akeneo > Enable Manage Stock |
+| | <a href="FEATURES.md#set-stock-status">Set Stock Status</a> | JustBetter Akeneo > Set Stock Status |
+| | <a href="FEATURES.md#remove-redundant-eav">Remove Redundant EAV</a> | JustBetter Akeneo > Remove Redundant EAV |
+| **<a href="FEATURES.md#category-features">Category</a>** | <a href="FEATURES.md#category-exist">Category Exist - Skip URL Regeneration</a> | JustBetter Akeneo > Category Exist |
+| **<a href="FEATURES.md#tax--pricing-features">Tax & Pricing</a>** | <a href="FEATURES.md#set-tax-class">Set Tax Class</a> | JustBetter Akeneo > Set Tax Class |
+| **<a href="FEATURES.md#attribute-features">Attributes</a>** | <a href="FEATURES.md#metric-units">Metric Units Import</a> | JustBetter Akeneo > Enable Metric Units |
+| | <a href="FEATURES.md#format-media-name">Format Media Name (SEO)</a> | JustBetter Akeneo > Format Media Name |
+| **<a href="FEATURES.md#visibility-features">Visibility</a>** | <a href="FEATURES.md#not-visible-individually">Set Families Not Visible</a> | JustBetter Akeneo > Not Visible Families |
+| **<a href="FEATURES.md#website-association-features">Website Association</a>** | <a href="FEATURES.md#required-attribute-mapping">Required Attribute Mapping</a> | Products > Required Attribute Mapping |
+| **<a href="FEATURES.md#management--administration">Management</a>** | <a href="FEATURES.md#akeneo-manager">Akeneo Manager</a> | JustBetter Akeneo > Akeneo Manager |
+| **<a href="FEATURES.md#notification-features">Notifications</a>** | <a href="FEATURES.md#slack-notifications">Slack Notifications</a> | JustBetter Akeneo > Slack |
+| **<a href="FEATURES.md#event-system">Events</a>** | <a href="FEATURES.md#import-finished-events">Import Finished Events</a> | - |
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Configuration
 
-- Enable and disable different Akeneo features. Go to `Stores > Configuration > Catalog > Akeneo Connector > JustBetter Akeneo`.
-- To map specific Akeneo attribute code with a Magento Customer group. Simply go to `Stores > Configuration > Catalog > Akeneo Connector > Products > Customer Group Pricing`
-- When you would like to use the Tax Class Mapping: map the Akeneo Attribute Option Codes to the Magento Tax Classes. Don't forget to define the Tax attribute within the Attribute configuration for this feature to work.
+All features are configured in the Magento Admin Panel:
+
+**`Stores > Configuration > Catalog > Akeneo Connector > JustBetter Akeneo`**
+
+For detailed configuration instructions, grid mappings, and best practices, see **[FEATURES.md - Configuration Guide](FEATURES.md#configuration-guide)**.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Usage
 
-### Metric Units
-<a id="metric-units"></a>
+The bundle extends the Akeneo Connector with additional features that can be configured in the Magento Admin Panel. Some features also provide CLI commands for manual execution.
 
-When enabled the default metric unit for metric attributes will be added to the `unit` field in the `eav_attribute` table.
-This can be overridden at a channel, currently we only support one channel for this which is configurable in the backend.
-
-You can run this from the command line using:
-```sh
-bin/magento metric:import
-```
-
-It is also automatically run after the attribute import.
-
-### Family - Not Visible Individually
-<a id="not-visible-individually"></a>
-
-If you need to set the visibility of all products that belong to certain families to `Not Visible Individually` you can select those families.
-After each import this will run and set products to not visible.
-
-You can also run this from the command line using:
-```sh
-bin/magento akeneo:setfamilynotvisible
-```
+For detailed usage instructions and CLI commands, see **[FEATURES.md](FEATURES.md)**.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Events
-<a id="import-finished-events"></a>
 
-We added a total of 5 events:
-```
-akeneo_connector_import_finish_category
-akeneo_connector_import_finish_family
-akeneo_connector_import_finish_attribute
-akeneo_connector_import_finish_option
-akeneo_connector_import_finish_product
-```
+The bundle dispatches custom events after import completion to enable custom post-processing:
 
-These events are fired before the `cleanCache` function which only runs at the end of the job execution.
-That way the cache will still be flushed after your hook.
-
-> **Note:** Please keep in mind that the Akeneo Products Import is executed per family ([since 102.1.1](https://github.com/akeneo/magento2-connector-community/blob/master/CHANGELOG.md#version-10211-)). So if you import products from multiple families the `akeneo_connector_import_finish_product` event will be called multiple times.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-## Installation
-```
-composer require justbetter/magento2-akeneo-bundle
-bin/magento module:enable JustBetter_AkeneoBundle
-bin/magento setup:upgrade && bin/magento cache:flush
-```
-## Configuration
-- Enable and disable different Akeneo features. Go to `Stores > Configuration > Catalog > Akeneo Connector > JustBetter Akeneo`.
-- To map specific Akeneo attribute code with a Magento Customer group. Simply go to `Stores > Configuration > Catalog > Akeneo Connector > Products > Customer Group Pricing`
-- When you would like to use the Tax Class Mapping: map the Akeneo Attribute Option Codes to the Magento Tax Classes. Don't forget to define the Tax attribute within the Attribute configuration for this feature to work.
-
-## Import finished events
-We added a total of 5 events:
-```
-akeneo_connector_import_finish_category
-akeneo_connector_import_finish_family
-akeneo_connector_import_finish_attribute
-akeneo_connector_import_finish_option
-akeneo_connector_import_finish_product
+```php
+akeneo_connector_import_finish_product   // After product import
+akeneo_connector_import_finish_category  // After category import
+akeneo_connector_import_finish_family    // After family import
+akeneo_connector_import_finish_attribute // After attribute import
+akeneo_connector_import_finish_option    // After option import
 ```
 
-These events are fired before the `cleanCache` function which only runs at the end of the job execution.
-That way the cache will still be flushed after your hook.
-
-
-> **Note:** Please keep in mind that the Akeneo Products Import is executed per family ([since 102.1.1](https://github.com/akeneo/magento2-connector-community/blob/master/CHANGELOG.md#version-10211-)). So if you import products from multiple families the `akeneo_connector_import_finish_product` event will be called multiple times.
+For implementation examples and use cases, see **[FEATURES.md - Events](FEATURES.md#event-system)**.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -207,8 +172,9 @@ That way the cache will still be flushed after your hook.
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
+Please read our [Contributing Guide](.github/CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
+
+**Quick start:**
 
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
@@ -216,21 +182,49 @@ Don't forget to give the project a star! Thanks again!
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
+**Development:**
+
+```bash
+# Install dependencies
+composer install
+
+# Run quality checks (PHPStan)
+composer analyse
+
+# Run GrumPHP tasks manually
+composer grumphp
+```
+
+**Note:** GrumPHP runs automatically on git commit.
+
+For security vulnerabilities, please see our [Security Policy](.github/SECURITY.md).
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## License
 
-Distributed under the GPL-3.0 License. See `LICENSE` for more information.
+Distributed under the GPL-3.0 License. See `LICENSE` for more information. Please see [License File](LICENSE) for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Contact
 
-[JustBetter B.V.](https://justbetter.nl/)
+[JustBetter B.V.](https://justbetter.nl/contact)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+<a href="https://justbetter.nl" title="JustBetter - Innovative Magento Development Agency">
+    <img src="./.github/assets/footer.svg" alt="JustBetter - We're an innovative development agency from The Netherlands building better Magento solutions">
+</a>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
+[packagist-version-shield]: https://img.shields.io/packagist/v/justbetter/magento2-akeneo-bundle.svg?style=for-the-badge
+[packagist-version-url]: https://packagist.org/packages/justbetter/magento2-akeneo-bundle
+[packagist-downloads-shield]: https://img.shields.io/packagist/dt/justbetter/magento2-akeneo-bundle.svg?style=for-the-badge
+[packagist-downloads-url]: https://packagist.org/packages/justbetter/magento2-akeneo-bundle
 [contributors-shield]: https://img.shields.io/github/contributors/justbetter/magento2-akeneo-bundle.svg?style=for-the-badge
 [contributors-url]: https://github.com/justbetter/magento2-akeneo-bundle/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/justbetter/magento2-akeneo-bundle.svg?style=for-the-badge
