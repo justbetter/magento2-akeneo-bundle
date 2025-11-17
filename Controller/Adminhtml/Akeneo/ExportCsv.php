@@ -1,5 +1,4 @@
 <?php
-
 /**
  * JustBetter Magento2 Akeneo Bundle
  *
@@ -11,7 +10,6 @@
  * For full license information, see the LICENSE file
  * or visit <https://github.com/justbetter/magento2-akeneo-bundle/blob/master/LICENSE>.
  */
-
 
 namespace JustBetter\AkeneoBundle\Controller\Adminhtml\Akeneo;
 

@@ -12,7 +12,6 @@
  * or visit <https://github.com/justbetter/magento2-akeneo-bundle/blob/master/LICENSE>.
  */
 
-
 declare(strict_types=1);
 
 namespace JustBetter\AkeneoBundle\Block\Adminhtml\Akeneo\Edit;
