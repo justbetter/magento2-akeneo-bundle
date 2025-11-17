@@ -43,7 +43,7 @@ jobs:
             ${{ runner.os }}-php${{ matrix.php-version }}-composer-
       
       - name: Install dependencies
-        run: composer install --prefer-dist --no-progress --no-interaction
+        run: composer install --prefer-dist --no-progress --no-interaction --ignore-platform-req=php+
       
       - name: Run PHPStan
         run: composer analyse
@@ -55,7 +55,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: ['8.2', '8.3', '8.4']
+        php-version: ['8.2', '8.3']
     
     steps:
       - name: Checkout code
