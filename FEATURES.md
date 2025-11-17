@@ -32,7 +32,6 @@ This document provides detailed information about all features available in the 
   - [Akeneo Manager](#akeneo-manager)
 - [Notification Features](#notification-features)
   - [Slack Notifications](#slack-notifications)
-- [CLI Commands](#cli-commands)
 - [Event System](#event-system)
   - [Import Finished Events](#import-finished-events)
 
@@ -41,17 +40,26 @@ This document provides detailed information about all features available in the 
 ## Configuration Guide
 <a id="configuration-guide"></a>
 
-All features are configured via the Magento Admin Panel:
+All features are configured via the Magento Admin Panel under:
 
-**Main Path:** `Stores > Configuration > Catalog > Akeneo Connector > JustBetter Akeneo`
+**`Stores > Configuration > Catalog > Akeneo Connector > JustBetter Akeneo`**
 
-Most features are toggled and configured in this main section. Some features use additional configuration sections:
-- Grid configurations for tier prices, tax mapping, and required attributes under `Products`
-- Family exclusion filter under `Products Filters`
+### Configuration Sections
 
-See each feature below for specific configuration paths and options.
+#### Main Configuration
+**Path:** `Stores > Configuration > Catalog > Akeneo Connector > JustBetter Akeneo`
 
-**[⬆ Back to top](#features-documentation)**
+#### Products Configuration
+**Path:** `Stores > Configuration > Catalog > Akeneo Connector > Products`
+
+- **Customer Group Pricing:** Grid mapping Akeneo attribute codes to Magento customer groups
+- **Tax Class Mapping:** Grid mapping Akeneo tax codes to Magento tax class IDs
+- **Required Attribute Mapping:** Grid defining required attributes per website
+
+#### Products Filters
+**Path:** `Stores > Configuration > Catalog > Akeneo Connector > Products Filters`
+
+- **Excluded Families:** Multiselect of families to exclude from import
 
 ---
 
@@ -64,8 +72,6 @@ Select attributes that should always be imported and added to product temporary 
 
 **Configuration:** `Stores > Configuration > Catalog > Akeneo Connector > JustBetter Akeneo > Important Attributes`
 
-**[⬆ Back to top](#features-documentation)**
-
 ---
 
 ### Tier Prices
@@ -75,8 +81,6 @@ Maps Akeneo attribute codes to Magento customer groups, enabling customer group-
 
 **Configuration:** `Stores > Configuration > Catalog > Akeneo Connector > Products > Customer Group Pricing`  
 **Mapping:** Define Akeneo Attribute → Magento Customer Group pairs in grid configuration.
-
-**[⬆ Back to top](#features-documentation)**
 
 ---
 
@@ -89,8 +93,6 @@ Automatically sets default language values for required product attributes when 
 - Enable: `Stores > Configuration > Catalog > Akeneo Connector > JustBetter Akeneo > Default Store Values`
 - Fallback Language: `Stores > Configuration > Catalog > Akeneo Connector > JustBetter Akeneo > Default Language` (e.g., `nl_NL`)
 
-**[⬆ Back to top](#features-documentation)**
-
 ---
 
 ### Exclude Families from Import
@@ -102,8 +104,6 @@ Prevents specific product families from being imported. Products belonging to ex
 
 **Note:** This feature works in combination with the "Family Attribute as Filter" configuration.
 
-**[⬆ Back to top](#features-documentation)**
-
 ---
 
 ### Insert New Products
@@ -112,8 +112,6 @@ Prevents specific product families from being imported. Products belonging to ex
 Control whether new products from Akeneo are inserted into Magento. When disabled, only existing products will be updated.
 
 **Configuration:** `Stores > Configuration > Catalog > Akeneo Connector > JustBetter Akeneo > Insert New Products` (Default: Yes)
-
-**[⬆ Back to top](#features-documentation)**
 
 ---
 
@@ -124,8 +122,6 @@ Automatically enables all products imported from Akeneo by setting their status 
 
 **Configuration:** `Stores > Configuration > Catalog > Akeneo Connector > JustBetter Akeneo > Set Products Active`
 
-**[⬆ Back to top](#features-documentation)**
-
 ---
 
 ### Enable Manage Stock by Default
@@ -135,8 +131,6 @@ Sets "Manage Stock" to "Yes" for all imported products by default.
 
 **Configuration:** `Stores > Configuration > Catalog > Akeneo Connector > JustBetter Akeneo > Enable Manage Stock`
 
-**[⬆ Back to top](#features-documentation)**
-
 ---
 
 ### Set Stock Status
@@ -145,8 +139,6 @@ Sets "Manage Stock" to "Yes" for all imported products by default.
 Automatically sets imported products' stock status to "In Stock" when they are backorderable.
 
 **Configuration:** `Stores > Configuration > Catalog > Akeneo Connector > JustBetter Akeneo > Set Stock Status`
-
-**[⬆ Back to top](#features-documentation)**
 
 ---
 
@@ -159,8 +151,6 @@ Automatically cleans up orphaned EAV values when a product's family changes in A
 
 **Example:** Product changes from Family A (attributes: name, price, color) to Family B (attributes: name, price, weight). The "color" EAV values are automatically deleted.
 
-**[⬆ Back to top](#features-documentation)**
-
 ---
 
 ## Category Features
@@ -171,8 +161,6 @@ Automatically cleans up orphaned EAV values when a product's family changes in A
 When enabled, preserves existing category URL keys instead of regenerating them during import. Improves performance by skipping unnecessary URL path updates for categories that already exist.
 
 **Configuration:** `Stores > Configuration > Catalog > Akeneo Connector > JustBetter Akeneo > Category Exist`
-
-**[⬆ Back to top](#features-documentation)**
 
 ---
 
@@ -188,8 +176,6 @@ Maps Akeneo tax class attribute values to Magento tax class IDs. Supports both n
 - Mapping: `Stores > Configuration > Catalog > Akeneo Connector > Products > Tax Class Mapping` (Grid: Akeneo Code → Magento Tax Class)
 
 **Requirements:** Map the Akeneo tax attribute in the Attribute Types configuration with type "tax".
-
-**[⬆ Back to top](#features-documentation)**
 
 ---
 
@@ -208,8 +194,6 @@ Imports Akeneo metric attribute units into Magento's `eav_attribute.unit` field.
 - Automatically runs after attribute import
 - Manual execution: `bin/magento metric:import`
 
-**[⬆ Back to top](#features-documentation)**
-
 ---
 
 ### Format Media Name (SEO Friendly)
@@ -220,8 +204,6 @@ Replaces underscores with hyphens in media file names for SEO-friendly URLs.
 **Configuration:** `Stores > Configuration > Catalog > Akeneo Connector > JustBetter Akeneo > Format Media Name`
 
 **Example:** `product_image_2024.jpg` → `product-image-2024.jpg`
-
-**[⬆ Back to top](#features-documentation)**
 
 ---
 
@@ -237,8 +219,6 @@ Automatically sets visibility to "Not Visible Individually" for all products bel
 **Usage:**
 - Automatically runs after product import
 - Manual execution: `bin/magento akeneo:setfamilynotvisible`
-
-**[⬆ Back to top](#features-documentation)**
 
 ---
 
@@ -258,8 +238,6 @@ Validates that required product attributes contain values before assigning websi
 
 **Example:** Product mapped to US website requires "description". If "description-en_US-ecommerce" is empty, US website association is removed.
 
-**[⬆ Back to top](#features-documentation)**
-
 ---
 
 ## Management & Administration
@@ -273,8 +251,6 @@ Manual mapping interface for adjusting Akeneo codes versus Magento entity IDs in
 **Access:** `JUSTBETTER > Akeneo Manager` (when enabled)
 
 **Features:** Create, edit, and delete mappings for families, categories, attributes, and other entities synced between Akeneo and Magento.
-
-**[⬆ Back to top](#features-documentation)**
 
 ---
 
@@ -302,41 +278,6 @@ Sends daily import status notifications to Slack at 8:00 AM. Reports successful 
 
 **Usage:** Manual execution: `bin/magento slack:notification`
 
-**[⬆ Back to top](#features-documentation)**
-
----
-
-## CLI Commands
-<a id="cli-commands"></a>
-
-Some features provide CLI commands for manual execution or testing purposes.
-
-### Import Metric Units
-```bash
-bin/magento metric:import
-```
-Imports metric unit information from Akeneo into Magento's `eav_attribute.unit` field. This command runs automatically after attribute import but can be executed manually when needed.
-
-**Related feature:** [Metric Units Import](#metric-units)
-
-### Set Family Visibility
-```bash
-bin/magento akeneo:setfamilynotvisible
-```
-Sets products in configured families to "Not Visible Individually". This command runs automatically after product import but can be executed manually to update visibility for existing products.
-
-**Related feature:** [Set Families Not Visible](#not-visible-individually)
-
-### Send Slack Notification
-```bash
-bin/magento slack:notification
-```
-Manually triggers Slack import status notification. Useful for testing Slack integration or sending on-demand status reports.
-
-**Related feature:** [Slack Notifications](#slack-notifications)
-
-**[⬆ Back to top](#features-documentation)**
-
 ---
 
 ## Event System
@@ -359,59 +300,7 @@ akeneo_connector_import_finish_product
 
 **Important:** Product import runs per family (since Akeneo Connector 102.1.1), so `akeneo_connector_import_finish_product` fires multiple times if importing multiple families.
 
-**Use Cases:**
-- Custom indexing after product import
-- Third-party system synchronization
-- Custom cache warming
-- Email notifications
-- Data validation and reporting
-
-### Event Implementation Example
-
-**Create an observer in your custom module:**
-
-1. **Register the observer in `etc/events.xml`:**
-```xml
-<?xml version="1.0"?>
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-        xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
-    <event name="akeneo_connector_import_finish_product">
-        <observer name="your_module_custom_processing" 
-                  instance="YourVendor\YourModule\Observer\CustomProductProcessing" />
-    </event>
-</config>
-```
-
-2. **Create the observer class:**
-```php
-<?php
-declare(strict_types=1);
-
-namespace YourVendor\YourModule\Observer;
-
-use Magento\Framework\Event\Observer;
-use Magento\Framework\Event\ObserverInterface;
-
-class CustomProductProcessing implements ObserverInterface
-{
-    public function execute(Observer $observer): void
-    {
-        /** @var \Akeneo\Connector\Job\Import $import */
-        $import = $observer->getData('import');
-        
-        // Get import details
-        $importCode = $import->getCode();      // e.g., 'product'
-        $family = $import->getFamily();        // Current family being imported
-        
-        // Your custom logic here
-        // Example: Trigger reindexing, send notifications, etc.
-    }
-}
-```
-
 **Note:** The `akeneo_connector_import_finish_product` event fires multiple times (once per family) since Akeneo Connector 102.1.1. Use `$import->getFamily()` to process specific families only.
-
-**[⬆ Back to top](#features-documentation)**
 
 ---
 
