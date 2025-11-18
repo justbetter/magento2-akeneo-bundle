@@ -8,6 +8,8 @@ use Akeneo\Connector\Helper\Import\Product as BaseProduct;
 class Product extends BaseProduct
 {
     /**
+     * Overwritten to set values for store view 0 when attributes are scopable/localizable and required
+     *
      * @param array<string, mixed> $result
      * @param array<int, string> $keys
      * @return array<string, mixed>

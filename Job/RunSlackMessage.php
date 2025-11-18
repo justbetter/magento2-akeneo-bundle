@@ -43,7 +43,7 @@ class RunSlackMessage
         
         return $this->logCollection
             ->addFieldToFilter('created_at', ['gteq' => date('Y-m-d')])
-            ->addFieldToFilter('created_at', ['lt' => date('Y-m-d', $tomorrow !== false ? $tomorrow : time() + 86400)]);
+            ->addFieldToFilter('created_at', ['lt' => date('Y-m-d', $tomorrow !== false ? $tomorrow : strtotime('tomorrow'))]);
     }
 
     protected function getLogsByStatus(int $status): Log\Collection

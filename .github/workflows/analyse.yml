@@ -49,13 +49,8 @@ jobs:
         run: composer analyse
   
   phpcs:
-    name: Code Style (PHP ${{ matrix.php-version }})
+    name: Code Style
     runs-on: ubuntu-latest
-    
-    strategy:
-      fail-fast: false
-      matrix:
-        php-version: ['8.2', '8.3']
     
     steps:
       - name: Checkout code
@@ -64,7 +59,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-version }}
+          php-version: '8.2'
           extensions: bcmath, ctype, curl, dom, gd, hash, iconv, intl, mbstring, openssl, pdo_mysql, simplexml, soap, xsl, zip
           coverage: none
       
@@ -76,8 +71,8 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-php${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-php${{ matrix.php-version }}-composer-
+          key: ${{ runner.os }}-php-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-php-composer-
       
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-interaction
