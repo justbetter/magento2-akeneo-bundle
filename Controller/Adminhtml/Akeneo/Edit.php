@@ -1,16 +1,5 @@
 <?php
-/**
- * JustBetter Magento2 Akeneo Bundle
- *
- * @author JustBetter B.V.
- * @copyright Copyright (c) JustBetter B.V. (https://justbetter.nl)
- * @package Magento2 Akeneo Bundle
- *
- * Licensed under the GNU General Public License v3.0 or later.
- * For full license information, see the LICENSE file
- * or visit <https://github.com/justbetter/magento2-akeneo-bundle/blob/master/LICENSE>.
- */
-
+declare(strict_types=1);
 namespace JustBetter\AkeneoBundle\Controller\Adminhtml\Akeneo;
 
 use JustBetter\AkeneoBundle\Model\AkeneoFactory;
@@ -44,8 +33,8 @@ class Edit extends Action implements HttpGetActionInterface
         /** @var Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
         $resultPage->setActiveMenu('JustBetter_AkeneoBundle::Akeneo')
-            ->addBreadcrumb(__('JustBetter AkeneoBundle'), __('JustBetter AkeneoBundle'))
-            ->addBreadcrumb(__('Manage Item'), __('Manage Item'));
+            ->addBreadcrumb((string)__('JustBetter AkeneoBundle'), (string)__('JustBetter AkeneoBundle'))
+            ->addBreadcrumb((string)__('Manage Item'), (string)__('Manage Item'));
 
         return $resultPage;
     }
@@ -58,7 +47,7 @@ class Edit extends Action implements HttpGetActionInterface
         if ($id) {
             $model->load($id); // @phpstan-ignore-line
             if (!$model->getId()) {
-                $this->messageManager->addErrorMessage(__('This item no longer exists.'));
+                $this->messageManager->addErrorMessage((string)__('This item no longer exists.'));
                 /** @var Redirect $resultRedirect */
                 $resultRedirect = $this->resultRedirectFactory->create();
 
@@ -76,12 +65,12 @@ class Edit extends Action implements HttpGetActionInterface
         /** @var Page $resultPage */
         $resultPage = $this->_initAction();
         $resultPage->setActiveMenu('JustBetter_AkeneoBundle::Akeneo');
-        $resultPage->addBreadcrumb(__('JustBetter'), __('JustBetter'));
+        $resultPage->addBreadcrumb((string)__('JustBetter'), (string)__('JustBetter'));
         $resultPage->addBreadcrumb(
-            $id ? __('Edit Item') : __('New Item'),
-            $id ? __('Edit Item') : __('New Item')
+            (string)($id ? __('Edit Item') : __('New Item')),
+            (string)($id ? __('Edit Item') : __('New Item'))
         );
-        $resultPage->getConfig()->getTitle()->prepend($id ? __('Edit Item') : __('New Item'));
+        $resultPage->getConfig()->getTitle()->prepend((string)($id ? __('Edit Item') : __('New Item')));
 
         return $resultPage;
     }

@@ -2,9 +2,9 @@ name: Code Quality
 
 on:
   push:
-    branches: [ master, main, develop, feature/* ]
+    branches: [ master, develop, feature/* ]
   pull_request:
-    branches: [ master, main, develop ]
+    branches: [ master, develop ]
 
 jobs:
   phpstan:

@@ -1,16 +1,5 @@
 <?php
-/**
- * JustBetter Magento2 Akeneo Bundle
- *
- * @author JustBetter B.V.
- * @copyright Copyright (c) JustBetter B.V. (https://justbetter.nl)
- * @package Magento2 Akeneo Bundle
- *
- * Licensed under the GNU General Public License v3.0 or later.
- * For full license information, see the LICENSE file
- * or visit <https://github.com/justbetter/magento2-akeneo-bundle/blob/master/LICENSE>.
- */
-
+declare(strict_types=1);
 namespace JustBetter\AkeneoBundle\Controller\Adminhtml\Akeneo;
 
 use JustBetter\AkeneoBundle\Model\AkeneoFactory;
@@ -38,7 +27,7 @@ class Delete extends Action implements HttpPostActionInterface
                 $model = $this->akeneoFactory->create();
                 $model->load($id); // @phpstan-ignore-line
                 $model->delete(); // @phpstan-ignore-line
-                $this->messageManager->addSuccessMessage(__('The item has been deleted.'));
+                $this->messageManager->addSuccessMessage((string)__('The item has been deleted.'));
 
                 return $resultRedirect->setPath('*/*/');
             } catch (\Exception $e) {
@@ -48,7 +37,7 @@ class Delete extends Action implements HttpPostActionInterface
             }
         }
 
-        $this->messageManager->addErrorMessage(__('We can\'t find an item to delete.'));
+        $this->messageManager->addErrorMessage((string)__('We can\'t find an item to delete.'));
 
         return $resultRedirect->setPath('*/*/');
     }

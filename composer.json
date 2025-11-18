@@ -3,7 +3,7 @@
     "description": "Magento2 bundle for extending the Akeneo connector with awesome features.",
     "license": "GPL-3.0-or-later",
     "require": {
-        "php": "^8.2 || ^8.3 || ^8.4",
+        "php": "^8.2",
         "akeneo/module-magento2-connector-community": "^105.1.0"
     },
     "require-dev": {

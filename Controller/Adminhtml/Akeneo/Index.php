@@ -1,16 +1,5 @@
 <?php
-/**
- * JustBetter Magento2 Akeneo Bundle
- *
- * @author JustBetter B.V.
- * @copyright Copyright (c) JustBetter B.V. (https://justbetter.nl)
- * @package Magento2 Akeneo Bundle
- *
- * Licensed under the GNU General Public License v3.0 or later.
- * For full license information, see the LICENSE file
- * or visit <https://github.com/justbetter/magento2-akeneo-bundle/blob/master/LICENSE>.
- */
-
+declare(strict_types=1);
 namespace JustBetter\AkeneoBundle\Controller\Adminhtml\Akeneo;
 
 use Magento\Backend\App\Action;
@@ -32,9 +21,9 @@ class Index extends Action implements HttpGetActionInterface
         /** @var Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
         $resultPage->setActiveMenu('JustBetter_AkeneoBundle::akeneo');
-        $resultPage->addBreadcrumb(__('JustBetter'), __('JustBetter'));
-        $resultPage->addBreadcrumb(__('Manage item'), __('Manage Akeneo'));
-        $resultPage->getConfig()->getTitle()->prepend(__('Manage Akeneo'));
+        $resultPage->addBreadcrumb((string)__('JustBetter'), (string)__('JustBetter'));
+        $resultPage->addBreadcrumb((string)__('Manage item'), (string)__('Manage Akeneo'));
+        $resultPage->getConfig()->getTitle()->prepend((string)__('Manage Akeneo'));
 
         return $resultPage;
     }

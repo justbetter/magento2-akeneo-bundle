@@ -1,16 +1,4 @@
 <?php
-/**
- * JustBetter Magento2 Akeneo Bundle
- *
- * @author JustBetter B.V.
- * @copyright Copyright (c) JustBetter B.V. (https://justbetter.nl)
- * @package Magento2 Akeneo Bundle
- *
- * Licensed under the GNU General Public License v3.0 or later.
- * For full license information, see the LICENSE file
- * or visit <https://github.com/justbetter/magento2-akeneo-bundle/blob/master/LICENSE>.
- */
-
 declare(strict_types=1);
 
 namespace JustBetter\AkeneoBundle\Service;
@@ -43,12 +31,8 @@ class SetTaxClassId
 
     public function execute(string $code): void
     {
-        $extensionEnabled = $this->scopeConfig->getValue('akeneo_connector/justbetter/settaxclass', ScopeInterface::SCOPE_WEBSITE);
-        if (!$extensionEnabled) {
-            return;
-        }
-
-        if (!($attributes = $this->scopeConfig->getValue(ConfigHelper::ATTRIBUTE_TYPES)) ||
+        if (!$this->scopeConfig->getValue('akeneo_connector/justbetter/settaxclass', ScopeInterface::SCOPE_WEBSITE) ||
+            !($attributes = $this->scopeConfig->getValue(ConfigHelper::ATTRIBUTE_TYPES)) ||
             !($mappings = $this->scopeConfig->getValue('akeneo_connector/product/tax_id_mapping'))
         ) {
             return;
@@ -68,7 +52,7 @@ class SetTaxClassId
             }
         }
 
-        if (!$this->taxIdColumns || !count($unserializedMappings)) {
+        if (empty($this->taxIdColumns) || empty($unserializedMappings)) {
             return;
         }
 

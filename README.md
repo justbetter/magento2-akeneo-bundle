@@ -21,7 +21,7 @@
   <h3 align="center">JustBeter - Magento 2 Akeneo Bundle</h3>
 
   <p align="center">
-    Powerful extensions for the Akeneo Connector Community Edition
+    Extends the official <a href="https://github.com/akeneo/magento2-connector-community">Akeneo Connector</a> with several features and optimizations.
     <br />
     <a href="https://github.com/justbetter/magento2-akeneo-bundle/issues">Report Bug</a>
     ·
@@ -78,12 +78,6 @@ Thanks to all the people who have contributed to this project:
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Getting Started
-
-### Prerequisites
-
-* PHP >=8.2 <=8.4
-* Magento >=2.4.4+
-* Akeneo Connector Community Edition >=105.1.0
 
 ### Installation
 
@@ -154,33 +148,14 @@ For detailed usage instructions and CLI commands, see **[FEATURES.md](FEATURES.m
 
 ## Events
 
-The bundle dispatches custom events after import completion to enable custom post-processing:
+The bundle dispatches custom events after import completion to enable custom post-processing.
 
-```php
-akeneo_connector_import_finish_product   // After product import
-akeneo_connector_import_finish_category  // After category import
-akeneo_connector_import_finish_family    // After family import
-akeneo_connector_import_finish_attribute // After attribute import
-akeneo_connector_import_finish_option    // After option import
-```
-
-For implementation examples and use cases, see **[FEATURES.md - Events](FEATURES.md#event-system)**.
+For available events, implementation examples and use cases, see **[FEATURES.md - Event System](FEATURES.md#event-system)**.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Contributing
-
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
 Please read our [Contributing Guide](.github/CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
-
-**Quick start:**
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
 
 **Development:**
 
