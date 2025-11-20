@@ -1,7 +1,7 @@
 <a href="https://github.com/justbetter/magento2-akeneo-bundle" title="JustBetter Magento 2 Akeneo Bundle">
     <img src="./.github/assets/banner.svg" alt="JustBetter Magento 2 Akeneo Bundle - Essential features the Akeneo Connector is missing">
 </a>
-<h1>JustBeter - Magento 2 Akeneo Bundle</h1>
+<h1>JustBetter - Magento 2 Akeneo Bundle</h1>
 <a id="readme-top"></a>
 
 [![Latest Version on Packagist][packagist-version-shield]][packagist-version-url]
@@ -18,7 +18,7 @@
     <img src="https://raw.githubusercontent.com/justbetter/art/master/justbetter-logo.png" alt="JustBetter Logo" width="200">
   </a>
 
-  <h3 align="center">JustBeter - Magento 2 Akeneo Bundle</h3>
+  <h3 align="center">JustBetter - Magento 2 Akeneo Bundle</h3>
 
   <p align="center">
     Extends the official <a href="https://github.com/akeneo/magento2-connector-community">Akeneo Connector</a> with several features and optimizations.

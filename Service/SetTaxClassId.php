@@ -66,18 +66,15 @@ class SetTaxClassId
         $connection = $this->entitiesHelper->getConnection();
 
         foreach ($taxColumns as $taxIdColumn) {
-            try {
-                $taxQuery = $this->createQuery($taxIdColumn, $tmpTable);
-                $connection->query($taxQuery);
-            } catch (Exception $e) {
-                throw $e;
-            }
+            $taxQuery = $this->createQuery($taxIdColumn, $tmpTable);
+            $connection->query($taxQuery);
         }
     }
 
     protected function createQuery(string $taxIdColumn, string $tableName): string
     {
-        $query = "UPDATE `" . $tableName . "` SET `" . $taxIdColumn . "` = ";
+        $connection = $this->entitiesHelper->getConnection();
+        $query = "UPDATE " . $connection->quoteIdentifier($tableName) . " SET " . $connection->quoteIdentifier($taxIdColumn) . " = ";
 
         return $this->addCase($query, $taxIdColumn);
     }
@@ -93,13 +90,14 @@ class SetTaxClassId
             return $query;
         }
 
+        $connection = $this->entitiesHelper->getConnection();
         $query .= "CASE ";
 
         foreach ($unserializedMappings as $mapping) {
             if (!is_array($mapping)) {
                 continue;
             }
-            $query .= "WHEN `" . $taxIdColumn . "` = '" . $mapping['akeneo'] . "' then '" . $mapping['magento'] . "' ";
+            $query .= "WHEN " . $connection->quoteIdentifier($taxIdColumn) . " = " . $connection->quote($mapping['akeneo']) . " THEN " . $connection->quote($mapping['magento']) . " ";
         }
 
         $query .= 'END';
