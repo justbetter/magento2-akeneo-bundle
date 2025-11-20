@@ -5,6 +5,9 @@ namespace JustBetter\AkeneoBundle\Helper\Import;
 
 use Akeneo\Connector\Helper\Import\Product as BaseProduct;
 
+/**
+ * Overwritten to set values for store view 0 when attributes are scopable/localizable and required
+ */
 class Product extends BaseProduct
 {
     /**
