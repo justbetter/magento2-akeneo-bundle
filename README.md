@@ -75,6 +75,7 @@ Thanks to all the people who have contributed to this project:
   <img src="https://contrib.rocks/image?repo=justbetter/magento2-akeneo-bundle" alt="Contributors" />
 </a>
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Getting Started
 
@@ -95,6 +96,7 @@ Thanks to all the people who have contributed to this project:
    bin/magento setup:upgrade && bin/magento cache:flush
    ```
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Features
 
@@ -124,6 +126,7 @@ For configuration instructions and best practices, see **[Configuration Guide](F
 | **<a href="FEATURES.md#notification-features">Notifications</a>** | <a href="FEATURES.md#slack-notifications">Slack Notifications</a> | JustBetter Akeneo > Slack |
 | **<a href="FEATURES.md#event-system">Events</a>** | <a href="FEATURES.md#import-finished-events">Import Finished Events</a> | - |
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Configuration
 
@@ -133,6 +136,7 @@ All features are configured in the Magento Admin Panel:
 
 For detailed configuration instructions, grid mappings, and best practices, see **[FEATURES.md - Configuration Guide](FEATURES.md#configuration-guide)**.
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Usage
 
@@ -140,6 +144,7 @@ The bundle extends the Akeneo Connector with additional features that can be con
 
 For detailed usage instructions and CLI commands, see **[FEATURES.md](FEATURES.md)**.
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Events
 
@@ -147,6 +152,7 @@ The bundle dispatches custom events after import completion to enable custom pos
 
 For available events, implementation examples and use cases, see **[FEATURES.md - Event System](FEATURES.md#event-system)**.
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Contributing
 Please read our [Contributing Guide](.github/CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
@@ -168,22 +174,26 @@ composer grumphp
 
 For security vulnerabilities, please see our [Security Policy](.github/SECURITY.md).
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## License
 
 Distributed under the GPL-3.0 License. See `LICENSE` for more information. Please see [License File](LICENSE) for more information.
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Contact
 
 [JustBetter B.V.](https://justbetter.nl/contact)
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 <a href="https://justbetter.nl" title="JustBetter - Innovative Magento Development Agency">
     <img src="./.github/assets/footer.svg" alt="JustBetter - We're an innovative development agency from The Netherlands building better Magento solutions">
 </a>
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
 [packagist-version-shield]: https://img.shields.io/packagist/v/justbetter/magento2-akeneo-bundle.svg?style=for-the-badge
