@@ -26,7 +26,7 @@ class Product
      * @param array<int, string>|null $families
      * @return array<int, string>
      */
-    public function afterGetFamilies(AkeneoProduct $subject, ?array $families = null): array
+    public function afterGetFamiliesToImport(AkeneoProduct $subject, ?array $families = null): array
     {
         $familiesToExclude = explode(',', (string)$this->getFamiliesToExclude());
 
