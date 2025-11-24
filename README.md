@@ -108,13 +108,8 @@ For configuration instructions and best practices, see **[Configuration Guide](F
 | Category | Feature | Configuration Path |
 |----------|---------|-------------------|
 | **<a href="FEATURES.md#product-import-features">Product Import</a>** | <a href="FEATURES.md#important-attributes">Important Attributes</a> | JustBetter Akeneo > Important Attributes |
-| | <a href="FEATURES.md#tier-prices">Tier Prices</a> | Products > Customer Group Pricing |
 | | <a href="FEATURES.md#default-store-values">Default Store Values</a> | JustBetter Akeneo > Default Store Values |
 | | <a href="FEATURES.md#exclude-families">Exclude Families from Import</a> | Products Filters > Excluded Families |
-| | <a href="FEATURES.md#insert-new-products">Insert New Products</a> | JustBetter Akeneo > Insert New Products |
-| | <a href="FEATURES.md#set-products-active">Set Products Active</a> | JustBetter Akeneo > Set Products Active |
-| | <a href="FEATURES.md#enable-manage-stock">Enable Manage Stock</a> | JustBetter Akeneo > Enable Manage Stock |
-| | <a href="FEATURES.md#set-stock-status">Set Stock Status</a> | JustBetter Akeneo > Set Stock Status |
 | | <a href="FEATURES.md#remove-redundant-eav">Remove Redundant EAV</a> | JustBetter Akeneo > Remove Redundant EAV |
 | **<a href="FEATURES.md#category-features">Category</a>** | <a href="FEATURES.md#category-exist">Category Exist - Skip URL Regeneration</a> | JustBetter Akeneo > Category Exist |
 | **<a href="FEATURES.md#tax--pricing-features">Tax & Pricing</a>** | <a href="FEATURES.md#set-tax-class">Set Tax Class</a> | JustBetter Akeneo > Set Tax Class |

@@ -9,13 +9,8 @@ This document provides detailed information about all features available in the 
 - [Configuration Guide](#configuration-guide)
 - [Product Import Features](#product-import-features)
   - [Important Attributes](#important-attributes)
-  - [Tier Prices](#tier-prices)
   - [Default Store Values for Required Attributes](#default-store-values)
   - [Exclude Families from Import](#exclude-families)
-  - [Insert New Products](#insert-new-products)
-  - [Set Products Active](#set-products-active)
-  - [Enable Manage Stock by Default](#enable-manage-stock)
-  - [Set Stock Status](#set-stock-status)
   - [Remove Redundant EAV Attributes](#remove-redundant-eav)
 - [Category Features](#category-features)
   - [Category Exist - Skip URL Path Regeneration](#category-exist)
@@ -74,16 +69,6 @@ Select attributes that should always be imported and added to product temporary 
 
 ---
 
-### Tier Prices
-<a id="tier-prices"></a>
-
-Maps Akeneo attribute codes to Magento customer groups, enabling customer group-specific pricing imported directly from Akeneo.
-
-**Configuration:** `Stores > Configuration > Catalog > Akeneo Connector > Products > Customer Group Pricing`  
-**Mapping:** Define Akeneo Attribute → Magento Customer Group pairs in grid configuration.
-
----
-
 ### Default Store Values for Required Attributes
 <a id="default-store-values"></a>
 
@@ -106,43 +91,8 @@ Prevents specific product families from being imported. Products belonging to ex
 
 ---
 
-### Insert New Products
-<a id="insert-new-products"></a>
-
-Control whether new products from Akeneo are inserted into Magento. When disabled, only existing products will be updated.
-
-**Configuration:** `Stores > Configuration > Catalog > Akeneo Connector > JustBetter Akeneo > Insert New Products` (Default: Yes)
-
----
-
-### Set Products Active
-<a id="set-products-active"></a>
-
-Automatically enables all products imported from Akeneo by setting their status to "Enabled".
-
-**Configuration:** `Stores > Configuration > Catalog > Akeneo Connector > JustBetter Akeneo > Set Products Active`
-
----
-
-### Enable Manage Stock by Default
-<a id="enable-manage-stock"></a>
-
-Sets "Manage Stock" to "Yes" for all imported products by default.
-
-**Configuration:** `Stores > Configuration > Catalog > Akeneo Connector > JustBetter Akeneo > Enable Manage Stock`
-
----
-
-### Set Stock Status
-<a id="set-stock-status"></a>
-
-Automatically sets imported products' stock status to "In Stock" when they are backorderable.
-
-**Configuration:** `Stores > Configuration > Catalog > Akeneo Connector > JustBetter Akeneo > Set Stock Status`
-
----
-
 ### Remove Redundant EAV Attributes
+
 <a id="remove-redundant-eav"></a>
 
 Automatically cleans up orphaned EAV values when a product's family changes in Akeneo. Removes attribute values that no longer belong to the product's new attribute set.
