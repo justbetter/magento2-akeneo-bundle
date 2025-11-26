@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace JustBetter\AkeneoBundle\Console\Command;
 
@@ -9,12 +10,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ImportMetricUnits extends Command
 {
-    protected ImportMetricUnitsJob $job;
-
-    public function __construct(ImportMetricUnitsJob $job, ?string $name = null)
-    {
-        $this->job = $job;
-
+    public function __construct(
+        protected ImportMetricUnitsJob $job,
+        ?string $name = null
+    ) {
         parent::__construct($name);
     }
 
@@ -26,8 +25,10 @@ class ImportMetricUnits extends Command
         parent::configure();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->job->execute($output);
+
+        return self::SUCCESS;
     }
 }

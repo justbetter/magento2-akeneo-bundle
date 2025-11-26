@@ -1,12 +1,8 @@
 includes:
-    - vendor/bitexpert/phpstan-magento/extension.neon
+    - %currentWorkingDirectory%/vendor/bitexpert/phpstan-magento/extension.neon
 parameters:
     paths:
         - .
     excludePaths:
         - vendor
-    level: 1
-    ignoreErrors:
-        - '#Magento\\Backend\\Model\\View\\Result\\ForwardFactory#'
-        - '#Magento\\Eav\\Model\\ResourceModel\\Entity\\Attribute\\Set\\CollectionFactory#'
-        - '#Magento\\Catalog\\Model\\ResourceModel\\Product\\CollectionFactory#'
+    level: 7

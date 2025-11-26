@@ -1,16 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\AkeneoBundle\Block\Adminhtml\Akeneo\Edit;
 
-/**
- * Admin page left menu
- */
-class Tabs extends \Magento\Backend\Block\Widget\Tabs
+use Magento\Backend\Block\Widget\Tabs as WidgetTabs;
+
+class Tabs extends WidgetTabs
 {
-    /**
-     * @return void
-     */
-    protected function _construct()
+    protected function _construct(): void
     {
         parent::_construct();
         $this->setId('akeneo_tabs');

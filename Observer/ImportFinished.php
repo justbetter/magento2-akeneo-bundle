@@ -1,0 +1,33 @@
+<?php
+declare(strict_types=1);
+
+namespace JustBetter\AkeneoBundle\Observer;
+
+use Akeneo\Connector\Executor\JobExecutor;
+use Magento\Framework\Event\Manager;
+use Magento\Framework\Event\Observer;
+use Magento\Framework\Event\ObserverInterface;
+
+class ImportFinished implements ObserverInterface
+{
+    public function __construct(
+        protected Manager $eventManager
+    ) {
+    }
+
+    public function execute(Observer $observer): void
+    {
+        /** @var JobExecutor $executor */
+        $executor = $observer->getData('import');
+
+        $method = $executor->getMethod();
+
+        // Only dispatch for cleanCache method (end of import)
+        if ($method === 'cleanCache') {
+            $code = $executor->getCurrentJob()->getCode();
+            $event = 'akeneo_connector_import_finish_' . $code;
+
+            $this->eventManager->dispatch($event, ['import' => $executor]);
+        }
+    }
+}

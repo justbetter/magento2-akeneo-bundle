@@ -1,67 +1,54 @@
 <?php
+declare(strict_types=1);
 
 namespace JustBetter\AkeneoBundle\Block\Adminhtml\Akeneo\Edit\Tab;
 
 use IntlDateFormatter;
-use Magento\Framework\Registry;
-use Magento\Store\Model\System\Store;
-use Magento\Framework\Data\FormFactory;
-use Magento\Backend\Block\Template\Context;
+use JustBetter\AkeneoBundle\Block\Adminhtml\Akeneo\Grid;
+use JustBetter\AkeneoBundle\Model\AkeneoFactory;
 use JustBetter\AkeneoBundle\Model\Status;
+use Magento\Backend\Block\Template\Context;
 use Magento\Backend\Block\Widget\Form\Generic;
 use Magento\Backend\Block\Widget\Tab\TabInterface;
+use Magento\Framework\Data\FormFactory;
+use Magento\Framework\Phrase;
+use Magento\Framework\Registry;
+use Magento\Store\Model\System\Store;
 
-/**
- * akeneo edit form main tab
- */
 class Main extends Generic implements TabInterface
 {
     /**
-     * @var Store
-     */
-    protected $_systemStore;
-
-    /**
-     * @var Status
-     */
-    protected $_status;
-
-    /**
-     * @param Context     $context
-     * @param Registry    $registry
-     * @param FormFactory $formFactory
-     * @param Store       $systemStore
-     * @param Status      $status
-     * @param array       $data
+     * @param array<string, mixed> $data
      */
     public function __construct(
         Context $context,
         Registry $registry,
         FormFactory $formFactory,
-        Store $systemStore,
-        Status $status,
+        protected AkeneoFactory $akeneoFactory,
+        protected Store $systemStore,
+        protected Status $status,
         array $data = []
     ) {
-        $this->_systemStore = $systemStore;
-        $this->_status = $status;
         parent::__construct($context, $registry, $formFactory, $data);
     }
 
-    /**
-     * Prepare form
-     *
-     * @return $this
-     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
-     */
-    protected function _prepareForm()
+    protected function _prepareForm(): Main
     {
+        // Get model from registry (set by controller) or load from request
         $model = $this->_coreRegistry->registry('akeneo');
+        
+        if (!$model) {
+            $model = $this->akeneoFactory->create();
+            $id = (int)$this->getRequest()->getParam('id');
+            
+            if ($id) {
+                $model->load($id); // @phpstan-ignore-line
+            }
+        }
 
         $isElementDisabled = false;
 
-        /** @var \Magento\Framework\Data\Form $form */
         $form = $this->_formFactory->create();
-
         $form->setHtmlIdPrefix('page_');
 
         $fieldset = $form->addFieldset('base_fieldset', ['legend' => __('Item Information')]);
@@ -69,7 +56,7 @@ class Main extends Generic implements TabInterface
         if ($model->getId()) {
             $fieldset->addField('id', 'hidden', ['name' => 'id']);
         }
-                        
+
         $fieldset->addField(
             'import',
             'select',
@@ -78,7 +65,7 @@ class Main extends Generic implements TabInterface
                 'title' => __('Type'),
                 'name' => 'import',
                 'required' => true,
-                'options' => \JustBetter\AkeneoBundle\Block\Adminhtml\Akeneo\Grid::getOptionArray0(),
+                'options' => Grid::getOptionArray0(),
                 'disabled' => $isElementDisabled
             ]
         );
@@ -107,89 +94,63 @@ class Main extends Generic implements TabInterface
             ]
         );
 
-        $dateFormat = $this->_localeDate->getDateFormat(
-            IntlDateFormatter::MEDIUM
-        );
-        $timeFormat = $this->_localeDate->getTimeFormat(
-            IntlDateFormatter::MEDIUM
-        );
+        $dateFormat = $this->_localeDate->getDateFormat(IntlDateFormatter::MEDIUM);
 
         $fieldset->addField(
             'created_at',
             'date',
             [
-                'name'        => 'created_at',
-                'label'       => __('Created'),
-                'title'       => __('Created'),
+                'name' => 'created_at',
+                'label' => __('Created'),
+                'title' => __('Created'),
                 'date_format' => $dateFormat,
-                //'time_format' => $timeFormat,
-
                 'disabled' => $isElementDisabled,
             ]
         );
 
         if (!$model->getId()) {
-            $model->setData('is_active', $isElementDisabled ? '0' : '1');
+            $model->setData('is_active', '1');
         }
 
         $form->setValues($model->getData());
         $this->setForm($form);
-        
+
         return parent::_prepareForm();
     }
 
-    /**
-     * Prepare label for tab
-     *
-     * @return \Magento\Framework\Phrase
-     */
-    public function getTabLabel()
+    public function getTabLabel(): string
     {
-        return __('Item Information');
+        return (string)__('Item Information');
     }
 
-    /**
-     * Prepare title for tab
-     *
-     * @return \Magento\Framework\Phrase
-     */
-    public function getTabTitle()
+    public function getTabTitle(): string
     {
-        return __('Item Information');
+        return (string)__('Item Information');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function canShowTab()
+    public function canShowTab(): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isHidden()
+    public function isHidden(): bool
     {
         return false;
     }
 
-    /**
-     * Check permission for passed action
-     *
-     * @param string $resourceId
-     * @return bool
-     */
-    protected function _isAllowedAction($resourceId)
+    protected function _isAllowedAction(string $resourceId): bool
     {
         return $this->_authorization->isAllowed($resourceId);
     }
 
-    public function getTargetOptionArray()
+    /**
+     * @return array<string, string>
+     */
+    public function getTargetOptionArray(): array
     {
-        return array(
-            '_self'  => "Self",
-            '_blank' => "New Page",
-        );
+        return [
+            '_self' => 'Self',
+            '_blank' => 'New Page',
+        ];
     }
 }

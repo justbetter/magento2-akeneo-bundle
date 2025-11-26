@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace JustBetter\AkeneoBundle\Cron;
 
@@ -6,19 +7,12 @@ use JustBetter\AkeneoBundle\Job\RunSlackMessage;
 
 class SlackNotificationCron
 {
-    protected $runSlackMessage;
-
-    public function __construct(RunSlackMessage $runSlackMessage)
-    {
-        $this->runSlackMessage = $runSlackMessage;
+    public function __construct(
+        protected RunSlackMessage $runSlackMessage
+    ) {
     }
 
-    /**
-     * Write to system.log
-     *
-     * @return void
-     */
-    public function execute()
+    public function execute(): void
     {
         $this->runSlackMessage->execute();
     }

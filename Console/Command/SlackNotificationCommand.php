@@ -1,27 +1,23 @@
 <?php
+declare(strict_types=1);
 
 namespace JustBetter\AkeneoBundle\Console\Command;
 
-use Symfony\Component\Console\Command\Command;
 use JustBetter\AkeneoBundle\Job\RunSlackMessage;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-/**
- * Class SlackNotificationCommand
- * @package JustBetter\AkeneoBundle\Console\Command
- */
 class SlackNotificationCommand extends Command
 {
-    protected $runSlackMessage;
-
-    public function __construct(RunSlackMessage $runSlackMessage, ?string $name = null)
-    {
-        $this->runSlackMessage = $runSlackMessage;
+    public function __construct(
+        protected RunSlackMessage $runSlackMessage,
+        ?string $name = null
+    ) {
         parent::__construct($name);
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('slack:imports');
         $this->setDescription(
@@ -30,7 +26,7 @@ class SlackNotificationCommand extends Command
         parent::configure();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->runSlackMessage->execute($input, $output);
 

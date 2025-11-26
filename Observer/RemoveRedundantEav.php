@@ -1,14 +1,15 @@
 <?php
+declare(strict_types=1);
 
 namespace JustBetter\AkeneoBundle\Observer;
 
 use Akeneo\Connector\Executor\JobExecutor;
 use Akeneo\Connector\Helper\Import\Entities;
 use Akeneo\Connector\Helper\Output;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
-use Magento\Framework\App\Config\ScopeConfigInterface;
 
 class RemoveRedundantEav implements ObserverInterface
 {

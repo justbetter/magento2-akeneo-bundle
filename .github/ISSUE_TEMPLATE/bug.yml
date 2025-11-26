@@ -1,0 +1,149 @@
+name: Bug Report
+description: File a bug report.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for participating in this project!
+        Please fill out the following sections to help us understand the issue you're experiencing.
+
+        **Before submitting:**
+          - Make sure you are using the latest version of the extension
+          - Search existing issues - your question might already be answered
+          - Include as many details as possible (screenshots, console errors, logs, etc.)
+  
+  - type: textarea
+    id: current-behavior
+    attributes:
+      label: Current Behavior
+      description: What is happening?
+    validations:
+      required: true
+  
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected Behavior
+      description: What should happen?
+    validations:
+      required: true
+  
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: Please provide detailed steps to reproduce the issue
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. Run command '...'
+        4. See error
+    validations:
+      required: true
+  
+  - type: dropdown
+    id: affected-feature
+    attributes:
+      label: Which feature is affected?
+      description: Select the feature that is affected by this bug
+      options:
+        - Tier Prices
+        - Tax Class Mapping
+        - Important Attributes
+        - Metric Units Import
+        - Category Import
+        - Product Import
+        - Default Store Values
+        - Exclude Families
+        - Set Products Active
+        - Enable Manage Stock
+        - Set Stock Status
+        - Remove Redundant EAV
+        - Format Media Name
+        - Not Visible Families
+        - Required Attribute Mapping
+        - Slack Notifications
+        - Akeneo Manager
+        - Event System
+        - Other / Unknown
+    validations:
+      required: true
+  
+  - type: input
+    id: magento-version
+    attributes:
+      label: Magento Version
+      placeholder: "e.g., 2.4.7"
+    validations:
+      required: true
+  
+  - type: input
+    id: akeneo-connector-version
+    attributes:
+      label: Akeneo Connector Version
+      placeholder: "e.g., 105.1.0"
+    validations:
+      required: true
+  
+  - type: input
+    id: bundle-version
+    attributes:
+      label: JustBetter Akeneo Bundle Version
+      placeholder: "e.g., 2.0.0"
+    validations:
+      required: true
+  
+  - type: input
+    id: php-version
+    attributes:
+      label: PHP Version
+      placeholder: "e.g., 8.3"
+    validations:
+      required: true
+  
+  - type: input
+    id: akeneo-version
+    attributes:
+      label: Akeneo PIM Version
+      placeholder: "e.g., 7.0"
+    validations:
+      required: false
+  
+  - type: textarea
+    id: proposed-solution
+    attributes:
+      label: Proposed Solution
+      description: If you have an idea how to fix this, please share it
+  
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant Log Output
+      description: Please copy and paste any relevant log output (var/log/akeneo.log, var/log/exception.log, etc.)
+      render: shell
+  
+  - type: textarea
+    id: additional-information
+    attributes:
+      label: Additional Information
+      description: Screenshots, configuration details, or any other relevant information
+  
+  - type: checkboxes
+    attributes:
+      label: Pre-submission Checklist
+      options:
+      - label: I have searched the existing issues
+        required: true
+      - label: I am using the latest version of the bundle
+        required: true
+      - label: I have included all required version information
+        required: true
+  
+  - type: checkboxes
+    attributes:
+      label: Are you willing to create a pull request for this?
+      description: Thank you so much for your willingness to help us out! We really appreciate it.
+      options:
+      - label: If I have a fix, I would be willing to create a pull request

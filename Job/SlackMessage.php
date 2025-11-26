@@ -1,35 +1,29 @@
 <?php
+declare(strict_types=1);
 
 namespace JustBetter\AkeneoBundle\Job;
 
 use Akeneo\Connector\Api\Data\ImportInterface;
-use Magento\Store\Model\StoreManagerInterface;
 use Akeneo\Connector\Model\ResourceModel\Log\Collection;
+use Magento\Store\Api\Data\StoreInterface;
+use Magento\Store\Model\StoreManagerInterface;
 
 class SlackMessage
 {
-    protected $store;
+    protected StoreInterface $store;
 
-    public function __construct(StoreManagerInterface $store)
+    public function __construct(StoreManagerInterface $storeManager)
     {
-        $this->store = $store->getStore();
+        $this->store = $storeManager->getStore();
     }
 
-    /**
-     * @return string
-     */
-    public function success()
+    public function success(): string
     {
         return ':white_check_mark: All of today\'s imports in *' . $this->store->getName()
             . '* have been successfully completed.';
     }
 
-    /**
-     * @param Collection $errorLogs
-     * @param Collection $processingLogs
-     * @return string
-     */
-    public function warning(?Collection $errorLogs = null, ?Collection $processingLogs = null)
+    public function warning(?Collection $errorLogs = null, ?Collection $processingLogs = null): string
     {
         $message = ':warning: *Warning!* There\'s a problem with today’s imports in *' . $this->store->getName()
             . "*.\n\n";
@@ -39,45 +33,31 @@ class SlackMessage
         $message .= (isset($processingLogs) && $processingLogs->getData())
             ? $this->logList($processingLogs, ImportInterface::IMPORT_PROCESSING)
             : '';
+
         return $message;
     }
 
-    /**
-     * @param Collection $logs
-     * @param int $status
-     * @return string
-     */
-    protected function logList(Collection $logs, int $status)
+    protected function logList(Collection $logs, int $status): string
     {
-        $message = '';
-        switch ($status) {
-            case $status == ImportInterface::IMPORT_ERROR:
-                $message = "The following imports have failed:\n\n";
-                break;
-            case ImportInterface::IMPORT_PROCESSING:
-                $message = "The following imports are still in process:\n\n";
-                break;
-        }
+        $message = match ($status) {
+            ImportInterface::IMPORT_ERROR => "The following imports have failed:\n\n",
+            ImportInterface::IMPORT_PROCESSING => "The following imports are still in process:\n\n",
+            default => '',
+        };
+
         foreach ($logs->getData() as $log) {
             $message .= $this->formatList(date('H:i:s', strtotime($log['created_at'])), $log['name']);
         }
+
         return $message . "\n";
     }
 
-    /**
-     * @return string
-     */
-    public function noImports()
+    public function noImports(): string
     {
         return $this->warning() . 'No imports have been made today.';
     }
 
-    /**
-     * @param string $dateTime
-     * @param string $name
-     * @return string
-     */
-    protected function formatList(string $dateTime, string $name)
+    protected function formatList(string $dateTime, string $name): string
     {
         return '> •  _' . $dateTime . '_ *' . $name . "*\n";
     }

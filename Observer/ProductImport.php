@@ -1,0 +1,38 @@
+<?php
+declare(strict_types=1);
+
+namespace JustBetter\AkeneoBundle\Observer;
+
+use Akeneo\Connector\Executor\JobExecutor;
+use JustBetter\AkeneoBundle\Service\CheckWebsiteAssociation;
+use JustBetter\AkeneoBundle\Service\SetTaxClassId;
+use Magento\Framework\Event\Observer;
+use Magento\Framework\Event\ObserverInterface;
+
+class ProductImport implements ObserverInterface
+{
+    public function __construct(
+        protected CheckWebsiteAssociation $checkWebsiteAssociation,
+        protected SetTaxClassId $setTaxClassId
+    ) {
+    }
+
+    public function execute(Observer $observer): void
+    {
+        /** @var JobExecutor $executor */
+        $executor = $observer->getData('import');
+
+        $method = $executor->getMethod();
+        $code = $executor->getCurrentJob()->getCode();
+
+        // Run before setWebsites step
+        if ($method === 'setWebsites') {
+            $this->checkWebsiteAssociation->execute($code);
+        }
+
+        // Run before updateOption step
+        if ($method === 'updateOption') {
+            $this->setTaxClassId->execute($code);
+        }
+    }
+}

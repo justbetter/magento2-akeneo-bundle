@@ -1,16 +1,14 @@
 <?php
+declare(strict_types=1);
 
 namespace JustBetter\AkeneoBundle\Model;
 
-class Akeneo extends \Magento\Framework\Model\AbstractModel
+use Magento\Framework\Model\AbstractModel;
+
+class Akeneo extends AbstractModel
 {
-    /**
-     * Initialize resource model
-     *
-     * @return void
-     */
-    protected function _construct()
+    protected function _construct(): void
     {
-        $this->_init('JustBetter\AkeneoBundle\Model\ResourceModel\Akeneo');
+        $this->_init(ResourceModel\Akeneo::class);
     }
 }

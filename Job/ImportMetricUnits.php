@@ -1,10 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace JustBetter\AkeneoBundle\Job;
 
 use Akeneo\Connector\Helper\Authenticator;
-use Akeneo\Pim\ApiClient\AkeneoPimClientInterface;
-use Akeneo\Pim\ApiClient\Pagination\ResourceCursor;
+use Akeneo\Pim\ApiClient\Pagination\ResourceCursorInterface;
 use Akeneo\Pim\ApiClient\Search\SearchBuilder;
 use Magento\Eav\Api\AttributeRepositoryInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
@@ -18,33 +18,28 @@ class ImportMetricUnits
     protected const ENABLED_CONFIG_KEY = 'enablemetricunits';
     protected const CHANNEL_CONFIG_KEY = 'metric_conversion_channel';
 
-    protected Authenticator $authenticator;
-    protected AttributeRepositoryInterface $attributeRepository;
-    protected ScopeConfigInterface $config;
-
     public function __construct(
-        Authenticator $authenticator,
-        AttributeRepositoryInterface $attributeRepository,
-        ScopeConfigInterface $config
+        protected Authenticator $authenticator,
+        protected AttributeRepositoryInterface $attributeRepository,
+        protected ScopeConfigInterface $config
     ) {
-        $this->authenticator = $authenticator;
-        $this->attributeRepository = $attributeRepository;
-        $this->config = $config;
     }
 
     public function execute(?OutputInterface $output = null): void
     {
-        if (! $this->authenticator->getAkeneoApiClient()) {
+        if (!$this->authenticator->getAkeneoApiClient()) {
             if ($output) {
                 $output->writeln('<error>Akeneo client not configured!</error>');
             }
+
             return;
         }
-        
+
         if (!$this->config->getValue(static::CONFIG_PREFIX . static::ENABLED_CONFIG_KEY)) {
             if ($output) {
                 $output->writeln('<error>Metrics not enabled!</error>');
             }
+
             return;
         }
 
@@ -63,15 +58,16 @@ class ImportMetricUnits
                 if ($output) {
                     $output->writeln("<error>Skipping $code because it does not exist in Magento</error>");
                 }
+
                 continue;
             }
 
-            if ($magentoAttribute->getData(self::EAV_ATTRIBUTE_UNIT_FIELD) == $unit) {
+            if ($magentoAttribute->getData(self::EAV_ATTRIBUTE_UNIT_FIELD) == $unit) { // @phpstan-ignore-line
                 continue;
             }
 
-            $magentoAttribute->setData(self::EAV_ATTRIBUTE_UNIT_FIELD, $unit);
-            $magentoAttribute->save();
+            $magentoAttribute->setData(self::EAV_ATTRIBUTE_UNIT_FIELD, $unit); // @phpstan-ignore-line
+            $this->attributeRepository->save($magentoAttribute);
 
             if ($output) {
                 $output->writeln("Set unit for <info>$code</info> to <info>$unit</info>");
@@ -83,13 +79,16 @@ class ImportMetricUnits
         }
     }
 
-    protected function getMetricAttributes(): ResourceCursor
+    protected function getMetricAttributes(): ResourceCursorInterface
     {
         $search = (new SearchBuilder())->addFilter('type', 'IN', ['pim_catalog_metric']);
 
         return $this->authenticator->getAkeneoApiClient()->getAttributeApi()->all(100, ['search' => $search->getFilters()]);
     }
 
+    /**
+     * @return array<string, string>
+     */
     protected function getChannelConversions(): array
     {
         $channel = $this->config->getValue(static::CONFIG_PREFIX . static::CHANNEL_CONFIG_KEY);

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace JustBetter\AkeneoBundle\Plugin\Job;
 
@@ -21,14 +22,17 @@ class Product
         return $this->scopeConfig->getValue(self::PRODUCTS_FILTERS_EXCLUDED_FAMILIES);
     }
 
-    public function afterGetFamiliesToImport(
-        AkeneoProduct $subject,
-        array $families
-    ): array {
-        $familiesToExclude = explode(',', $this->getFamiliesToExclude() ?? '');
-      
+    /**
+     * @param array<int, string>|null $families
+     * @return array<int, string>
+     */
+    public function afterGetFamiliesToImport(AkeneoProduct $subject, ?array $families = null): array
+    {
+        $familiesToExclude = explode(',', (string)$this->getFamiliesToExclude());
+
         if (!$families || $families[0] === '') {
-            $families = array_values($this->familyFilter->getFamilies() ?? []);
+            $allFamilies = $this->familyFilter->getFamilies();
+            $families = is_array($allFamilies) ? array_values($allFamilies) : [];
         }
 
         return array_diff($families, $familiesToExclude);

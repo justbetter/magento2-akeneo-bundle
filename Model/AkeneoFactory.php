@@ -1,30 +1,22 @@
 <?php
+declare(strict_types=1);
 
 namespace JustBetter\AkeneoBundle\Model;
 
+use Magento\Framework\ObjectManagerInterface;
+
 class AkeneoFactory
 {
-    /**
-     * @var \Magento\Framework\ObjectManagerInterface
-     */
-    protected $_objectManager;
-
-    /**
-     * @param \Magento\Framework\ObjectManagerInterface $objectManager
-     */
-    public function __construct(\Magento\Framework\ObjectManagerInterface $objectManager)
-    {
-        $this->_objectManager = $objectManager;
+    public function __construct(
+        protected ObjectManagerInterface $objectManager
+    ) {
     }
 
     /**
-     * Create new country model
-     *
-     * @param array $arguments
-     * @return \Magento\Directory\Model\Country
+     * @param array<string, mixed> $arguments
      */
-    public function create(array $arguments = [])
+    public function create(array $arguments = []): Akeneo
     {
-        return $this->_objectManager->create('JustBetter\AkeneoBundle\Model\Akeneo', $arguments, false);
+        return $this->objectManager->create(Akeneo::class, $arguments);
     }
 }

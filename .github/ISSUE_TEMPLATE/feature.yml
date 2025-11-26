@@ -1,0 +1,114 @@
+name: Feature Request
+description: Request a new feature or enhancement.
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for participating in this project!
+        Please fill out the following sections to help us understand what you want.
+
+        **Before submitting:**
+          - Make sure you are using the latest version of the extension
+          - Search existing issues and PRs - there might be a similar request already
+          - Include as many details as possible about your use case
+  
+  - type: textarea
+    id: requested-feature
+    attributes:
+      label: Feature Description
+      description: What feature would you like to see added?
+      placeholder: A clear and concise description of what you want to happen
+    validations:
+      required: true
+  
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use Case
+      description: Why would you need this feature? How are you currently limited?
+      placeholder: Describe your use case and why this feature would be valuable
+    validations:
+      required: true
+  
+  - type: dropdown
+    id: feature-category
+    attributes:
+      label: Feature Category
+      description: Which area does this feature relate to?
+      options:
+        - Product Import
+        - Category Import
+        - Attribute Management
+        - Tax & Pricing
+        - Visibility & Stock
+        - Website Association
+        - Notifications
+        - Event System
+        - Configuration
+        - CLI Commands
+        - Other
+    validations:
+      required: true
+  
+  - type: textarea
+    id: proposed-solution
+    attributes:
+      label: Proposed Solution
+      description: How do you envision this feature working?
+      placeholder: |
+        Describe the solution you'd like:
+        - What configuration options would be needed?
+        - How would it integrate with existing features?
+        - What would the user workflow look like?
+  
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Have you considered any alternative solutions or workarounds?
+  
+  - type: textarea
+    id: current-workaround
+    attributes:
+      label: Current Workaround
+      description: How are you currently solving this problem (if at all)?
+  
+  - type: input
+    id: magento-version
+    attributes:
+      label: Magento Version
+      placeholder: "e.g., 2.4.7"
+    validations:
+      required: false
+  
+  - type: input
+    id: bundle-version
+    attributes:
+      label: JustBetter Akeneo Bundle Version
+      placeholder: "e.g., 2.0.0"
+    validations:
+      required: false
+  
+  - type: textarea
+    id: additional-information
+    attributes:
+      label: Additional Information
+      description: Any other context, screenshots, or examples that would help us understand the request
+  
+  - type: checkboxes
+    attributes:
+      label: Pre-submission Checklist
+      options:
+      - label: I have searched the existing issues and pull requests
+        required: true
+      - label: I have described my use case clearly
+        required: true
+  
+  - type: checkboxes
+    attributes:
+      label: Are you willing to create a pull request for this?
+      description: Thank you so much for your willingness to help us out! We really appreciate it.
+      options:
+      - label: I would be willing to create a pull request for this feature

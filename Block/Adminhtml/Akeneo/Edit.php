@@ -1,39 +1,31 @@
 <?php
+declare(strict_types=1);
 
 namespace JustBetter\AkeneoBundle\Block\Adminhtml\Akeneo;
 
-use Magento\Framework\Registry;
+use JustBetter\AkeneoBundle\Model\AkeneoFactory;
 use Magento\Backend\Block\Widget\Context;
+use Magento\Backend\Block\Widget\Form\Container;
+use Magento\Framework\Escaper;
+use Magento\Framework\Phrase;
 
-class Edit extends \Magento\Backend\Block\Widget\Form\Container
+class Edit extends Container
 {
-    /**
-     * Core registry
-     *
-     * @var Registry
-     */
-    protected $_coreRegistry = null;
+    protected Escaper $escaper;
 
     /**
-     * @param Context $context
-     * @param Registry $registry
-     * @param array $data
+     * @param array<string, mixed> $data
      */
     public function __construct(
         Context $context,
-        Registry $registry,
+        protected AkeneoFactory $akeneoFactory,
         array $data = []
     ) {
-        $this->_coreRegistry = $registry;
+        $this->escaper = $context->getEscaper();
         parent::__construct($context, $data);
     }
 
-    /**
-     * Initialize akeneo edit block
-     *
-     * @return void
-     */
-    protected function _construct()
+    protected function _construct(): void
     {
         $this->_objectId = 'id';
         $this->_blockGroup = 'JustBetter_AkeneoBundle';
@@ -41,7 +33,7 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
 
         parent::_construct();
 
-        $this->buttonList->update('save', 'label', __('Save Akeneo'));
+        $this->buttonList->update('save', 'label', (string)__('Save Akeneo'));
         $this->buttonList->add(
             'saveandcontinue',
             [
@@ -56,40 +48,35 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
             -100
         );
 
-        $this->buttonList->update('delete', 'label', __('Delete Akeneo'));
+        $this->buttonList->update('delete', 'label', (string)__('Delete Akeneo'));
     }
 
-    /**
-     * Retrieve text for header element depending on loaded post
-     *
-     * @return \Magento\Framework\Phrase
-     */
-    public function getHeaderText()
+    public function getHeaderText(): string
     {
-        if ($this->_coreRegistry->registry('akeneo')->getId()) {
-            return __("Edit Akeneo '%1'", $this->escapeHtml($this->_coreRegistry->registry('akeneo')->getTitle()));
-        } else {
-            return __('New Akeneo');
+        $id = (int)$this->getRequest()->getParam('id');
+        
+        if ($id) {
+            $model = $this->akeneoFactory->create();
+            $model->load($id); // @phpstan-ignore-line
+            
+            if ($model->getId()) {
+                return (string)__("Edit Akeneo '%1'", $this->escaper->escapeHtml($model->getTitle()));
+            }
         }
+
+        return (string)__('New Akeneo');
     }
 
-    /**
-     * Getter of url for "Save and Continue" button
-     * tab_id will be replaced by desired by JS later
-     *
-     * @return string
-     */
-    protected function _getSaveAndContinueUrl()
+    protected function _getSaveAndContinueUrl(): string
     {
-        return $this->getUrl('akeneomanager/*/save', ['_current' => true, 'back' => 'edit', 'active_tab' => '{{tab_id}}']);
+        return $this->getUrl('akeneomanager/*/save', [
+            '_current' => true,
+            'back' => 'edit',
+            'active_tab' => '{{tab_id}}'
+        ]);
     }
 
-    /**
-     * Prepare layout
-     *
-     * @return \Magento\Framework\View\Element\AbstractBlock
-     */
-    protected function _prepareLayout()
+    protected function _prepareLayout(): Edit
     {
         $this->_formScripts[] = "
             function toggleEditor() {
@@ -100,6 +87,7 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
                 }
             };
         ";
+
         return parent::_prepareLayout();
     }
 }

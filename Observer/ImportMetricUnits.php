@@ -1,18 +1,17 @@
 <?php
+declare(strict_types=1);
 
 namespace JustBetter\AkeneoBundle\Observer;
 
+use JustBetter\AkeneoBundle\Job\ImportMetricUnits as ImportMetricUnitsJob;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
-use JustBetter\AkeneoBundle\Job\ImportMetricUnits as ImportMetricUnitsJob;
 
 class ImportMetricUnits implements ObserverInterface
 {
-    protected ImportMetricUnitsJob $job;
-
-    public function __construct(ImportMetricUnitsJob $job)
-    {
-        $this->job = $job;
+    public function __construct(
+        protected ImportMetricUnitsJob $job
+    ) {
     }
 
     public function execute(Observer $observer): void

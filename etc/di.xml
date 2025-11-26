@@ -1,35 +1,7 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <type name="Akeneo\Connector\Job\Product">
-        <plugin name="JustBetter_TierPrices" type="JustBetter\AkeneoBundle\Plugin\SetTierPrices" />
-        <plugin name="JustBetter_InsertNewProducts" type="JustBetter\AkeneoBundle\Plugin\InsertNewProducts" />
-        <plugin name="JustBetter_setTaxClass" type="JustBetter\AkeneoBundle\Plugin\SetTaxClassId" />
-        <plugin name="JustBetter_setProductsActive" type="JustBetter\AkeneoBundle\Plugin\SetProductsActive" />
-        <plugin name="JustBetter_EnableManageStock" type="JustBetter\AkeneoBundle\Plugin\EnableManageStock" sortOrder="1" />
-        <plugin name="JustBetter_SetStockStatus" type="JustBetter\AkeneoBundle\Plugin\SetStockStatus" sortOrder="2" />
-        <plugin name="JustBetter_ImportFinished" type="JustBetter\AkeneoBundle\Plugin\ImportFinished" sortOrder="10" />
-        <plugin name="JustBetter_CheckWebsiteAssociation" type="JustBetter\AkeneoBundle\Plugin\CheckWebsiteAssociation" />
-    </type>
-
-    <type name="Akeneo\Connector\Job\Category">
-        <plugin name="JustBetter_ImportFinished" type="JustBetter\AkeneoBundle\Plugin\ImportFinished" sortOrder="1" />
-        <plugin name="JustBetter_CategoryExist" type="JustBetter\AkeneoBundle\Plugin\CategoryExist" />
-    </type>
-
-    <type name="Akeneo\Connector\Job\Attribute">
-        <plugin name="JustBetter_ImportFinished" type="JustBetter\AkeneoBundle\Plugin\ImportFinished" sortOrder="1" />
-    </type>
-
-    <type name="Akeneo\Connector\Job\Family">
-        <plugin name="JustBetter_ImportFinished" type="JustBetter\AkeneoBundle\Plugin\ImportFinished" sortOrder="1" />
-    </type>
-
-    <type name="Akeneo\Connector\Job\Product">
         <plugin name="JustBetter_FamiliesToExclude" type="JustBetter\AkeneoBundle\Plugin\Job\Product" sortOrder="1" />
-    </type>
-
-    <type name="Akeneo\Connector\Job\Option">
-        <plugin name="JustBetter_ImportFinished" type="JustBetter\AkeneoBundle\Plugin\ImportFinished" sortOrder="1" />
     </type>
 
     <type name="Akeneo\Connector\Helper\Import\Entities">
