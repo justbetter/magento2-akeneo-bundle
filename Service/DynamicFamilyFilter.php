@@ -7,6 +7,8 @@ namespace JustBetter\AkeneoBundle\Service;
 use Akeneo\Connector\Helper\Authenticator;
 use Akeneo\Connector\Helper\Config as ConfigHelper;
 use Akeneo\Connector\Model\Source\Filters\Update;
+use Akeneo\Pim\ApiClient\Search\SearchBuilder;
+use Akeneo\Pim\ApiClient\Search\SearchBuilderFactory;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
@@ -20,7 +22,8 @@ class DynamicFamilyFilter
         protected Authenticator $authenticator,
         protected ConfigHelper $configHelper,
         protected ResourceConnection $resourceConnection,
-        protected TimezoneInterface $timezone
+        protected TimezoneInterface $timezone,
+        protected SearchBuilderFactory $searchBuilderFactory
     ) {
     }
 
@@ -43,22 +46,22 @@ class DynamicFamilyFilter
             return null;
         }
 
-        $filter = $this->buildUpdateFilter();
-        if (empty($filter)) {
+        $searchBuilder = $this->buildUpdateFilter();
+        if ($searchBuilder === null) {
             return null;
         }
 
         $families = [];
-        $searchFilters = ['updated' => [$filter]];
+        $filters = ['search' => $searchBuilder->getFilters()];
         $pageSize = $this->configHelper->getPaginationSize();
 
-        foreach ($client->getProductApi()->all($pageSize, ['search' => $searchFilters]) as $product) {
+        foreach ($client->getProductApi()->all($pageSize, $filters) as $product) {
             if (!empty($product['family'])) {
                 $families[] = $product['family'];
             }
         }
 
-        foreach ($client->getProductModelApi()->all($pageSize, ['search' => $searchFilters]) as $model) {
+        foreach ($client->getProductModelApi()->all($pageSize, $filters) as $model) {
             if (!empty($model['family'])) {
                 $families[] = $model['family'];
             }
@@ -67,81 +70,63 @@ class DynamicFamilyFilter
         return array_values(array_unique($families));
     }
 
-    /**
-     * @return array<string, mixed>
-     */
-    protected function buildUpdateFilter(): array
+    protected function buildUpdateFilter(): ?SearchBuilder
     {
+        $searchBuilder = $this->searchBuilderFactory->create();
+
         return match ($this->configHelper->getUpdatedMode()) {
-            Update::GREATER_THAN => $this->greaterThan($this->configHelper->getUpdatedGreaterFilter()),
-            Update::LOWER_THAN => $this->lowerThan($this->configHelper->getUpdatedLowerFilter()),
+            Update::GREATER_THAN => $this->greaterThan($searchBuilder, $this->configHelper->getUpdatedGreaterFilter()),
+            Update::LOWER_THAN => $this->lowerThan($searchBuilder, $this->configHelper->getUpdatedLowerFilter()),
             Update::BETWEEN => $this->between(
+                $searchBuilder,
                 $this->configHelper->getUpdatedBetweenAfterFilter(),
                 $this->configHelper->getUpdatedBetweenBeforeFilter()
             ),
-            Update::SINCE_LAST_N_DAYS => $this->sinceLastNDays($this->configHelper->getUpdatedSinceFilter()),
-            Update::SINCE_LAST_N_HOURS => $this->sinceLastNHours($this->configHelper->getUpdatedSinceLastHoursFilter()),
-            Update::SINCE_LAST_IMPORT => $this->sinceLastImport(),
-            default => [],
+            Update::SINCE_LAST_N_DAYS => $this->sinceLastNDays($searchBuilder, $this->configHelper->getUpdatedSinceFilter()),
+            Update::SINCE_LAST_N_HOURS => $this->sinceLastNHours($searchBuilder, $this->configHelper->getUpdatedSinceLastHoursFilter()),
+            Update::SINCE_LAST_IMPORT => $this->sinceLastImport($searchBuilder),
+            default => null,
         };
     }
 
-    /**
-     * @return array<string, mixed>
-     */
-    protected function greaterThan(?string $date): array
+    protected function greaterThan(SearchBuilder $searchBuilder, ?string $date): ?SearchBuilder
     {
-        return $date ? ['operator' => '>', 'value' => "$date 00:00:00"] : [];
+        return $date ? $searchBuilder->addFilter('updated', '>', "$date 00:00:00") : null;
     }
 
-    /**
-     * @return array<string, mixed>
-     */
-    protected function lowerThan(?string $date): array
+    protected function lowerThan(SearchBuilder $searchBuilder, ?string $date): ?SearchBuilder
     {
-        return $date ? ['operator' => '<', 'value' => "$date 23:59:59"] : [];
+        return $date ? $searchBuilder->addFilter('updated', '<', "$date 23:59:59") : null;
     }
 
-    /**
-     * @return array<string, mixed>
-     */
-    protected function between(?string $after, ?string $before): array
+    protected function between(SearchBuilder $searchBuilder, ?string $after, ?string $before): ?SearchBuilder
     {
         return ($after && $before)
-            ? ['operator' => 'BETWEEN', 'value' => ["$after 00:00:00", "$before 23:59:59"]]
-            : [];
+            ? $searchBuilder->addFilter('updated', 'BETWEEN', ["$after 00:00:00", "$before 23:59:59"])
+            : null;
     }
 
-    /**
-     * @return array<string, mixed>
-     */
-    protected function sinceLastNDays(?string $days): array
+    protected function sinceLastNDays(SearchBuilder $searchBuilder, ?string $days): ?SearchBuilder
     {
         if (!$days || !is_numeric($days)) {
-            return [];
+            return null;
         }
         $date = $this->timezone->date()->modify("-$days days");
 
-        return ['operator' => '>', 'value' => $date->format('Y-m-d H:i:s')];
+        return $searchBuilder->addFilter('updated', '>', $date->format('Y-m-d H:i:s'));
     }
 
-    /**
-     * @return array<string, mixed>
-     */
-    protected function sinceLastNHours(?string $hours): array
+    protected function sinceLastNHours(SearchBuilder $searchBuilder, ?string $hours): ?SearchBuilder
     {
         if (!$hours || !is_numeric($hours)) {
-            return [];
+            return null;
         }
         $date = $this->timezone->date()->modify("-$hours hours");
 
-        return ['operator' => '>', 'value' => $date->format('Y-m-d H:i:s')];
+        return $searchBuilder->addFilter('updated', '>', $date->format('Y-m-d H:i:s'));
     }
 
-    /**
-     * @return array<string, mixed>
-     */
-    protected function sinceLastImport(): array
+    protected function sinceLastImport(SearchBuilder $searchBuilder): ?SearchBuilder
     {
         $connection = $this->resourceConnection->getConnection();
         $date = $connection->fetchOne(
@@ -150,6 +135,6 @@ class DynamicFamilyFilter
                 ->where('code = ?', 'product')
         );
 
-        return $date ? ['operator' => '>', 'value' => $date] : [];
+        return $date ? $searchBuilder->addFilter('updated', '>', $date) : null;
     }
 }
