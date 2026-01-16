@@ -164,6 +164,19 @@
                     </depends>
                     <can_be_empty>1</can_be_empty>
                 </field>
+                <field id="dynamic_families_enabled" translate="label" type="select" sortOrder="150" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Dynamic Family Filtering</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>
+                        <![CDATA[
+                        <b>Speeds up product imports for large catalogs.</b>
+                        <br/><br/>
+                        First fetches updated products based on "Updated Mode"; then imports only the families found in those results.
+                        <br/><br/>
+                        Example: 936 families total, but only 5 with updates ⇒ only those 5 are processed.
+                        ]]>
+                    </comment>
+                </field>
             </group>
         </section>
     </system>
