@@ -6,3 +6,6 @@ parameters:
     excludePaths:
         - vendor
     level: 7
+    ignoreErrors:
+        - message: '#\w+Factory#'
+          reportUnmatched: false

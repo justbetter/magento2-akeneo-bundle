@@ -11,6 +11,7 @@ This document provides detailed information about all features available in the 
   - [Important Attributes](#important-attributes)
   - [Default Store Values for Required Attributes](#default-store-values)
   - [Exclude Families from Import](#exclude-families)
+  - [Dynamic Family Filtering](#dynamic-family-filtering)
   - [Remove Redundant EAV Attributes](#remove-redundant-eav)
 - [Category Features](#category-features)
   - [Category Exist - Skip URL Path Regeneration](#category-exist)
@@ -88,6 +89,24 @@ Prevents specific product families from being imported. Products belonging to ex
 **Configuration:** `Stores > Configuration > Catalog > Akeneo Connector > Products Filters > Excluded Families`
 
 **Note:** This feature works in combination with the "Family Attribute as Filter" configuration.
+
+---
+
+### Dynamic Family Filtering
+<a id="dynamic-family-filtering"></a>
+
+Speeds up product imports for large catalogs by only processing families that have updated products within the configured "Updated Mode" period.
+
+**How it works:**
+1. Before import starts, queries Akeneo API for products updated within the configured period
+2. Extracts unique family codes from those products
+3. Only imports families that have updates, skipping all others
+
+**Configuration:** `Stores > Configuration > Catalog > Akeneo Connector > Products Filters > Dynamic Family Filtering`
+
+**Example:** Catalog has 936 families. With "Updated Mode" set to "Since Last 2 Days" and only 5 products updated, only 5 families are processed instead of all 936.
+
+**Important:** This feature uses the existing "Updated Mode" configuration from the Akeneo Connector. Make sure your update filter is properly configured.
 
 ---
 

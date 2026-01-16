@@ -17,6 +17,9 @@
                     <api>https://slack.com/api/chat.postMessage</api>
                 </slack>
             </justbetter>
+            <products_filters>
+                <dynamic_families_enabled>0</dynamic_families_enabled>
+            </products_filters>
         </akeneo_connector>
     </default>
 </config>

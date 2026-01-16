@@ -1,10 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace JustBetter\AkeneoBundle\Plugin\Job;
 
 use Akeneo\Connector\Job\Product as AkeneoProduct;
 use Akeneo\Connector\Model\Source\Filters\Family;
+use JustBetter\AkeneoBundle\Service\DynamicFamilyFilter;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 
 class Product
@@ -13,7 +15,8 @@ class Product
 
     public function __construct(
         protected ScopeConfigInterface $scopeConfig,
-        protected Family $familyFilter
+        protected Family $familyFilter,
+        protected DynamicFamilyFilter $dynamicFamilyFilter
     ) {
     }
 
@@ -35,6 +38,13 @@ class Product
             $families = is_array($allFamilies) ? array_values($allFamilies) : [];
         }
 
-        return array_diff($families, $familiesToExclude);
+        $families = array_diff($families, $familiesToExclude);
+
+        $dynamicFamilies = $this->dynamicFamilyFilter->getFamiliesWithUpdatedProducts();
+        if ($dynamicFamilies !== null) {
+            $families = array_intersect($families, $dynamicFamilies);
+        }
+
+        return array_values($families);
     }
 }
