@@ -1,7 +1,35 @@
 <?xml version="1.0"?>
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../Magento/Backend/etc/menu.xsd">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
-	    <add id="JustBetter_AkeneoBundle::menu" title="JustBetter" module="JustBetter_AkeneoBundle" sortOrder="49" resource="JustBetter_AkeneoBundle::menu" dependsOnConfig="akeneo_connector/justbetter/akeneomanager"/>
-		<add id="JustBetter_AkeneoBundle::akeneo" title="Akeneo Manager" module="JustBetter_AkeneoBundle" sortOrder="20" parent="JustBetter_AkeneoBundle::menu" action="akeneomanager/akeneo" resource="JustBetter_AkeneoBundle::akeneo"/>
+        <add 
+            id="JustBetter_AkeneoBundle::section"
+            title="Akeneo Bundle"
+            module="JustBetter_AkeneoBundle"
+            translate="title"
+            sortOrder="20"
+            parent="JustBetter_Core::menu"
+            resource="JustBetter_AkeneoBundle::menu"
+        />
+        <add 
+            id="JustBetter_AkeneoBundle::config"
+            title="Configuration"
+            module="JustBetter_AkeneoBundle"
+            translate="title"
+            sortOrder="10"
+            action="adminhtml/system_config/edit/section/akeneo_connector"
+            parent="JustBetter_AkeneoBundle::section"
+            resource="JustBetter_AkeneoBundle::config"
+        />
+        <add 
+            id="JustBetter_AkeneoBundle::akeneo_manager"
+            title="Akeneo Manager"
+            module="JustBetter_AkeneoBundle"
+            translate="title"
+            sortOrder="20"
+            action="akeneomanager/akeneo"
+            parent="JustBetter_AkeneoBundle::section"
+            resource="JustBetter_AkeneoBundle::akeneo"
+            dependsOnConfig="akeneo_connector/justbetter/akeneomanager"
+        />
     </menu>
 </config>
