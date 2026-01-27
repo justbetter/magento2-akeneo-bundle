@@ -3,6 +3,7 @@
     <module name="JustBetter_AkeneoBundle" setup_version="1.0.0">
         <sequence>
             <module name="Akeneo_Connector"/>
+            <module name="JustBetter_Core"/>
         </sequence>
     </module>
 </config>
