@@ -9,6 +9,7 @@
                 <enablemetricunits>0</enablemetricunits>
                 <metric_conversion_channel>ecommerce</metric_conversion_channel>
                 <defaultstorevalues>0</defaultstorevalues>
+                <fill_default_store_values>0</fill_default_store_values>
                 <slack>
                     <enable>0</enable>
                     <token></token>
