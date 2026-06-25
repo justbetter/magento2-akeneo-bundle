@@ -9,3 +9,6 @@ parameters:
     ignoreErrors:
         - message: '#\w+Factory#'
           reportUnmatched: false
+        - message: '#Parameter \#2 \$block of method Magento\\Framework\\View\\Element\\AbstractBlock::setChild\(\) expects Magento\\Framework\\View\\Element\\AbstractBlock\|string, Magento\\Framework\\View\\Element\\BlockInterface given\.#'
+          path: Block/Adminhtml/Akeneo.php
+          reportUnmatched: false

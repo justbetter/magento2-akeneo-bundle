@@ -34,7 +34,7 @@ class Akeneo extends Container
 
         $this->setChild(
             'grid',
-            $this->getLayout()->createBlock( // @phpstan-ignore-line
+            $this->getLayout()->createBlock(
                 'JustBetter\AkeneoBundle\Block\Adminhtml\Akeneo\Grid',
                 'justbetter.akeneo.grid'
             )
