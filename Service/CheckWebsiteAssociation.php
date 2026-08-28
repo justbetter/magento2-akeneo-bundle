@@ -71,7 +71,7 @@ class CheckWebsiteAssociation
                         if (empty($row[$attrKey])) {
                             unset($websites[$key]);
 
-                            break 2;
+                            continue 2;
                         }
                     }
                 }
