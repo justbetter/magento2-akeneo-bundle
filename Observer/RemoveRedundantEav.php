@@ -32,16 +32,20 @@ class RemoveRedundantEav implements ObserverInterface
 
         $this->jobExecutor->displayInfo((string)$this->outputHelper->getPrefix() . __('Remove Redundant EAV attribute values'));
         $connection = $this->resourceConnection->getConnection();
+        $productTable = $this->resourceConnection->getTableName('catalog_product_entity');
+        $attributeTable = $this->resourceConnection->getTableName('eav_attribute');
+        $entityAttributeTable = $this->resourceConnection->getTableName('eav_entity_attribute');
 
         foreach (self::CATALOG_PRODUCT_ENTITY_DATA_TYPES as $dataType) {
+            $valueTable = $this->resourceConnection->getTableName('catalog_product_entity_' . $dataType);
             $query = "
                 DELETE cpe{$dataType}
-                FROM catalog_product_entity_{$dataType} as cpe{$dataType}
-                LEFT JOIN catalog_product_entity as cpe on cpe.entity_id = cpe{$dataType}.entity_id
-                LEFT JOIN eav_attribute as ea on ea.attribute_id = cpe{$dataType}.attribute_id
+                FROM {$valueTable} as cpe{$dataType}
+                LEFT JOIN {$productTable} as cpe on cpe.entity_id = cpe{$dataType}.entity_id
+                LEFT JOIN {$attributeTable} as ea on ea.attribute_id = cpe{$dataType}.attribute_id
                 WHERE cpe{$dataType}.store_id = 0 AND cpe.attribute_set_id NOT IN (
                     SELECT attribute_set_id 
-                    FROM eav_entity_attribute 
+                    FROM {$entityAttributeTable} 
                     WHERE attribute_set_id = cpe.attribute_set_id AND attribute_id = cpe{$dataType}.attribute_id
                 )
             ";
