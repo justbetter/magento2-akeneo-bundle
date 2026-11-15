@@ -6,6 +6,7 @@ namespace JustBetter\AkeneoBundle\Service;
 use Akeneo\Connector\Helper\Import\Entities;
 use Akeneo\Connector\Helper\Store as StoreHelper;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\App\ResourceConnection;
 use Magento\Store\Model\ScopeInterface;
 
 class CategoryExist
@@ -13,7 +14,8 @@ class CategoryExist
     public function __construct(
         protected ScopeConfigInterface $config,
         protected Entities $entitiesHelper,
-        protected StoreHelper $storeHelper
+        protected StoreHelper $storeHelper,
+        protected ResourceConnection $resourceConnection
     ) {
     }
 
@@ -26,22 +28,26 @@ class CategoryExist
 
         $connection = $this->entitiesHelper->getConnection();
         $stores = $this->storeHelper->getStores('lang');
+        $tmpTable = $this->entitiesHelper->getTableName('category');
+        $varcharTable = $this->resourceConnection->getTableName('catalog_category_entity_varchar');
+        $attributeTable = $this->resourceConnection->getTableName('eav_attribute');
+        $entityTypeTable = $this->resourceConnection->getTableName('eav_entity_type');
 
         foreach ($stores as $local => $affected) {
             foreach ($affected as $store) {
                 $columnName = 'url_key-' . $store['lang'];
 
                 $query = "
-                    UPDATE tmp_akeneo_connector_entities_category temp
-                    LEFT JOIN catalog_category_entity_varchar eav ON (
+                    UPDATE {$tmpTable} temp
+                    LEFT JOIN {$varcharTable} eav ON (
                         eav.entity_id = temp._entity_id 
                         AND eav.attribute_id = (
                             SELECT attribute_id 
-                            FROM eav_attribute 
+                            FROM {$attributeTable} 
                             WHERE attribute_code = 'url_key' 
                             AND entity_type_id = (
                                 SELECT entity_type_id 
-                                FROM eav_entity_type 
+                                FROM {$entityTypeTable} 
                                 WHERE entity_type_code = 'catalog_category'
                             )
                             AND eav.value != ''

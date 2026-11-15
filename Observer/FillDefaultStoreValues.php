@@ -113,11 +113,11 @@ class FillDefaultStoreValues implements ObserverInterface
     {
         $select = $connection->select()
             ->from(
-                ['attr' => $connection->getTableName('eav_attribute')],
+                ['attr' => $this->resourceConnection->getTableName('eav_attribute')],
                 ['attribute_id', 'attribute_code', 'backend_type']
             )
             ->join(
-                ['type' => $connection->getTableName('eav_entity_type')],
+                ['type' => $this->resourceConnection->getTableName('eav_entity_type')],
                 'attr.entity_type_id = type.entity_type_id',
                 []
             )
@@ -137,7 +137,7 @@ class FillDefaultStoreValues implements ObserverInterface
         string $tmpTable,
         array $sourceStoreIds
     ): void {
-        $valueTable = $connection->getTableName('catalog_product_entity_'.$backendType);
+        $valueTable = $this->resourceConnection->getTableName('catalog_product_entity_'.$backendType);
         $sourceStoreList = implode(',', array_map('intval', $sourceStoreIds));
 
         $sql = sprintf(
